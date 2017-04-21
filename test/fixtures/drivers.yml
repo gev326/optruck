@@ -1,0 +1,41 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  first_name: MyString
+  last_name: MyString
+  latitude: 1.5
+  longitude: 1.5
+  address: MyString
+  desired_city: MyString
+  desired_state: MyString
+  desired_zip: MyString
+  driver_id_tag: MyString
+  driver_phone: MyString
+  driver_truck_type: MyString
+  active: MyString
+  driver_status: MyString
+  driver_contract_number: MyString
+  driver_availability: 2017-04-19
+  driver_company: MyString
+  comments: MyString
+  active: false
+
+two:
+  first_name: MyString
+  last_name: MyString
+  latitude: 1.5
+  longitude: 1.5
+  address: MyString
+  desired_city: MyString
+  desired_state: MyString
+  desired_zip: MyString
+  driver_id_tag: MyString
+  driver_phone: MyString
+  driver_truck_type: MyString
+  active: MyString
+  driver_status: MyString
+  driver_contract_number: MyString
+  driver_availability: 2017-04-19
+  driver_company: MyString
+  comments: MyString
+  active: false

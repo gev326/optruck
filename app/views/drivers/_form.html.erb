@@ -1,0 +1,89 @@
+<%= form_for(@driver) do |f| %>
+  <% if @driver.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@driver.errors.count, "error") %> prohibited this driver from being saved:</h2>
+
+      <ul>
+      <% @driver.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :first_name %><br>
+    <%= f.text_field :first_name %>
+  </div>
+  <div class="field">
+    <%= f.label :last_name %><br>
+    <%= f.text_field :last_name %>
+  </div>
+  <div class="field">
+    <%= f.label :latitude %><br>
+    <%= f.text_field :latitude %>
+  </div>
+  <div class="field">
+    <%= f.label :longitude %><br>
+    <%= f.text_field :longitude %>
+  </div>
+  <div class="field">
+    <%= f.label :address %><br>
+    <%= f.text_field :address %>
+  </div>
+  <div class="field">
+    <%= f.label :desired_city %><br>
+    <%= f.text_field :desired_city %>
+  </div>
+  <div class="field">
+    <%= f.label :desired_state %><br>
+    <%= f.text_field :desired_state %>
+  </div>
+  <div class="field">
+    <%= f.label :desired_zip %><br>
+    <%= f.text_field :desired_zip %>
+  </div>
+  <div class="field">
+    <%= f.label :driver_id_tag %><br>
+    <%= f.text_field :driver_id_tag %>
+  </div>
+  <div class="field">
+    <%= f.label :driver_phone %><br>
+    <%= f.text_field :driver_phone %>
+  </div>
+  <div class="field">
+    <%= f.label :driver_truck_type %><br>
+    <%= f.text_field :driver_truck_type %>
+  </div>
+  <div class="field">
+    <%= f.label :active %><br>
+    <%= f.text_field :active %>
+  </div>
+  <div class="field">
+    <%= f.label :driver_status %><br>
+    <%= f.text_field :driver_status %>
+  </div>
+  <div class="field">
+    <%= f.label :driver_contract_number %><br>
+    <%= f.text_field :driver_contract_number %>
+  </div>
+  <div class="field">
+    <%= f.label :driver_availability %><br>
+    <%= f.date_select :driver_availability %>
+  </div>
+  <div class="field">
+    <%= f.label :driver_company %><br>
+    <%= f.text_field :driver_company %>
+  </div>
+  <div class="field">
+    <%= f.label :comments %><br>
+    <%= f.text_field :comments %>
+  </div>
+  <div class="field">
+    <%= f.label :active %><br>
+    <%= f.check_box :active %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
