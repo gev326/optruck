@@ -27,6 +27,8 @@ gem 'sprockets', '3.6.3'
 gem 'geocoder'
 gem 'gmaps4rails'
 gem 'underscore-rails'
+gem 'devise', '~> 4.2'
+
 #
 
 
