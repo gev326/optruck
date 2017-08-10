@@ -12,21 +12,13 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :first_name %><br>
+    <%= f.label :first_name %>
     <%= f.text_field :first_name %>
-  </div>
-  <div class="field">
-    <%= f.label :last_name %><br>
+
+    <%= f.label :last_name %>
     <%= f.text_field :last_name %>
   </div>
-  <div class="field">
-    <%= f.label :latitude %><br>
-    <%= f.text_field :latitude %>
-  </div>
-  <div class="field">
-    <%= f.label :longitude %><br>
-    <%= f.text_field :longitude %>
-  </div>
+
   <div class="field">
     <%= f.label :address %><br>
     <%= f.text_field :address %>
@@ -44,21 +36,23 @@
     <%= f.text_field :desired_zip %>
   </div>
   <div class="field">
-    <%= f.label :driver_id_tag %><br>
+    <%= f.label :driver_id_tag %>
     <%= f.text_field :driver_id_tag %>
-  </div>
-  <div class="field">
-    <%= f.label :driver_phone %><br>
+    <%= f.label :driver_phone %>
     <%= f.text_field :driver_phone %>
   </div>
-  <div class="field">
-    <%= f.label :driver_truck_type %><br>
-    <%= f.text_field :driver_truck_type %>
-  </div>
-  <div class="field">
-    <%= f.label :active %><br>
-    <%= f.text_field :active %>
-  </div>
+<!--   <div class="field">
+
+  </div> -->
+
+  <div class="control-group">
+      <%= f.label "Truck Type", class: 'control-label' %>
+      <div class="controls">
+        <%= f.select(:driver_truck_type, options_for_select([['r53', 'r53'], ['flat', 'flat']]), { include_blank: true }) %>
+      </div>
+    </div>
+<!--  -->
+
   <div class="field">
     <%= f.label :driver_status %><br>
     <%= f.text_field :driver_status %>
@@ -86,4 +80,5 @@
   <div class="actions">
     <%= f.submit %>
   </div>
+
 <% end %>

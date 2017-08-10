@@ -1,0 +1,19 @@
+
+
+
+
+<div class="container col-md-12 center">
+<link href='https://fonts.googleapis.com/css?family=Dancing+Script' rel='stylesheet' type='text/css'>
+<h1> Welcome to OptruckBoard </h1>
+<div class="row">
+  <div class="col-md-12">
+  <section class="login-form">
+  <%= link_to "Log in", new_user_session_path, method: :get %>
+  <% if user_signed_in? %>
+    <%= link_to "Log out", destroy_user_session_path, method: :delete %>
+
+<% end %>
+</div>
+</section>
+</div>
+</div>

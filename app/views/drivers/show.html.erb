@@ -10,15 +10,7 @@
   <%= @driver.last_name %>
 </p>
 
-<p>
-  <strong>Latitude:</strong>
-  <%= @driver.latitude %>
-</p>
 
-<p>
-  <strong>Longitude:</strong>
-  <%= @driver.longitude %>
-</p>
 
 <p>
   <strong>Address:</strong>
@@ -85,10 +77,7 @@
   <%= @driver.comments %>
 </p>
 
-<p>
-  <strong>Active:</strong>
-  <%= @driver.active %>
-</p>
+
 
 <%= link_to 'Edit', edit_driver_path(@driver) %> |
-<%= link_to 'Back', drivers_path %>
+<%= link_to 'Home', drivers_path(@driver)%>

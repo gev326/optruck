@@ -4,8 +4,29 @@
   <%= devise_error_messages! %>
 
   <div class="field">
+    <%= f.label :first_name %><br />
+    <%= f.email_field :first_name, autofocus: true %>
+  </div>
+  <div class="field">
+    <%= f.label :last_name %><br />
+    <%= f.email_field :last_name, autofocus: true %>
+  </div>
+  <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true %>
+  </div>
+
+  <div class="field">
+  <%= f.label :admin %>
+   <%= f.radio_button :admin, true %>
+   </div>
+   <div class="field">
+<%= f.label :updater %>
+<%= f.radio_button :updater, true %>
+</div>
+<div class="field">
+<%= f.label :regular_user %>
+<%= f.radio_button :regular_user, true %>
   </div>
 
   <div class="field">

@@ -28,6 +28,8 @@ gem 'geocoder'
 gem 'gmaps4rails'
 gem 'underscore-rails'
 gem 'devise', '~> 4.2'
+gem 'bootstrap-sass', '~> 3.3.6'
+
 
 #
 

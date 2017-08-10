@@ -6,11 +6,18 @@ class DriversController < ApplicationController
   def index
     @drivers = Driver.all
     @hash = Gmaps4rails.build_markers(@drivers) do |driver, marker|
+    driver_path = view_context.link_to driver.full_name, driver_path(driver)
+    driver_desired = driver.desired_state
     marker.lat driver.latitude
     marker.lng driver.longitude
     marker.title driver.first_name
+    marker.infowindow "Driver: #{driver_path} <br> Desired City: #{driver_desired}"
 end
   end
+
+
+
+
 
   # GET /drivers/1
   # GET /drivers/1.json
@@ -65,6 +72,8 @@ end
       format.json { head :no_content }
     end
   end
+
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
