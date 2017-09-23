@@ -16,4 +16,42 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+body {
+background-color: whitespace
+;
+}
 
+
+.login-form {
+  margin-top: 60px;
+  text-align: center;
+}
+.login-form form {
+  color: #5d5d5d;
+  background: #f2f2f2;
+  padding: 26px;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+}
+.login-form form img {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 35px;
+}
+.login-form form input,
+.login-form form button {
+  font-size: 18px;
+  margin: 16px 0;
+}
+.login-form form > div {
+  text-align: center;
+}
+
+#advanced-report-container {
+  padding-left: 25px;
+
+  .report-label {
+    width: 150px;
+  }
+}

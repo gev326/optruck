@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-
+gem 'dotenv-rails', groups: [:development, :test]
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.4'
 # Use sqlite3 as the database for Active Record
@@ -29,7 +29,12 @@ gem 'gmaps4rails'
 gem 'underscore-rails'
 gem 'devise', '~> 4.2'
 gem 'bootstrap-sass', '~> 3.3.6'
-
+gem 'humanize_boolean'
+gem 'ransack'
+gem 'bootstrap-form'
+gem 'simple_form'
+gem 'country_select'
+gem 'redis'
 
 #
 
@@ -46,6 +51,13 @@ gem 'bootstrap-sass', '~> 3.3.6'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+  gem 'rb-readline'
+  gem 'pry-rails'
+end
+
+group :development do
+  gem "better_errors"
+  gem "binding_of_caller"
 end
 
 group :development do
