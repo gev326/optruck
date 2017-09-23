@@ -1,0 +1,106 @@
+
+
+<h1> advanced search/reports </h1>
+
+<%= search_form_for @q, url: drivers_reports_path do |f| %>
+  <div class="form-group">
+
+    <%= f.label :full_name_cont %>
+    <%= f.text_field :full_name_cont%>
+
+    <%= f.label :address %>
+    <%= f.search_field :address_cont%>
+
+    <%= f.label :desired_city %>
+    <%= f.text_field :desired_city_cont%>
+
+    <%= f.label :desired_state %>
+    <%= f.text_field :desired_state_cont%>
+
+    <%= f.label :desired_zip %>
+    <%= f.text_field :desired_zip_cont%>
+
+    <%= f.label :driver_ID %>
+    <%= f.text_field :driver_id_tag_cont%>
+
+    <%= f.label :driver_phone_number %>
+    <%= f.text_field :driver_phone%>
+
+    <%= f.label :driver_truck_type %>
+    <%= f.text_field :driver_truck_type%>
+
+    <%= text_field_tag :miles, params[:miles], placeholder: "radius" %>
+
+
+
+
+
+    <%= f.label :Active, 'Active' %>
+    <%= f.select :active_eq, options_for_select([['Active', true], ['Inactive', false]]),
+include_blank: true %>
+
+
+
+
+
+<%= f.submit "Search", class: "btn btn-primary" %>
+  <% end %>
+          <td><%= link_to 'New Report', drivers_reports_path, :class => 'btn btn-success' %></td>
+    </div>
+
+
+
+
+
+
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Full Name</th>
+      <th>Address</th>
+      <th>Desired City</th>
+      <th>Desired State</th>
+      <th>Desired Zip</th>
+      <th>Driver ID</th>
+      <th>Phone</th>
+      <th>Truck Type</th>
+      <th>Active</th>
+      <th>Driver status</th>
+      <th>Contract Number</th>
+      <th>Availability</th>
+      <th>Company</th>
+      <th>Comments</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @drivers.each do |driver| %>
+      <tr>
+        <td><%= driver.full_name %></td>
+
+
+        <td><%= driver.address %></td>
+        <td><%= driver.desired_city %></td>
+        <td><%= driver.desired_state %></td>
+        <td><%= driver.desired_zip %></td>
+        <td><%= driver.driver_id_tag %></td>
+        <td><%= driver.driver_phone %></td>
+        <td><%= driver.driver_truck_type %></td>
+        <% if driver.active == true%>
+        <td class="success"><%= humanize_boolean(driver.active?)%></td>
+        <% else %>
+        <td class="danger"><%= humanize_boolean(driver.active?) %></td>
+
+        <%end %>
+        <td><%= driver.driver_status %></td>
+        <td><%= driver.driver_contract_number %></td>
+        <td><%= driver.driver_availability %></td>
+        <td><%= driver.driver_company %></td>
+        <td><%= driver.comments %></td>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170810033906) do
+ActiveRecord::Schema.define(version: 20170817034140) do
 
   create_table "drivers", force: :cascade do |t|
     t.string   "first_name"
@@ -39,6 +39,9 @@ ActiveRecord::Schema.define(version: 20170810033906) do
     t.string   "PreferredLanes"
     t.boolean  "backhaul"
     t.boolean  "Covered"
+    t.string   "state"
+    t.boolean  "reeferunit"
+    t.string   "insurance"
   end
 
   add_index "drivers", ["user_id"], name: "index_drivers_on_user_id"
