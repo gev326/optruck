@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
 
-  has_many :links
+  has_many :drivers
 
     def full_name
     "#{first_name} #{last_name}"

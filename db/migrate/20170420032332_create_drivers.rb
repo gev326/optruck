@@ -11,7 +11,7 @@ class CreateDrivers < ActiveRecord::Migration
       t.string :desired_zip
       t.string :driver_id_tag
       t.string :driver_phone
-      t.string :driver_truck_type, :string, :null => false, :default => "R53", "R54"
+      t.string :driver_truck_type
       t.string :active
       t.string :driver_status
       t.string :driver_contract_number
