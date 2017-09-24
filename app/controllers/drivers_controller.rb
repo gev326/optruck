@@ -1,5 +1,3 @@
-require 'pry'
-
 class DriversController < ApplicationController
   before_action :set_driver,  only: [:show, :edit, :update, :destroy]
 
@@ -15,11 +13,12 @@ class DriversController < ApplicationController
       marker.title driver.full_name
       marker.infowindow "Driver: #{driver_path} <br> Desired City: #{driver_desired}"
       if driver.active == true
-        return marker.picture({
+        marker.picture({
          :url => "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|008000|000000",
          :width   => 32,
          :height  => 32
         })
+        next
       end
       marker.picture({
        :url => "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=N|ff0000|000000",
@@ -98,11 +97,15 @@ class DriversController < ApplicationController
 
 # search
 def reports
-  if params[:miles] && params[:miles].length != 0
+  miles = params[:miles] && params[:miles].length != 0
+  q = params[:q]
+  address = q && q[:address_cont] && q[:address_cont].length != 0
+  if miles && address
     radius = params[:miles].to_f
-    address = params[:q][:address_cont]
+    address = q[:address_cont]
+    q[:address_cont] = nil
     lat_lon = Geocoder.coordinates(address)
-    @q = Driver.near(lat_lon, radius).ransack(params[:q])
+    @q = Driver.near(address, radius).ransack(q)
     return @drivers = @q.result(distinct: true)
   end
   @q = Driver.ransack(params[:q])
