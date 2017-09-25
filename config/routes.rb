@@ -1,23 +1,19 @@
 Rails.application.routes.draw do
-  devise_for :users
-# root to: 'sessions#new'
-
-
-  #
-
+  Rails.application.routes.draw do
+    devise_for :users, controllers: {
+      registrations: 'users/registrations'
+    }
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
 
-get 'reports/index' => 'reports#index'
+  get 'reports/index' => 'reports#index'
 
-root 'drivers#index'
-get 'drivers/reports' => 'drivers#reports'
-resources :drivers
-
-
-
+  root 'drivers#index'
+  get 'drivers/reports' => 'drivers#reports'
+  resources :drivers
 
 
 # root :to => redirect("devise/sessions/login")
