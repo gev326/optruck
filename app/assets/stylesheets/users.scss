@@ -1,0 +1,24 @@
+
+#signup-form {
+  width: fit-content;
+  margin: 0 auto;
+
+  #clear-signup-button {
+    color: #FFFFFF;
+  }
+}
+
+#user-management-container {
+  text-align: center;
+  margin: 25px;
+
+  #manage-users-heading {
+    margin-bottom: 25px;
+  }
+  td {
+    vertical-align: middle;
+  }
+  th {
+    text-align: center;
+  }
+}

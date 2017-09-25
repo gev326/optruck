@@ -10,6 +10,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
+  def index
+    @users = User.all
+  end
+
   # POST /resource
   def create
     build_resource(sign_up_params)
@@ -33,19 +37,39 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   # GET /resource/edit
-  # def edit
-  #   super
-  # end
+  def edit
+    @user = User.find(params[:id])
+  end
 
   # PUT /resource
-  # def update
-  #   super
-  # end
+  def update
+    begin
+      @user = User.find(params[:id])
+      params[:user].each_pair do |k, v|
+        if @user[k] != v then @user[k] = v end
+      end
+      @user.save
+      flash_key = :updated
+      redirect_to users_path
+    rescue => e
+      flash_key = :update_failed
+      redirect_to edit_user_registration_path(:id => params[:id])
+    end
+    set_flash_message :notice, flash_key
+  end
 
   # DELETE /resource
-  # def destroy
-  #   super
-  # end
+  def destroy
+    begin
+      user = User.find(params[:id])
+      user.destroy
+      flash_key = :destroyed
+    rescue => e
+      flash_key = :failed_to_destroy
+    end
+    redirect_to users_path
+    set_flash_message :notice, flash_key
+  end
 
   # GET /resource/cancel
   # Forces the session data which is usually expired after sign
@@ -79,7 +103,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # The path used after sign up.
   def after_sign_up_path_for(users)
     # super(users)
-    new_user_registration_path
+    users_path
   end
 
   # The path used after sign up for inactive accounts.
