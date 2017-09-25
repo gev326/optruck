@@ -53,6 +53,7 @@ group :development, :test do
   gem 'byebug'
   gem 'rb-readline'
   gem 'pry-rails'
+  gem 'faker'
 end
 
 group :development do

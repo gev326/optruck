@@ -1,50 +1,67 @@
-<h2>Sign up</h2>
+<div id='signup-form'>
+  <h2>Add User</h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= devise_error_messages! %>
 
-  <div class="field">
-    <%= f.label :first_name %><br />
-    <%= f.text_field :first_name, autofocus: true %>
-  </div>
-  <div class="field">
-    <%= f.label :last_name %><br />
-    <%= f.text_field :last_name, autofocus: true %>
-  </div>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
-  </div>
+    <div class="field">
+      <%= f.label :first_name %><br />
+      <%= f.text_field :first_name, autofocus: true %>
+    </div>
 
-  <div class="field">
-  <%= f.label :admin %>
-   <%= f.radio_button :admin, true %>
-   </div>
-   <div class="field">
-<%= f.label :updater %>
-<%= f.radio_button :updater, true %>
+    <div class="field">
+      <%= f.label :last_name %><br />
+      <%= f.text_field :last_name, autofocus: true %>
+    </div>
+
+    <div class="field">
+      <%= f.label :email %><br />
+      <%= f.email_field :email, autofocus: true %>
+    </div>
+
+    <div class="field">
+      <%= f.label 'Type' %>
+      <%= f.select :account_type do %>
+        <option value='admin'> Admin </option>
+        <option value='updater'> Updater </option>
+        <option value='dispatcher' selected='selected'> Dispatcher </option>
+      <% end %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password %>
+      <% if @minimum_password_length %>
+        <em>(<%= @minimum_password_length %> characters minimum)</em>
+      <% end %>
+      <br />
+      <%= f.password_field :password, autocomplete: "off" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password_confirmation %><br />
+      <%= f.password_field :password_confirmation, autocomplete: "off" %>
+    </div>
+
+    <span class="actions">
+      <%= f.submit "Sign up", {:class => 'btn btn-primary'} %>
+    </span>
+
+    <%=  link_to "Clear form",
+      new_user_registration_path,
+      {
+        :id => 'clear-signup-button',
+        :class => 'btn btn-danger'
+      }
+    %>
+
+    <br />
+
+    <%= link_to "Back to map",
+      root_path,
+      {
+        :id => 'back-to-map',
+        :class => 'btn btn-success'
+      }
+    %>
+  <% end %>
 </div>
-<div class="field">
-<%= f.label :regular_user %>
-<%= f.radio_button :regular_user, true %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>

@@ -7,7 +7,13 @@ class User < ActiveRecord::Base
 
   has_many :drivers
 
-    def full_name
+  def full_name
     "#{first_name} #{last_name}"
   end
+
+  validates :account_type, :inclusion  => {
+    :in => [ 'admin', 'updater', 'dispatcher' ],
+    :message => 'User type must be one of admin, updater, or dispatcher'
+  }
+
 end
