@@ -11,15 +11,33 @@
 </head>
 <body>
 
+  <% if user_signed_in? %>
 
-<% flash.each do |name, msg| %>
- <%= content_tag(:div, msg, class: "alert alert-#{name}") %>
- <% end %>
+    <% account_type = current_user.account_type %>
 
+    <header class="navbar navbar-light bg-faded">
+      <div class="container">
+        <nav>
+          <ul class="nav navbar-nav navbar-left">
+            <li> <%=  link_to current_user.full_name, drivers_path %></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><%= link_to "Log out", destroy_user_session_path, method: :delete %></li>
+            <li><%= link_to "Reports", drivers_reports_path %></li>
+            <li><%= link_to "Map", drivers_path %></li>
+            <% if account_type == 'admin' %>
+              <li><%= link_to "Manage users", users_path %></li>
+            <% end %>
+          </ul>
+        </nav>
+      </div>
+    </header>
 
+  <% end %>
 
-
-
+  <% flash.each do |name, msg| %>
+    <%= content_tag(:div, msg, class: "alert alert-#{name}") %>
+  <% end %>
 
 
 <%= yield %>

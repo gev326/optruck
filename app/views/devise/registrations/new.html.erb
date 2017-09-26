@@ -1,5 +1,5 @@
 <div id='signup-form'>
-  <h2>Add User</h2>
+  <h3>Add New User</h3>
 
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
     <%= devise_error_messages! %>
@@ -24,7 +24,7 @@
       <%= f.select :account_type do %>
         <option value='admin'> Admin </option>
         <option value='updater'> Updater </option>
-        <option value='dispatcher' selected='selected'> Dispatcher </option>
+        <option value='dispatcher' selected> Dispatcher </option>
       <% end %>
     </div>
 
@@ -43,7 +43,7 @@
     </div>
 
     <span class="actions">
-      <%= f.submit "Sign up", {:class => 'btn btn-primary'} %>
+      <%= f.submit "Add user", {:class => 'btn btn-primary'} %>
     </span>
 
     <%=  link_to "Clear form",
@@ -51,16 +51,6 @@
       {
         :id => 'clear-signup-button',
         :class => 'btn btn-danger'
-      }
-    %>
-
-    <br />
-
-    <%= link_to "Back to map",
-      root_path,
-      {
-        :id => 'back-to-map',
-        :class => 'btn btn-success'
       }
     %>
   <% end %>

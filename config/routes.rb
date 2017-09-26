@@ -1,9 +1,19 @@
 Rails.application.routes.draw do
-  Rails.application.routes.draw do
-    devise_for :users, controllers: {
-      registrations: 'users/registrations'
-    }
+
+  devise_for :users, skip: :registrations, controllers: {
+    registrations: 'users/registrations'
+  }
+
+  as :user do
+    get '/users' => 'users/registrations#index'
+    get '/users/sign_up' => 'users/registrations#new', as: :new_user_registration
+    get '/users/edit' => 'users/registrations#edit', as: :edit_user_registration
+    post '/users' => 'users/registrations#create', as: :user_registration
+    put '/users/edit/:id' => 'users/registrations#update', as: :update_user_registration
+    patch '/users/:id' => 'users/registrations#update', as: :patch_user_registration
+    delete '/users/:id' => 'users/registrations#destroy', as: :destroy_user_registration
   end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

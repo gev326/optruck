@@ -1,0 +1,48 @@
+
+<div id='user-management-container'>
+  <h2 id='manage-users-heading'> Manage Users </h2>
+  <%= link_to 'Add new user', new_user_registration_path, { class: 'btn btn-primary link-btn'} %>
+  <table id='users-table' class="table table-bordered">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Account Type</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @users.each do |u| %>
+        <% if u != current_user %>
+          <tr>
+            <td><%= u.first_name %></td>
+            <td><%= u.last_name %></td>
+            <td><%= u.email %></td>
+            <td><%= u.account_type %></td>
+            <td>
+              <%=
+                link_to 'Edit',
+                  edit_user_registration_path(:id => u.id),
+                  {
+                    class: 'btn btn-primary link-btn'
+                  }
+              %>
+            </td>
+            <td>
+              <%=
+                link_to 'X',
+                  destroy_user_registration_path(:id => u.id),
+                  {
+                    method: :delete,
+                    class: 'btn btn-danger link-btn',
+                    data: {confirm: "Are you sure?"}
+                  }
+              %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
