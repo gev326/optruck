@@ -30,7 +30,7 @@ drivers = []
   driver = {
     :first_name => Faker::Name.first_name,
     :last_name => Faker::Name.last_name,
-    :address => Faker::Address.zip,
+    :address => Faker::Address.state,
     :desired_state => Faker::Address.state,
     :driver_id_tag => Faker::Number.number(6),
     :driver_phone => Faker::Number.number(10),
@@ -50,3 +50,5 @@ Driver.delete_all
 drivers.each do |d|
   Driver.create(d)
 end
+
+puts "Successfully added #{drivers.length} drivers to database"

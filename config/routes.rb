@@ -23,6 +23,9 @@ Rails.application.routes.draw do
 
   root 'drivers#index'
   get 'drivers/reports' => 'drivers#reports'
+  post 'drivers/click' => 'drivers#get_state_drivers'
+  get 'show_state_drivers' => 'drivers#show_state_drivers', as: :show_state_drivers
+
   resources :drivers
 
 
