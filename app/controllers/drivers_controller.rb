@@ -1,11 +1,32 @@
 class DriversController < ApplicationController
-  before_action :set_driver,  only: [:show, :edit, :update, :destroy]
+  before_action :set_driver,  only: [:show, :edit, :update, :destroy ]
 
   # GET /drivers
   # GET /drivers.json
   def index
     @drivers = Driver.all
-    @hash = Gmaps4rails.build_markers(@drivers) do |driver, marker|
+    @hash = generate_hash_map
+  end
+
+  def get_state_drivers
+    redirect_to show_state_drivers_path lat: params[:latLng][0], lng: params[:latLng][1]
+  end
+
+  def show_state_drivers
+    result = Geocoder.search([params[:lat], params[:lng]])
+    @state = result[0].state
+    @drivers = get_click_point_drivers @state
+    @hash = generate_hash_map
+  end
+
+  def get_click_point_drivers state
+    drivers = Driver.select do |d|
+      d.address == state
+    end
+  end
+
+  def generate_hash_map
+    Gmaps4rails.build_markers(@drivers) do |driver, marker|
       driver_path = view_context.link_to driver.full_name, driver_path(driver)
       driver_desired = driver.desired_state
       marker.lat driver.latitude
@@ -32,18 +53,11 @@ class DriversController < ApplicationController
 
 
 
-
-
-
   # GET /drivers/1
   # GET /drivers/1.json
   def show
 
   end
-
-
-
-
 
   # GET /drivers/new
   def new
