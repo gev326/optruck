@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20170924153605) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "drivers", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -44,7 +47,7 @@ ActiveRecord::Schema.define(version: 20170924153605) do
     t.string   "insurance"
   end
 
-  add_index "drivers", ["user_id"], name: "index_drivers_on_user_id"
+  add_index "drivers", ["user_id"], name: "index_drivers_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",           null: false
@@ -64,8 +67,8 @@ ActiveRecord::Schema.define(version: 20170924153605) do
     t.string   "account_type",           default: "dispatcher", null: false
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "views", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -82,7 +85,7 @@ ActiveRecord::Schema.define(version: 20170924153605) do
     t.datetime "updated_at",                          null: false
   end
 
-  add_index "views", ["email"], name: "index_views_on_email", unique: true
-  add_index "views", ["reset_password_token"], name: "index_views_on_reset_password_token", unique: true
+  add_index "views", ["email"], name: "index_views_on_email", unique: true, using: :btree
+  add_index "views", ["reset_password_token"], name: "index_views_on_reset_password_token", unique: true, using: :btree
 
 end
