@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170924153605) do
+ActiveRecord::Schema.define(version: 20171007215638) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20170924153605) do
     t.string   "last_name"
     t.float    "latitude"
     t.float    "longitude"
-    t.string   "address"
+    t.string   "current_city"
     t.string   "desired_city"
     t.string   "desired_state"
     t.string   "desired_zip"
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 20170924153605) do
     t.string   "PreferredLanes"
     t.boolean  "backhaul"
     t.boolean  "Covered"
-    t.string   "state"
+    t.string   "current_state"
     t.boolean  "reeferunit"
     t.string   "insurance"
   end

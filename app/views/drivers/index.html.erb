@@ -8,7 +8,7 @@
   </div>
 
   <script type="text/javascript">
-    handler = Gmaps.build(
+    var handler = Gmaps.build(
       'Google',
       {
         markers: {
@@ -18,30 +18,63 @@
       }
     );
     handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
-      markers = handler.addMarkers(<%=raw @hash.to_json %>);
-      handler.bounds.extendWith(markers);
-      handler.fitMapToBounds();
+      var rawData = <%= raw @hash.to_json %>
+      try {
+        var markers = handler.addMarkers(rawData);
+        handler.bounds.extendWith(markers);
+        handler.fitMapToBounds();
+      } catch (e) {
+        // Gmaps sometimes kicks an error for no apparent reason
+        // Cannot read property 'addMarker' of undefined
+        // Since markers always seem to work fine despite this error,
+        // we're ignoring this for now so it's doesn't print to the console
+      }
     });
 
-    handler.getMap().addListener('click', function(evt) {
-      var latLng = evt.latLng;
-      var lat = latLng.lat();
-      var lng = latLng.lng();
-      var clickedPoint = { latLng: [lat, lng] };
+    var infoWindow = new handler.builders.Map.PRIMITIVES.infowindow();
+    var map = handler.getMap();
+    var stateReportButton = "<a id='state-report-link'> Generate State Report </a>";
+    var isOpen = false;
+
+    function sendData(latLng, evt) {
+      evt.preventDefault();
       $.ajax({
         method: 'POST',
-        url: 'drivers/click',
-        data: clickedPoint
-      })
+        url: "<%= state_drivers_path %>",
+        data: latLng
+      });
+    }
+    map.addListener('click', function(evt) {
+      if (isOpen) {
+        $('#state-report-link').off('click', sendData);
+        infoWindow.close();
+        isOpen = false;
+      }
     });
+    map.addListener('rightclick', function(evt) {
+      if (isOpen) {
+        $('#state-report-link').off('click', sendData);
+        infoWindow.close();
+        isOpen = false;
+      }
+      var position = evt.latLng;
+      var clickedPoint = {};
+      clickedPoint.lat = position.lat();
+      clickedPoint.lng = position.lng();
+      infoWindow.setContent(stateReportButton);
+      infoWindow.setPosition(position);
+      infoWindow.open(map, this);
+      isOpen = true
+      $('#state-report-link').on('click', sendData.bind(this, clickedPoint));
+    });
+
   </script>
 
 
-
-  <h1>Driver Feed</h1>
-  <%= link_to 'New Driver', new_driver_path %>
-  <%= link_to 'home', drivers_path %>
-
+  <div id='drivers-heading'>
+    <h1>Driver Feed</h1>
+    <%= link_to 'Create New Driver', new_driver_path, class: 'btn btn-primary link-btn' %>
+  </div>
 
   <table class="table table-bordered">
     <thead>

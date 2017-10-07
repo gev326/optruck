@@ -3,10 +3,34 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 
-#advanced-report-container {
+#advanced-reporting {
   padding-left: 25px;
 
-  .report-label {
-    width: 150px;
+  h1 {
+    text-align: center;
+    margin-bottom: 25px;
+  }
+
+  .search-report-container {
+
+    margin: 0 auto;
+    width: fit-content;
+
+    .report-label {
+      width: 135px;
+    }
+
+    .search-report-section {
+      display: inline-block;
+      margin-right: 10px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
+    .report-buttons {
+      text-align: center;
+      margin: 10px auto;
+    }
   }
 }

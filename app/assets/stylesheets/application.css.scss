@@ -23,6 +23,51 @@ body {
     color: #FFFFFF;
     margin: 10px;
   }
+
+  #drivers-heading {
+    width: fit-content;
+    margin: 0 auto;
+  }
+
+  #driver-show {
+    margin: 0 auto;
+    width: fit-content;
+  }
+
+  .driver-container {
+    margin: 0 auto;
+    width: fit-content;
+    text-align: center;
+
+    .name {
+      width: 300px;
+      display: inline-block;
+      margin: 0 5px;
+    }
+
+    .field {
+      margin: 25px;
+    }
+
+    .control-label {
+      margin: 0 5px
+    }
+
+    .info {
+      margin: 0 5px;
+    }
+
+    .location-container {
+      display: inline-block;
+      margin: 25px;
+
+      .location {
+        display: inline-block;
+        margin: 0 10px;
+      }
+    }
+
+  }
 }
 
 
