@@ -35,6 +35,7 @@ gem 'bootstrap-form'
 gem 'simple_form'
 gem 'country_select'
 gem 'redis'
+gem 'city-state'
 
 #
 

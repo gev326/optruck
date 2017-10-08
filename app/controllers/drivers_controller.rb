@@ -1,4 +1,5 @@
 class DriversController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_driver,  only: [:show, :edit, :update, :destroy ]
 
   # GET /drivers
@@ -8,20 +9,26 @@ class DriversController < ApplicationController
     @hash = generate_hash_map
   end
 
-  def get_state_drivers
-    redirect_to show_state_drivers_path lat: params[:latLng][0], lng: params[:latLng][1]
+  def state_drivers
+    redirect_to show_state_drivers_path params
   end
 
   def show_state_drivers
-    result = Geocoder.search([params[:lat], params[:lng]])
+    result = Geocoder.search([ params[:lat], params[:lng] ])
+    if !result[0]
+      @drivers = []
+      @hash = generate_hash_map
+      @state = 'Unknown Region'
+      return
+    end
     @state = result[0].state
     @drivers = get_click_point_drivers @state
     @hash = generate_hash_map
   end
 
   def get_click_point_drivers state
-    drivers = Driver.select do |d|
-      d.address == state
+    Driver.select do |d|
+      d.current_state == state
     end
   end
 
@@ -29,10 +36,25 @@ class DriversController < ApplicationController
     Gmaps4rails.build_markers(@drivers) do |driver, marker|
       driver_path = view_context.link_to driver.full_name, driver_path(driver)
       driver_desired = driver.desired_state
+      driver_phone = driver[:driver_phone]
+      truck_type = driver[:driver_truck_type]
+      reefer = driver[:reeferunit]
+      available = driver[:driver_availability]
+      comments = driver[:comments]
       marker.lat driver.latitude
       marker.lng driver.longitude
       marker.title driver.full_name
-      marker.infowindow "Driver: #{driver_path} <br> Desired City: #{driver_desired}"
+      marker.infowindow (
+        %Q(
+          Driver: #{driver_path}<br><br>
+          Phone: #{driver_phone}<br><br>
+          Desired State: #{driver_desired}<br><br>
+          Truck Type: #{truck_type}<br><br>
+          Reefer Unit: #{reefer}<br><br>
+          Available Date: #{available}<br><br>
+          Comments: #{comments}
+        )
+      )
       if driver.active == true
         marker.picture({
          :url => "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|008000|000000",
@@ -48,10 +70,6 @@ class DriversController < ApplicationController
       })
     end
   end
-
-
-
-
 
   # GET /drivers/1
   # GET /drivers/1.json
@@ -108,69 +126,77 @@ class DriversController < ApplicationController
     end
   end
 
+  # search
+  def reports
+    radius = params[:miles] && params[:miles].length !=0
+    q = params[:q]
+    state = q && q[:current_state_cont] && q[:current_state_cont].length != 0
+    city = q && q[:current_city_cont] && q[:current_city_cont].length != 0
+    if radius && (state || city)
+      radius = params[:miles].to_f
 
-# search
-def reports
-  miles = params[:miles] && params[:miles].length != 0
-  q = params[:q]
-  address = q && q[:address_cont] && q[:address_cont].length != 0
-  if miles && address
-    radius = params[:miles].to_f
-    address = q[:address_cont]
-    q[:address_cont] = nil
-    lat_lon = Geocoder.coordinates(address)
-    @q = Driver.near(address, radius).ransack(q)
-    return @drivers = @q.result(distinct: true)
+      # use state if city not present otherwise always
+      # use city for radius searches.
+      if state && !city
+        address = q[:current_state_cont]
+      else
+        address = q[:current_city_cont]
+      end
+      lat_lon = Geocoder.coordinates(address)
+
+      # since we are fuzzy matching we may not get a latlng
+      # this allows the user to put in garabage without breaking
+      # the form
+      if lat_lon
+        q[:current_state_cont] = nil
+        q[:current_city_cont] = nil
+        @q = Driver.near(address, radius).ransack(q)
+        return @drivers = @q.result(distinct: true)
+      else
+        @q = Driver.ransack(params[:q])
+        @drivers = @q.result(distinct: true)
+      end
+    end
+    @q = Driver.ransack(params[:q])
+    @drivers = @q.result(distinct: true)
   end
-  @q = Driver.ransack(params[:q])
-  @drivers = @q.result(distinct: true)
-end
-
-
-#   if params[:miles].present? && (params[:miles].to_i > 0)
-#    @search = Driver.near(address,params[:miles]).search(params[:q])
-#   ### THIS IS THE MAIN CODE YOU HAD @search = Driver.ransack(params[:q])
-# else
-#   @search = Driver.ransack(params[:q])
-#   @drivers = @search.result
-
-  # @location = params[:search]
-  #   @distance = params[:miles]
-  #   @drivers = Driver.near(@location, @distance)
-
-
-
-
-
-
-# def search
-#     @location = params[:search]
-#     @distance = params[:miles]
-#     @farms = Farm.near(@location, @distance)
-
-#     if @location.empty?
-#       gflash notice: "You can't search without a search term; please enter a location and retry!"
-#       redirect_to "/"
-#     else
-#       if @farms.length < 1
-#         gflash notice: "Sorry! We couldn't find any farms within #{@distance} miles of #{@location}."
-#         redirect_to "/"
-#       else
-#         search_map(@farms)
-#       end
-#     end
-
-#   end
-
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_driver
-      @driver = Driver.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_driver
+    @driver = Driver.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def driver_params
-      params.require(:driver).permit(:search, :reports, :first_name, :last_name, :latitude, :longitude, :address, :desired_city, :state, :full_name, :full_address, :desired_state, :desired_zip, :driver_id_tag, :driver_phone, :driver_truck_type, :active, :driver_status, :driver_contract_number, :driver_availability, :driver_company, :comments, :active, :Covered)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def driver_params
+    params.require(:driver).permit(
+      :search,
+      :reports,
+      :first_name,
+      :last_name,
+      :latitude,
+      :longitude,
+      :current_city,
+      :current_state,
+      :desired_city,
+      :full_name,
+      :full_address,
+      :desired_state,
+      :desired_zip,
+      :driver_id_tag,
+      :driver_phone,
+      :driver_truck_type,
+      :active,
+      :driver_status,
+      :driver_contract_number,
+      :driver_availability,
+      :driver_company,
+      :comments,
+      :Covered,
+      :Etrac,
+      :PlateTrailer,
+      :insurance,
+      :reeferunit
+    )
+  end
 end

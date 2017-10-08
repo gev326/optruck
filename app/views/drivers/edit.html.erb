@@ -1,5 +1,5 @@
 
-<div class="container">
+<div class="container driver-container">
   <div class="row">
     <div class="col-md-12">
       <div class="page-header">
@@ -9,8 +9,9 @@
   </div>
   <div class="row">
     <div class="col-md-12">
-<%= render 'form' %>
-
-<%= link_to 'Show', @driver %> |
-<%= link_to 'Home', drivers_path, method: :get%>
+      <%= render 'form' %>
+      <%= link_to 'Cancel', @driver, class: 'btn btn-danger link-btn' %>
+    </div>
+  </div>
+</div>
 

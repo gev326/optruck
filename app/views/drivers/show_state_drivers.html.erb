@@ -8,7 +8,7 @@
   </div>
 
   <script type="text/javascript">
-    handler = Gmaps.build(
+    var handler = Gmaps.build(
       'Google',
       {
         markers: {
@@ -18,9 +18,17 @@
       }
     );
     handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
-      markers = handler.addMarkers(<%=raw @hash.to_json %>);
-      handler.bounds.extendWith(markers);
-      handler.fitMapToBounds();
+      var rawData = <%= raw @hash.to_json %>
+      try {
+        var markers = handler.addMarkers(rawData);
+        handler.bounds.extendWith(markers);
+        handler.fitMapToBounds();
+      } catch (e) {
+        // Gmaps sometimes kicks an error for no apparent reason
+        // Cannot read property 'addMarker' of undefined
+        // Since markers always seem to work fine despite this error,
+        // we're ignoring this for now so it's doesn't print to the console
+      }
     });
   </script>
 

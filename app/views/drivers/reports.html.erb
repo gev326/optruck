@@ -1,53 +1,82 @@
 
-<div id='advanced-report-container'>
-  <h1> advanced search/reports </h1>
+<div id='advanced-reporting'>
+  <h1> Advanced search/reports </h1>
 
   <%= search_form_for @q, url: drivers_reports_path do |f| %>
-    <div class="form-group">
+    <div class="search-report-container form-group">
 
-      <%= f.label :full_name_cont, class: 'report-label' %>
-      <%= f.text_field :full_name_cont%>
+      <div class='search-report-section col1'>
+        <%= f.label :full_name_cont, class: 'report-label' %>
+        <%= f.text_field :full_name_cont%>
+        <br />
+
+        <%= f.label :current_state, class: 'report-label' %>
+        <%= f.text_field :current_state_cont %>
+        <br />
+
+        <%= f.label :current_city, class: 'report-label' %>
+        <%= f.text_field :current_city_cont %>
+        <br />
+
+        <%= f.label 'Radius (mi)', class: 'report-label' %>
+        <%= number_field_tag :miles, params[:miles], min: 1 %>
+      </div>
+
+      <div class='search-report-section col2'>
+        <%= f.label :desired_city, class: 'report-label' %>
+        <%= f.text_field :desired_city_cont%>
+        <br />
+
+        <%= f.label :desired_state, class: 'report-label' %>
+        <%= f.text_field :desired_state_cont%>
+        <br />
+
+        <%= f.label :desired_zip, class: 'report-label' %>
+        <%= f.text_field :desired_zip_eq%>
+        <br />
+
+        <%= f.label :driver_id_tag, class: 'report-label' %>
+        <%= f.text_field :driver_id_tag_cont%>
+      </div>
+
+      <div class='search-report-section col3'>
+        <%= f.label :driver_phone, class: 'report-label' %>
+        <%= f.text_field :driver_phone_eq%>
+        <br />
+
+        <%= f.label :driver_truck_type, class: 'report-label' %>
+        <%= f.select(
+          :driver_truck_type_eq,
+          options_for_select(
+            [
+              ['r53', 'r53'], ['flat', 'flat']
+            ],
+            params[:q] ? params[:q][:driver_truck_type_eq] : ''
+          ),
+          include_blank: true
+        ) %>
+        <br />
+
+        <%= f.label :active, class: 'report-label' %>
+        <%= f.select(
+          :active_eq,
+          options_for_select(
+            [
+              ['Active', true], ['Inactive', false]
+            ],
+            params[:q] ? params[:q][:active_eq] : ''
+          ),
+          include_blank: true
+        ) %>
+      </div>
+
       <br />
 
-      <%= f.label :address, class: 'report-label' %>
-      <%= f.search_field :address_cont%>
-      <br />
+      <div class='report-buttons'>
+        <%= f.submit "Search", class: "btn btn-primary" %>
+        <span><%= link_to 'Clear Form', drivers_reports_path, :class => 'btn btn-success' %></span>
+      </div>
 
-      <%= f.label :desired_city, class: 'report-label' %>
-      <%= f.text_field :desired_city_cont%>
-      <br />
-
-      <%= f.label :desired_state, class: 'report-label' %>
-      <%= f.text_field :desired_state_cont%>
-      <br />
-
-      <%= f.label :desired_zip, class: 'report-label' %>
-      <%= f.text_field :desired_zip_cont%>
-      <br />
-
-      <%= f.label :driver_ID, class: 'report-label' %>
-      <%= f.text_field :driver_id_tag_cont%>
-      <br />
-
-      <%= f.label :driver_phone_number, class: 'report-label' %>
-      <%= f.text_field :driver_phone%>
-      <br />
-
-      <%= f.label :driver_truck_type, class: 'report-label' %>
-      <%= f.text_field :driver_truck_type%>
-      <br />
-
-      <%= f.label 'Radius (mi)', class: 'report-label' %>
-      <%= number_field_tag :miles, params[:miles], min: 1 %>
-      <br />
-
-      <%= f.label :Active, 'Active', class: 'report-label' %>
-      <%= f.select :active_eq, options_for_select([['Active', true], ['Inactive', false]]), include_blank: true %>
-      <br />
-
-      <%= f.submit "Search", class: "btn btn-primary" %>
-
-      <span><%= link_to 'Clear Form', drivers_reports_path, :class => 'btn btn-success' %></span>
     </div>
   <% end %>
 
@@ -56,7 +85,7 @@
     <thead>
       <tr>
         <th>Full Name</th>
-        <th>Address</th>
+        <th>Current Location</th>
         <th>Desired City</th>
         <th>Desired State</th>
         <th>Desired Zip</th>
@@ -76,7 +105,7 @@
       <% @drivers.each do |driver| %>
         <tr>
           <td><%= driver.full_name %></td>
-          <td><%= driver.address %></td>
+          <td><%= driver.full_address %></td>
           <td><%= driver.desired_city %></td>
           <td><%= driver.desired_state %></td>
           <td><%= driver.desired_zip %></td>
