@@ -8,68 +8,96 @@
   </div>
 
   <script type="text/javascript">
-    var handler = Gmaps.build(
-      'Google',
-      {
-        markers: {
-          maxRandomDistance: 100,
-          clusterer: { maxZoom: 12, gridSize: 40 }
+    $( document ).ready(function() {
+      var handler = Gmaps.build(
+        'Google',
+        {
+          markers: {
+            maxRandomDistance: 100,
+            clusterer: { maxZoom: 12, gridSize: 40 }
+          }
+        }
+      );
+      handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+        var rawData = <%= raw @hash.to_json %>
+        try {
+          var markers = handler.addMarkers(rawData);
+          handler.bounds.extendWith(markers);
+          handler.fitMapToBounds();
+        } catch (e) {
+          // Gmaps sometimes kicks an error for no apparent reason
+          // Cannot read property 'addMarker' of undefined
+          // Since markers always seem to work fine despite this error,
+          // we're ignoring this for now so it's doesn't print to the console
+        }
+      });
+
+      var infoWindow = new handler.builders.Map.PRIMITIVES.infowindow();
+      var map = handler.getMap();
+
+      var icons = {
+        active: {
+          text: "Driver available",
+          url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|008000|000000"
+        },
+
+        inactive: {
+          text: "Driver not available",
+          url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=N|ff0000|000000"
         }
       }
-    );
-    handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
-      var rawData = <%= raw @hash.to_json %>
-      try {
-        var markers = handler.addMarkers(rawData);
-        handler.bounds.extendWith(markers);
-        handler.fitMapToBounds();
-      } catch (e) {
-        // Gmaps sometimes kicks an error for no apparent reason
-        // Cannot read property 'addMarker' of undefined
-        // Since markers always seem to work fine despite this error,
-        // we're ignoring this for now so it's doesn't print to the console
+
+      var legend = document.getElementById('legend');
+        for (var key in icons) {
+          var text = icons[key].text;
+          var url = icons[key].url;
+          var div = document.createElement('div');
+          div.innerHTML = '<img src="' + url + '"> ' + text;
+          legend.appendChild(div);
+        }
+      map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(legend);
+
+      var stateReportButton = "<a id='state-report-link'> Generate State Report </a>";
+      var isOpen = false;
+
+      function sendData(latLng, evt) {
+        evt.preventDefault();
+        $.ajax({
+          method: 'POST',
+          url: "<%= state_drivers_path %>",
+          data: latLng
+        });
       }
-    });
-
-    var infoWindow = new handler.builders.Map.PRIMITIVES.infowindow();
-    var map = handler.getMap();
-    var stateReportButton = "<a id='state-report-link'> Generate State Report </a>";
-    var isOpen = false;
-
-    function sendData(latLng, evt) {
-      evt.preventDefault();
-      $.ajax({
-        method: 'POST',
-        url: "<%= state_drivers_path %>",
-        data: latLng
+      map.addListener('click', function(evt) {
+        if (isOpen) {
+          $('#state-report-link').off('click', sendData);
+          infoWindow.close();
+          isOpen = false;
+        }
       });
-    }
-    map.addListener('click', function(evt) {
-      if (isOpen) {
-        $('#state-report-link').off('click', sendData);
-        infoWindow.close();
-        isOpen = false;
-      }
-    });
-    map.addListener('rightclick', function(evt) {
-      if (isOpen) {
-        $('#state-report-link').off('click', sendData);
-        infoWindow.close();
-        isOpen = false;
-      }
-      var position = evt.latLng;
-      var clickedPoint = {};
-      clickedPoint.lat = position.lat();
-      clickedPoint.lng = position.lng();
-      infoWindow.setContent(stateReportButton);
-      infoWindow.setPosition(position);
-      infoWindow.open(map, this);
-      isOpen = true
-      $('#state-report-link').on('click', sendData.bind(this, clickedPoint));
+      map.addListener('rightclick', function(evt) {
+        if (isOpen) {
+          $('#state-report-link').off('click', sendData);
+          infoWindow.close();
+          isOpen = false;
+        }
+        var position = evt.latLng;
+        var clickedPoint = {};
+        clickedPoint.lat = position.lat();
+        clickedPoint.lng = position.lng();
+        infoWindow.setContent(stateReportButton);
+        infoWindow.setPosition(position);
+        infoWindow.open(map, this);
+        isOpen = true
+        $('#state-report-link').on('click', sendData.bind(this, clickedPoint));
+      });
     });
 
   </script>
 
+  <div id='legend'>
+    <h4> Map Legend </h4>
+  </div>
 
   <div id='drivers-heading'>
     <h1>Driver Feed</h1>
