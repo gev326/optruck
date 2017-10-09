@@ -24,9 +24,13 @@ users.each do |u|
   User.create(u)
 end
 
+current_user = User.first
+
 drivers = []
 
 50.times do
+  covered = [true, false].sample
+  id = covered ? current_user.id : nil
   driver = {
     :first_name => Faker::Name.first_name,
     :last_name => Faker::Name.last_name,
@@ -39,7 +43,8 @@ drivers = []
     :active => [true, false].sample,
     :driver_company => Faker::Company.name,
     :backhaul => [true, false].sample,
-    :Covered => [true, false].sample,
+    :Covered => covered,
+    :user_id => id,
     :reeferunit => [true, false].sample,
     :insurance =>Faker::Company.name
   }
