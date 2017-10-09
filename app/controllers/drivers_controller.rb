@@ -89,6 +89,11 @@ class DriversController < ApplicationController
   # POST /drivers
   # POST /drivers.json
   def create
+
+    if params[:driver][:Covered] == '1'
+      params[:driver][:user_id] = current_user.id
+    end
+
     @driver = Driver.new(driver_params)
 
     respond_to do |format|
@@ -105,6 +110,11 @@ class DriversController < ApplicationController
   # PATCH/PUT /drivers/1
   # PATCH/PUT /drivers/1.json
   def update
+
+    if params[:driver][:Covered] == '1'
+      params[:driver][:user_id] = current_user.id
+    end
+
     respond_to do |format|
       if @driver.update(driver_params)
         format.html { redirect_to @driver, notice: 'Driver was successfully updated.' }
@@ -193,6 +203,7 @@ class DriversController < ApplicationController
       :driver_company,
       :comments,
       :Covered,
+      :user_id,
       :Etrac,
       :PlateTrailer,
       :insurance,

@@ -73,6 +73,13 @@
     <%= @driver.driver_availability %>
   </p>
 
+  <% if @driver.Covered %>
+    <p>
+      <strong>Covered by:</strong>
+      <%= @driver.user.full_name %>
+    </p>
+  <% end %>
+
   <p>
     <strong>Driver company:</strong>
     <%= @driver.driver_company %>
