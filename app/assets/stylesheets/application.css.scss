@@ -19,11 +19,22 @@
 body {
   background-color: whitespace;
 
-  #legend {
-    background-color: rgba(255, 255, 255, 0.8);
-    color: black;
-    padding: 20px;
+  #map-container {
+    position: relative;
+    #legend {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.8);
+      color: black;
+      padding: 20px;
+
+      .legend-image {
+        padding: 5px;
+      }
+    }
   }
+
 
   .link-btn {
     color: #FFFFFF;
