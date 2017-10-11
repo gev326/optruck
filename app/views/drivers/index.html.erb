@@ -2,10 +2,19 @@
 <% if user_signed_in? %>
   <% account_type = current_user.account_type %>
 
-
-  <div style='width: 100%;'>
+  <div id='map-container' style='width: 100%;'>
     <div id="map" style='width: 100%; height: 800px;'></div>
+    <div id='legend'>
+      <h4> Map Legend </h4>
+      <div class='legend-image'>
+        <img src='http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|008000|000000' />  Driver available
+      </div>
+      <div class='legend-image'>
+        <img src='http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=N|ff0000|000000' /> Driver not available
+      </div>
+    </div>
   </div>
+
 
   <script type="text/javascript">
     $( document ).ready(function() {
@@ -35,28 +44,6 @@
       var infoWindow = new handler.builders.Map.PRIMITIVES.infowindow();
       var map = handler.getMap();
 
-      var icons = {
-        active: {
-          text: "Driver available",
-          url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|008000|000000"
-        },
-
-        inactive: {
-          text: "Driver not available",
-          url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=N|ff0000|000000"
-        }
-      }
-
-      var legend = document.getElementById('legend');
-        for (var key in icons) {
-          var text = icons[key].text;
-          var url = icons[key].url;
-          var div = document.createElement('div');
-          div.innerHTML = '<img src="' + url + '"> ' + text;
-          legend.appendChild(div);
-        }
-      map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(legend);
-
       var stateReportButton = "<a id='state-report-link'> Generate State Report </a>";
       var isOpen = false;
 
@@ -68,6 +55,7 @@
           data: latLng
         });
       }
+
       map.addListener('click', function(evt) {
         if (isOpen) {
           $('#state-report-link').off('click', sendData);
@@ -94,10 +82,6 @@
     });
 
   </script>
-
-  <div id='legend'>
-    <h4> Map Legend </h4>
-  </div>
 
   <div id='drivers-heading'>
     <h1>Driver Feed</h1>
