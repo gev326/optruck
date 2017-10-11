@@ -6,6 +6,7 @@ class DriversController < ApplicationController
   # GET /drivers.json
   def index
     @drivers = Driver.all
+    @located_drivers = get_located_drivers @drivers
     @hash = generate_hash_map
   end
 
@@ -17,12 +18,14 @@ class DriversController < ApplicationController
     result = Geocoder.search([ params[:lat], params[:lng] ])
     if !result[0]
       @drivers = []
+      @located_drivers = []
       @hash = generate_hash_map
       @state = 'Unknown Region'
       return
     end
     @state = result[0].state
     @drivers = get_click_point_drivers @state
+    @located_drivers = get_located_drivers @drivers
     @hash = generate_hash_map
   end
 
@@ -32,8 +35,14 @@ class DriversController < ApplicationController
     end
   end
 
+  def get_located_drivers drivers
+    drivers.select do |driver|
+      driver.latitude && driver.longitude
+    end
+  end
+
   def generate_hash_map
-    Gmaps4rails.build_markers(@drivers) do |driver, marker|
+    Gmaps4rails.build_markers(@located_drivers) do |driver, marker|
       driver_path = view_context.link_to driver.full_name, driver_path(driver)
       driver_desired = driver.desired_state
       driver_phone = driver[:driver_phone]
