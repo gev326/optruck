@@ -87,12 +87,11 @@
           <td><%= driver.driver_availability %></td>
           <td><%= driver.driver_company %></td>
           <td><%= driver.comments %></td>
-          <% if driver.Covered == true%>
-
-          <td class="success"><%= driver.user %></td>
-          <% else %>
-          <td class="danger"><%= humanize_boolean(driver.Covered?) %></td>
-         <% end %>
+           <% if driver.Covered %>
+             <td class="success"><%= driver.user.full_name %></td>
+           <% else %>
+             <td class="danger"><%= humanize_boolean(driver.Covered?) %></td>
+          <% end %>
 
           <td><%= driver.PlateTrailer %></td>
           <td><%= driver.Etrac %></td>
