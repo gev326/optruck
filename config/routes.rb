@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-
-  devise_for :users, skip: :registrations, controllers: {
+    devise_for :users, skip: :registrations, controllers: {
     registrations: 'users/registrations'
   }
 
@@ -14,23 +13,21 @@ Rails.application.routes.draw do
     delete '/users/:id' => 'users/registrations#destroy', as: :destroy_user_registration
   end
 
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
 
-  # You can have the root of your site routed with "root"
-
-  get 'reports/index' => 'reports#index'
-
-  root 'drivers#index'
   get 'drivers/reports' => 'drivers#reports'
   post 'drivers/state' => 'drivers#state_drivers', as: :state_drivers
   get 'drivers/state' => 'drivers#show_state_drivers', as: :show_state_drivers
 
+  get 'reports/index' => 'reports#index'
+
+  root 'drivers#index'
   resources :drivers
 
+  # The priority is based upon order of creation: first created -> highest priority.
+  # See how all your routes lay out with "rake routes".
 
-# root :to => redirect("devise/sessions/login")
-
+  # You can have the root of your site routed with "root"
+  # root 'welcome#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

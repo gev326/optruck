@@ -18,7 +18,7 @@
 
   <script type="text/javascript">
     $( document ).ready(function() {
-      var handler = Gmaps.build(
+      handler = Gmaps.build(
         'Google',
         {
           markers: {
@@ -27,11 +27,16 @@
           }
         }
       );
+      Gmaps.store = {};
       handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
         var rawData = <%= raw @hash.to_json %>
         try {
-          var markers = handler.addMarkers(rawData);
-          handler.bounds.extendWith(markers);
+          Gmaps.store.markers = rawData.map(function(m){
+            var marker = handler.addMarker(m);
+            marker.serviceObject.set('id', m.id);
+            return marker;
+          });
+          handler.bounds.extendWith(Gmaps.store.markers);
           handler.fitMapToBounds();
         } catch (e) {
           // Gmaps sometimes kicks an error for no apparent reason
@@ -71,8 +76,8 @@
         }
         var position = evt.latLng;
         var clickedPoint = {};
-        clickedPoint.lat = position.lat();
-        clickedPoint.lng = position.lng();
+        clickedPoint.state_lat = position.lat();
+        clickedPoint.state_lng = position.lng();
         infoWindow.setContent(stateReportButton);
         infoWindow.setPosition(position);
         infoWindow.open(map, this);
@@ -95,7 +100,6 @@
         <th>Current Location</th>
         <th>Desired City</th>
         <th>Desired State</th>
-        <th>Desired Zip</th>
         <th>Driver ID</th>
         <th>Phone</th>
         <th>Truck Type</th>
@@ -115,14 +119,13 @@
       </tr>
     </thead>
 
-    <tbody>
+    <tbody id='driver-feed'>
       <% @drivers.each do |driver| %>
-        <tr>
+        <tr driver="<%= driver.id %>">
           <td><%= driver.full_name %></td>
           <td><%= driver.full_address %></td>
           <td><%= driver.desired_city %></td>
           <td><%= driver.desired_state %></td>
-          <td><%= driver.desired_zip %></td>
           <td><%= driver.driver_id_tag %></td>
           <td><%= driver.driver_phone %></td>
           <td><%= driver.driver_truck_type %></td>

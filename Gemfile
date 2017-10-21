@@ -2,9 +2,9 @@ source 'https://rubygems.org'
 
 gem 'dotenv-rails', groups: [:development, :test]
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.4'
+gem 'rails', '5.0'
 # Use postgresql as the database for Active Record
-gem 'pg'
+gem 'pg', '~> 0.20.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -54,7 +54,8 @@ group :development, :test do
   gem 'byebug'
   gem 'rb-readline'
   gem 'pry-rails'
-  gem 'faker'
+  gem 'faker', :require => false
+  gem 'puma'
 end
 
 group :development do

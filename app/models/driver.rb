@@ -18,13 +18,16 @@ class Driver < ActiveRecord::Base
   end
 
   def full_address
-    if current_city && current_state
+    current_city_exists = current_city != nil && current_city.length != 0
+    current_state_exists = current_state != nil && current_state.length != 0
+    if current_city_exists && current_state_exists
       return "#{current_city}, #{current_state}"
-    elsif current_city
+    elsif current_city_exists
       return "#{current_city}"
-    else
+    elsif current_state_exists
       return "#{current_state}"
     end
+    ""
   end
 
   def driver_info

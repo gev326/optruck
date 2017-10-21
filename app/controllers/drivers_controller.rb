@@ -7,26 +7,30 @@ class DriversController < ApplicationController
   def index
     @drivers = Driver.all
     @located_drivers = get_located_drivers @drivers
-    @hash = generate_hash_map
+    @hash = generate_hash_map @located_drivers
   end
 
   def state_drivers
-    redirect_to show_state_drivers_path params
+    new_params = {
+      :state_lat => params[:state_lat],
+      :state_lng => params[:state_lng]
+    }
+    redirect_to show_state_drivers_path new_params
   end
 
   def show_state_drivers
-    result = Geocoder.search([ params[:lat], params[:lng] ])
+    result = Geocoder.search([ params[:state_lat], params[:state_lng] ])
     if !result[0]
       @drivers = []
       @located_drivers = []
-      @hash = generate_hash_map
+      @hash = generate_hash_map []
       @state = 'Unknown Region'
       return
     end
     @state = result[0].state
     @drivers = get_click_point_drivers @state
     @located_drivers = get_located_drivers @drivers
-    @hash = generate_hash_map
+    @hash = generate_hash_map @located_drivers
   end
 
   def get_click_point_drivers state
@@ -41,8 +45,8 @@ class DriversController < ApplicationController
     end
   end
 
-  def generate_hash_map
-    Gmaps4rails.build_markers(@located_drivers) do |driver, marker|
+  def generate_hash_map located_drivers
+    Gmaps4rails.build_markers(located_drivers) do |driver, marker|
       driver_path = view_context.link_to driver.full_name, driver_path(driver)
       driver_desired = driver.desired_state
       driver_phone = driver[:driver_phone]
@@ -53,6 +57,7 @@ class DriversController < ApplicationController
       marker.lat driver.latitude
       marker.lng driver.longitude
       marker.title driver.full_name
+      marker.json(:id => driver[:id])
       marker.infowindow (
         %Q(
           Driver: #{driver_path}<br><br>
@@ -99,14 +104,29 @@ class DriversController < ApplicationController
   # POST /drivers.json
   def create
 
+    covered_name = nil
     if params[:driver][:Covered] == '1'
       params[:driver][:user_id] = current_user.id
+      covered_name = current_user.full_name
     end
 
     @driver = Driver.new(driver_params)
 
     respond_to do |format|
       if @driver.save
+        marker = nil
+        if @driver.current_state.length != 0 || @driver.current_city.length != 0
+          marker = generate_hash_map [@driver]
+        end
+        ActionCable.server.broadcast(
+          'driver_channel',
+          {
+            :msg=>'add-driver',
+            :driver=>@driver,
+            :covered_name=>covered_name,
+            :marker=>marker
+          }
+        )
         format.html { redirect_to @driver, notice: 'Driver was successfully created.' }
         format.json { render :show, status: :created, location: @driver }
       else
@@ -120,12 +140,27 @@ class DriversController < ApplicationController
   # PATCH/PUT /drivers/1.json
   def update
 
+    covered_name = nil
     if params[:driver][:Covered] == '1'
       params[:driver][:user_id] = current_user.id
+      covered_name = current_user.full_name
     end
 
     respond_to do |format|
       if @driver.update(driver_params)
+        marker = nil
+        if @driver.current_state.length != 0 || @driver.current_city.length != 0
+          marker = generate_hash_map [@driver]
+        end
+        ActionCable.server.broadcast(
+          'driver_channel',
+          {
+            :msg=>'update-driver',
+            :driver=>@driver,
+            :covered_name=>covered_name,
+            :marker=>marker
+          }
+        )
         format.html { redirect_to @driver, notice: 'Driver was successfully updated.' }
         format.json { render :show, status: :ok, location: @driver }
       else
@@ -139,6 +174,10 @@ class DriversController < ApplicationController
   # DELETE /drivers/1.json
   def destroy
     @driver.destroy
+    ActionCable.server.broadcast(
+      'driver_channel',
+      {:msg=>'delete-driver', :id=>@driver.id}
+    )
     respond_to do |format|
       format.html { redirect_to drivers_url, notice: 'Driver was successfully destroyed.' }
       format.json { head :no_content }
@@ -216,7 +255,9 @@ class DriversController < ApplicationController
       :Etrac,
       :PlateTrailer,
       :insurance,
-      :reeferunit
+      :reeferunit,
+      :state_lat,
+      :state_lng
     )
   end
 end
