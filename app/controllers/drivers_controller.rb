@@ -1,4 +1,6 @@
 class DriversController < ApplicationController
+  include ApplicationHelper
+
   before_action :authenticate_user!
   before_action :set_driver,  only: [:show, :edit, :update, :destroy ]
 
@@ -110,6 +112,24 @@ class DriversController < ApplicationController
       covered_name = current_user.full_name
     end
 
+    desired_state = params[:driver][:desired_state]
+    desired_city = params[:driver][:desired_city]
+    if desired_state && desired_state.length != 0
+      state_abbrv = get_state_abbrev desired_state
+      zone = get_destination_zone state_abbrv
+      params[:driver][:destination_zone] = zone
+    elsif desired_city && desired_city.length != 0
+      result = Geocoder.search(desired_city)
+      if result[0]
+        state_abbrv = get_state_abbrev result[0].state
+        zone = get_destination_zone state_abbrv
+        params[:driver][:desired_state] = result[0].state
+        params[:driver][:destination_zone] = zone
+      end
+    else
+      params[:driver][:destination_zone] = nil
+    end
+
     @driver = Driver.new(driver_params)
 
     respond_to do |format|
@@ -144,6 +164,24 @@ class DriversController < ApplicationController
     if params[:driver][:Covered] == '1'
       params[:driver][:user_id] = current_user.id
       covered_name = current_user.full_name
+    end
+
+    desired_state = params[:driver][:desired_state]
+    desired_city = params[:driver][:desired_city]
+    if desired_state && desired_state.length != 0
+      state_abbrv = get_state_abbrev desired_state
+      zone = get_destination_zone state_abbrv
+      params[:driver][:destination_zone] = zone
+    elsif desired_city && desired_city.length != 0
+      result = Geocoder.search(desired_city)
+      if result[0]
+        state_abbrv = get_state_abbrev result[0].state
+        zone = get_destination_zone state_abbrv
+        params[:driver][:desired_state] = result[0].state
+        params[:driver][:destination_zone] = zone
+      end
+    else
+      params[:driver][:destination_zone] = nil
     end
 
     respond_to do |format|
@@ -257,7 +295,8 @@ class DriversController < ApplicationController
       :insurance,
       :reeferunit,
       :state_lat,
-      :state_lng
+      :state_lng,
+      :destination_zone
     )
   end
 end
