@@ -10,31 +10,20 @@ App.driver = App.cable.subscriptions.create("DriverChannel", {
   received: function(data) {
     // Called when there's incoming data on the websocket for this channel
     if (!$("#map").is(":visible")) return;
-    var meta = document.querySelector('meta[name="current_user"]');
-    var user = meta.getAttribute('content');
     var driver = '';
     var active = '';
     var activeClass = '';
-    var covered = '';
-    var coveredClass = '';
     var html = '';
 
     switch (data.msg) {
       case 'add-driver':
         driver = data.driver;
         driver.full_name = full_name(driver);
-        driver.full_address = full_address(driver);
+        driver.current_location = current_location(driver);
+        driver.desired_location = desired_location(driver);
         active = driver.active ? 'yes' : 'no';
         activeClass = driver.active ? 'success' : 'danger';
-        covered = data.covered_name ? data.covered_name : 'no';
-        coveredClass = driver.Covered ? 'success' : 'danger';
-        html = `<tr id=${driver.id}><td>${driver.full_name}</td><td>${driver.full_address}</td><td>${driver.desired_city}</td><td>${driver.desired_state}</td><td>${driver.destination_zone}</td><td>${driver.driver_id_tag}</td><td>${driver.driver_phone}</td><td>${driver.driver_truck_type}</td><td class=${activeClass}>${active}</td><td>${driver.driver_status}</td><td>${driver.driver_contract_number}</td><td>${driver.driver_availability}</td><td>${driver.driver_company}</td><td>${driver.comments}</td><td class=${coveredClass}>${covered}</td><td>${driver.PlateTrailer}</td><td>${driver.Etrac}</td><td>${driver.PreferredLanes}</td><td>${driver.reeferunit}</td><td>${driver.insurance}</td>`;
-        if (user === 'admin' || user === 'updater') {
-          var extended = `<td><a href=drivers/${driver.id}> Show </a></td><td><a href=drivers/${driver.id}/edit> Edit </a></td><td><a data-confirm="Are you sure?" data-method="delete" href=drivers/${driver.id}> Destroy </a></td></tr>`;
-          html += extended;
-        } else {
-          html += `</tr>`
-        }
+        html = `<tr driver=${driver.id}><td><a href=drivers/${driver.id}>${driver.full_name}</a></td><td>${driver.driver_phone}</td><td>${driver.driver_truck_type}</td><td>${driver.driver_availability}</td><td>${driver.current_location}</td><td>${driver.desired_location}</td><td class=${activeClass}>${active}</td><td>${driver.driver_status}</td><td>${driver.driver_company}</td></tr>`;
         if (data.marker) {
           var newMarker = handler.addMarker(data.marker[0]);
           newMarker.serviceObject.set('id', data.marker[0].id);
@@ -45,16 +34,11 @@ App.driver = App.cable.subscriptions.create("DriverChannel", {
       case 'update-driver':
         driver = data.driver;
         driver.full_name = full_name(driver);
-        driver.full_address = full_address(driver);
+        driver.current_location = current_location(driver);
+        driver.desired_location = desired_location(driver);
         active = driver.active ? 'yes' : 'no';
         activeClass = driver.active ? 'success' : 'danger';
-        covered = data.covered_name ? data.covered_name : 'no';
-        coveredClass = driver.Covered ? 'success' : 'danger';
-        html = `<td>${driver.full_name}</td><td>${driver.full_address}</td><td>${driver.desired_city}</td><td>${driver.desired_state}</td><td>${driver.destination_zone}</td><td>${driver.driver_id_tag}</td><td>${driver.driver_phone}</td><td>${driver.driver_truck_type}</td><td class=${activeClass}>${active}</td><td>${driver.driver_status}</td><td>${driver.driver_contract_number}</td><td>${driver.driver_availability}</td><td>${driver.driver_company}</td><td>${driver.comments}</td><td class=${coveredClass}>${covered}</td><td>${driver.PlateTrailer}</td><td>${driver.Etrac}</td><td>${driver.PreferredLanes}</td><td>${driver.reeferunit}</td><td>${driver.insurance}</td>`;
-        if (user === 'admin' || user === 'updater') {
-          var extended = `<td><a href=drivers/${driver.id}> Show </a></td><td><a href=drivers/${driver.id}/edit> Edit </a></td><td><a data-confirm="Are you sure?" data-method="delete" href=drivers/${driver.id}> Destroy </a></td>`;
-          html += extended;
-        }
+        html = `<td><a href=drivers/${driver.id}>${driver.full_name}</a></td><td>${driver.driver_phone}</td><td>${driver.driver_truck_type}</td><td>${driver.driver_availability}</td><td>${driver.current_location}</td><td>${driver.desired_location}</td><td class=${activeClass}>${active}</td><td>${driver.driver_status}</td><td>${driver.driver_company}</td>`;
         Gmaps.store.markers = Gmaps.store.markers.filter(function(m) {
           if (m.serviceObject.id === driver.id) handler.removeMarker(m);
           return m.serviceObject.id != driver.id;
@@ -83,13 +67,25 @@ function full_name(driver) {
   return `${driver.first_name} ${driver.last_name}`
 }
 
-function full_address(driver) {
+function current_location(driver) {
   if (driver.current_city && driver.current_state) {
     return `${driver.current_city}, ${driver.current_state}`;
   } else if (driver.current_city) {
     return `${driver.current_city}`;
   } else if (driver.current_state) {
     return `${driver.current_state}`;
+  } else {
+    return "";
+  }
+}
+
+function desired_location(driver) {
+  if (driver.desired_city && driver.desired_state) {
+    return `${driver.desired_city}, ${driver.desired_state}`;
+  } else if (driver.desired_city) {
+    return `${driver.desired_city}`;
+  } else if (driver.desired_state) {
+    return `${driver.desired_state}`;
   } else {
     return "";
   }

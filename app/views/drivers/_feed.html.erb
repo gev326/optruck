@@ -1,0 +1,44 @@
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Full Name</th>
+        <th>Phone</th>
+        <th>Truck Type</th>
+        <th>Availability</th>
+        <th>Current Location</th>
+        <th>Desired Location</th>
+        <th>Active</th>
+        <th>Driver status</th>
+        <th>LANG</th>
+        <th>Company</th>
+      </tr>
+    </thead>
+
+    <tbody id="<%=data_id%>">
+      <% @drivers.each do |driver| %>
+        <tr driver="<%= driver.id %>">
+          <td><%= link_to driver.full_name, driver %></td>
+          <td><%= driver.driver_phone %></td>
+          <td><%= driver.driver_truck_type %></td>
+          <td>
+            <%=
+              driver.driver_availability ?
+                driver.driver_availability.strftime("%m/%d/%Y") :
+                nil
+            %>
+          </td>
+          <td><%= driver.current_location %></td>
+          <td><%= driver.desired_location %></td>
+          <% if driver.active == true%>
+            <td class="success"><%= humanize_boolean(driver.active?)%></td>
+          <% else %>
+            <td class="danger"><%= humanize_boolean(driver.active?) %></td>
+          <% end %>
+          <td><%= driver.driver_status %></td>
+          <td><%= driver.lang %></td>
+          <td><%= driver.driver_company %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>

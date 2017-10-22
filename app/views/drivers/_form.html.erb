@@ -69,7 +69,9 @@
 
   <div class="field">
     <%= f.label :driver_availability %><br>
-    <%= f.date_select :driver_availability %>
+    <%= f.date_select :driver_availability,
+      order: [:month, :day, :year],
+      :date_separator => ' / ' %>
   </div>
 
   <div class="control-group">
@@ -91,6 +93,11 @@
   <div class="field">
     <%= f.label :driver_status %><br>
     <%= f.text_field :driver_status %>
+  </div>
+
+  <div class="field">
+    <%= f.label 'Languages' %><br>
+    <%= f.text_field :lang %>
   </div>
 
   <div class="field">

@@ -1,5 +1,5 @@
 class Driver < ActiveRecord::Base
-  geocoded_by :full_address
+  geocoded_by :current_location
   after_validation :geocode
 
   belongs_to :user
@@ -17,7 +17,7 @@ class Driver < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
-  def full_address
+  def current_location
     current_city_exists = current_city != nil && current_city.length != 0
     current_state_exists = current_state != nil && current_state.length != 0
     if current_city_exists && current_state_exists
@@ -26,6 +26,19 @@ class Driver < ActiveRecord::Base
       return "#{current_city}"
     elsif current_state_exists
       return "#{current_state}"
+    end
+    ""
+  end
+
+  def desired_location
+    desired_city_exists = desired_city != nil && desired_city.length != 0
+    desired_state_exists = desired_state != nil && desired_state.length != 0
+    if desired_city_exists && desired_state_exists
+      return "#{desired_city}, #{desired_state}"
+    elsif desired_city_exists
+      return "#{desired_city}"
+    elsif desired_state_exists
+      return "#{desired_state}"
     end
     ""
   end

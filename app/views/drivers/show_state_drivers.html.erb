@@ -19,10 +19,14 @@
     );
     handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
       var rawData = <%= raw @hash.to_json %>
+      var lat = rawData[0] ? rawData[0].lat : '';
+      var lng = rawData[0] ? rawData[0].lng : '';
       try {
         var markers = handler.addMarkers(rawData);
-        handler.bounds.extendWith(markers);
-        handler.fitMapToBounds();
+        if (lat && lng) {
+          handler.map.centerOn({lat: lat, lng: lng});
+          handler.getMap().setZoom(7);
+        }
       } catch (e) {
         // Gmaps sometimes kicks an error for no apparent reason
         // Cannot read property 'addMarker' of undefined
@@ -32,92 +36,7 @@
     });
   </script>
 
-
-
-  <h1>Driver Feed</h1>
-
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>Full Name</th>
-        <th>Current Location</th>
-        <th>Desired City</th>
-        <th>Desired State</th>
-        <th>Desired Zip</th>
-        <th>Driver ID</th>
-        <th>Phone</th>
-        <th>Truck Type</th>
-        <th>Active</th>
-        <th>Driver status</th>
-        <th>Contract Number</th>
-        <th>Availability</th>
-        <th>Company</th>
-        <th>Comments</th>
-        <th>Covered</th>
-        <th>Plate Trailer</th>
-        <th>Etrac</th>
-        <th>Preferred Lanes</th>
-        <th>Reefer Unit</th>
-        <th>Insurance</th>
-        <th colspan="12"></th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% @drivers.each do |driver,user| %>
-        <tr>
-          <td><%= driver.full_name %></td>
-          <td><%= driver.full_address %></td>
-          <td><%= driver.desired_city %></td>
-          <td><%= driver.desired_state %></td>
-          <td><%= driver.desired_zip %></td>
-          <td><%= driver.driver_id_tag %></td>
-          <td><%= driver.driver_phone %></td>
-          <td><%= driver.driver_truck_type %></td>
-            <% if driver.active == true%>
-          <td class="success"><%= humanize_boolean(driver.active?)%></td>
-          <% else %>
-          <td class="danger"><%= humanize_boolean(driver.active?) %></td>
-            <% end %>
-          <td><%= driver.driver_status %></td>
-          <td><%= driver.driver_contract_number %></td>
-          <td><%= driver.driver_availability %></td>
-          <td><%= driver.driver_company %></td>
-          <td><%= driver.comments %></td>
-           <% if driver.Covered %>
-             <td class="success"><%= driver.user.full_name %></td>
-           <% else %>
-             <td class="danger"><%= humanize_boolean(driver.Covered?) %></td>
-          <% end %>
-
-          <td><%= driver.PlateTrailer %></td>
-          <td><%= driver.Etrac %></td>
-          <td><%= driver.PreferredLanes %></td>
-          <td><%= driver.reeferunit %></td>
-          <td><%= driver.insurance %></td>
-          <% if account_type == 'admin' || account_type == 'updater' %>
-
-            <td>
-              <%= link_to 'Show', driver %>
-            </td>
-
-            <td>
-              <%= link_to 'Edit', edit_driver_path(driver) %>
-            </td>
-
-            <td>
-              <%= link_to 'Destroy',
-                driver,
-                method: :delete,
-                data: { confirm: 'Are you sure?' } %>
-            </td>
-          <% end %>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-
-  <br>
+  <%= render :partial => 'feed', :locals => {:data_id => 'state-report'} %>
 
 <% else %>
 

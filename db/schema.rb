@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171022164527) do
+ActiveRecord::Schema.define(version: 20171022214930) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20171022164527) do
     t.boolean  "reeferunit"
     t.string   "insurance"
     t.string   "destination_zone"
+    t.string   "lang"
     t.index ["user_id"], name: "index_drivers_on_user_id", using: :btree
   end
 

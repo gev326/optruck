@@ -42,13 +42,24 @@ body {
   }
 
   #drivers-heading {
-    width: fit-content;
+    text-align: center;
     margin: 0 auto;
   }
 
   #driver-show {
-    margin: 0 auto;
-    width: fit-content;
+    text-align: center;
+  }
+
+  th {
+    text-align: center;
+  }
+
+  #driver-feed {
+    text-align: center;
+
+    a:visited {
+      color: #337ab7;
+    }
   }
 
   .driver-container {

@@ -11,7 +11,9 @@
         <br />
 
         <%= f.label :current_state, class: 'report-label' %>
-        <%= f.text_field :current_state_cont %>
+        <%= f.select :current_state_eq,
+          options_for_select(us_states),
+          :include_blank => true %>
         <br />
 
         <%= f.label :current_city, class: 'report-label' %>
@@ -28,7 +30,9 @@
         <br />
 
         <%= f.label :desired_state, class: 'report-label' %>
-        <%= f.text_field :desired_state_cont%>
+        <%= f.select :desired_state_eq,
+          options_for_select(us_states),
+          :include_blank => true %>
         <br />
 
         <%= f.label :desired_zip, class: 'report-label' %>
@@ -80,53 +84,7 @@
     </div>
   <% end %>
 
+  <%= render :partial => 'feed', :locals => {:data_id => 'report-feed'} %>
 
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>Full Name</th>
-        <th>Current Location</th>
-        <th>Desired City</th>
-        <th>Desired State</th>
-        <th>Desired Zip</th>
-        <th>Driver ID</th>
-        <th>Phone</th>
-        <th>Truck Type</th>
-        <th>Active</th>
-        <th>Driver status</th>
-        <th>Contract Number</th>
-        <th>Availability</th>
-        <th>Company</th>
-        <th>Comments</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% @drivers.each do |driver| %>
-        <tr>
-          <td><%= driver.full_name %></td>
-          <td><%= driver.full_address %></td>
-          <td><%= driver.desired_city %></td>
-          <td><%= driver.desired_state %></td>
-          <td><%= driver.desired_zip %></td>
-          <td><%= driver.driver_id_tag %></td>
-          <td><%= driver.driver_phone %></td>
-          <td><%= driver.driver_truck_type %></td>
-          <% if driver.active == true%>
-          <td class="success"><%= humanize_boolean(driver.active?)%></td>
-          <% else %>
-          <td class="danger"><%= humanize_boolean(driver.active?) %></td>
-
-          <%end %>
-          <td><%= driver.driver_status %></td>
-          <td><%= driver.driver_contract_number %></td>
-          <td><%= driver.driver_availability %></td>
-          <td><%= driver.driver_company %></td>
-          <td><%= driver.comments %></td>
-
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
 </div>
 
