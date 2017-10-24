@@ -6,6 +6,4 @@ test:
 
 production:
   adapter: redis
-  url: redis://h:p1cb19f703cd739f709e0a78e4861361deb82d4a89a7f1aac45c04aaa832c6f1c@ec2-34-236-65-51.compute-1.amazonaws.com:18809
-  port: 18809
-  password: p1cb19f703cd739f709e0a78e4861361deb82d4a89a7f1aac45c04aaa832c6f1c
+  url: redis://redistogo:4de7bed46ed7062c00f5967dcf6d0d22@greeneye.redistogo.com:11118/
