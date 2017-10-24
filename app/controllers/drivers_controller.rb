@@ -217,7 +217,7 @@ class DriversController < ApplicationController
       {:msg=>'delete-driver', :id=>@driver.id}
     )
     respond_to do |format|
-      format.html { redirect_to drivers_url, notice: 'Driver was successfully destroyed.' }
+      format.html { redirect_to drivers_url, notice: 'Driver was successfully deleted.' }
       format.json { head :no_content }
     end
   end
@@ -226,7 +226,7 @@ class DriversController < ApplicationController
   def reports
     radius = params[:miles] && params[:miles].length !=0
     q = params[:q]
-    state = q && q[:current_state_cont] && q[:current_state_cont].length != 0
+    state = q && q[:current_state_eq] && q[:current_state_eq].length != 0
     city = q && q[:current_city_cont] && q[:current_city_cont].length != 0
     if radius && (state || city)
       radius = params[:miles].to_f
@@ -234,7 +234,7 @@ class DriversController < ApplicationController
       # use state if city not present otherwise always
       # use city for radius searches.
       if state && !city
-        address = q[:current_state_cont]
+        address = q[:current_state_eq]
       else
         address = q[:current_city_cont]
       end
@@ -244,13 +244,13 @@ class DriversController < ApplicationController
       # this allows the user to put in garabage without breaking
       # the form
       if lat_lon
-        q[:current_state_cont] = nil
+        q[:current_state_eq] = nil
         q[:current_city_cont] = nil
         @q = Driver.near(address, radius).ransack(q)
         return @drivers = @q.result(distinct: true)
       else
         @q = Driver.ransack(params[:q])
-        @drivers = @q.result(distinct: true)
+        return @drivers = @q.result(distinct: true)
       end
     end
     @q = Driver.ransack(params[:q])
@@ -276,9 +276,8 @@ class DriversController < ApplicationController
       :current_state,
       :desired_city,
       :full_name,
-      :full_address,
+      :current_location,
       :desired_state,
-      :desired_zip,
       :driver_id_tag,
       :driver_phone,
       :driver_truck_type,
@@ -296,7 +295,8 @@ class DriversController < ApplicationController
       :reeferunit,
       :state_lat,
       :state_lng,
-      :destination_zone
+      :destination_zone,
+      :lang
     )
   end
 end

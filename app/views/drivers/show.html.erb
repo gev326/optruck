@@ -16,21 +16,12 @@
 
   <p>
     <strong>Current Location:</strong>
-    <%= @driver.current_city %>
-  </p>
-  <p>
-    <strong>Current State:</strong>
-    <%= @driver.current_state %>
+    <%= @driver.current_location %>
   </p>
 
   <p>
-    <strong>Desired city:</strong>
-    <%= @driver.desired_city %>
-  </p>
-
-  <p>
-    <strong>Desired state:</strong>
-    <%= @driver.desired_state %>
+    <strong>Desired Location:</strong>
+    <%= @driver.desired_location %>
   </p>
 
   <p>
@@ -64,6 +55,11 @@
   </p>
 
   <p>
+    <strong>Languages</strong>
+    <%= @driver.lang %>
+  </p>
+
+  <p>
     <strong>Driver contract number:</strong>
     <%= @driver.driver_contract_number %>
   </p>
@@ -90,5 +86,22 @@
     <%= @driver.comments %>
   </p>
 
-  <%= link_to 'Edit', edit_driver_path(@driver), class: 'btn btn-success link-btn' %>
+  <% account_type = current_user.account_type %>
+  <% if account_type == 'admin' || account_type == 'updater' %>
+
+    <td>
+      <%= link_to 'Edit',
+        edit_driver_path(@driver),
+        class: 'btn btn-primary link-btn'%>
+    </td>
+
+    <td>
+      <%= link_to 'Delete',
+        @driver,
+        method: :delete,
+        data: { confirm: 'Are you sure?' },
+        class: 'btn btn-danger link-btn'%>
+    </td>
+  <% end %>
+
 </div>
