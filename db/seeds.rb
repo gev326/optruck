@@ -14,7 +14,7 @@ users = [
     :last_name => 'Admin',
     :email => 'admin@admin.com',
     :account_type => 'admin',
-    :password => 'admin666'
+    :password => 'admin123'
   },
 ]
 
@@ -28,7 +28,7 @@ current_user = User.first
 
 drivers = []
 
-50.times do
+10.times do
   covered = [true, false].sample
   id = covered ? current_user.id : nil
   driver = {
