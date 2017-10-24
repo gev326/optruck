@@ -23,7 +23,7 @@ App.driver = App.cable.subscriptions.create("DriverChannel", {
         driver.desired_location = desired_location(driver);
         active = driver.active ? 'yes' : 'no';
         activeClass = driver.active ? 'success' : 'danger';
-        html = `<tr driver=${driver.id}><td><a href=drivers/${driver.id}>${driver.full_name}</a></td><td>${driver.driver_phone}</td><td>${driver.driver_truck_type}</td><td>${driver.driver_availability}</td><td>${driver.current_location}</td><td>${driver.desired_location}</td><td class=${activeClass}>${active}</td><td>${driver.driver_status}</td><td>${driver.driver_company}</td></tr>`;
+        html = "<tr driver="+driver.id+"><td><a href=drivers/"+driver.id+">"+driver.full_name+"</a></td><td>"+driver.driver_phone+"</td><td>"+driver.driver_truck_type+"</td><td>"+driver.driver_availability+"</td><td>"+driver.current_location+"</td><td>"+driver.desired_location+"</td><td class="+activeClass+">"+active+"</td><td>"+driver.driver_status+"</td><td>"+driver.driver_company+"</td></tr>";
         if (data.marker) {
           var newMarker = handler.addMarker(data.marker[0]);
           newMarker.serviceObject.set('id', data.marker[0].id);
@@ -38,7 +38,7 @@ App.driver = App.cable.subscriptions.create("DriverChannel", {
         driver.desired_location = desired_location(driver);
         active = driver.active ? 'yes' : 'no';
         activeClass = driver.active ? 'success' : 'danger';
-        html = `<td><a href=drivers/${driver.id}>${driver.full_name}</a></td><td>${driver.driver_phone}</td><td>${driver.driver_truck_type}</td><td>${driver.driver_availability}</td><td>${driver.current_location}</td><td>${driver.desired_location}</td><td class=${activeClass}>${active}</td><td>${driver.driver_status}</td><td>${driver.driver_company}</td>`;
+        html = "<td><a href=drivers/"+driver.id+">"+driver.full_name+"</a></td><td>"+driver.driver_phone+"</td><td>"+driver.driver_truck_type+"</td><td>"+driver.driver_availability+"</td><td>"+driver.current_location+"</td><td>"+driver.desired_location+"</td><td class="+activeClass+">"+active+"</td><td>"+driver.driver_status+"</td><td>"+driver.driver_company+"</td>";
         Gmaps.store.markers = Gmaps.store.markers.filter(function(m) {
           if (m.serviceObject.id === driver.id) handler.removeMarker(m);
           return m.serviceObject.id != driver.id;
@@ -48,14 +48,14 @@ App.driver = App.cable.subscriptions.create("DriverChannel", {
           newMarker.serviceObject.set('id', data.marker[0].id);
           Gmaps.store.markers.unshift(newMarker);
         }
-        $(`tr[driver=${driver.id}]`).html(html);
+        $("tr[driver="+driver.id+"]").html(html);
         break;
       case 'delete-driver':
         Gmaps.store.markers = Gmaps.store.markers.filter(function(m) {
           if (m.serviceObject.id === data.id) handler.removeMarker(m);
           return m.serviceObject.id != data.id;
         });
-        $(`tr[driver=${data.id}]`).remove();
+        $("tr[driver="+data.id+"]").remove();
         break;
       default:
         break;
@@ -64,16 +64,16 @@ App.driver = App.cable.subscriptions.create("DriverChannel", {
 });
 
 function full_name(driver) {
-  return `${driver.first_name} ${driver.last_name}`
+  return ""+driver.first_name+" "+driver.last_name
 }
 
 function current_location(driver) {
   if (driver.current_city && driver.current_state) {
-    return `${driver.current_city}, ${driver.current_state}`;
+    return ""+driver.current_city+", "+driver.current_state;
   } else if (driver.current_city) {
-    return `${driver.current_city}`;
+    return driver.current_city;
   } else if (driver.current_state) {
-    return `${driver.current_state}`;
+    return driver.current_state;
   } else {
     return "";
   }
@@ -81,11 +81,11 @@ function current_location(driver) {
 
 function desired_location(driver) {
   if (driver.desired_city && driver.desired_state) {
-    return `${driver.desired_city}, ${driver.desired_state}`;
+    return ""+driver.desired_city+", "+driver.desired_state;
   } else if (driver.desired_city) {
-    return `${driver.desired_city}`;
+    return driver.desired_city;
   } else if (driver.desired_state) {
-    return `${driver.desired_state}`;
+    return driver.desired_state;
   } else {
     return "";
   }
