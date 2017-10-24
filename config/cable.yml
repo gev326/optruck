@@ -6,4 +6,6 @@ test:
 
 production:
   adapter: redis
-  url: redis://localhost:6379/1
+  url: redis://h:p1cb19f703cd739f709e0a78e4861361deb82d4a89a7f1aac45c04aaa832c6f1c@ec2-34-236-65-51.compute-1.amazonaws.com:18809
+  port: 18809
+  password: p1cb19f703cd739f709e0a78e4861361deb82d4a89a7f1aac45c04aaa832c6f1c
