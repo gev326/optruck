@@ -15,6 +15,7 @@
 
     margin: 0 auto;
     width: fit-content;
+    overflow: hidden;
 
     .report-label {
       width: 135px;
@@ -23,14 +24,16 @@
     .search-report-section {
       display: inline-block;
       margin-right: 10px;
+      float: left;
       &:last-child {
         margin-right: 0;
       }
     }
+  }
 
-    .report-buttons {
-      text-align: center;
-      margin: 10px auto;
-    }
+  .report-buttons {
+    clear: left;
+    text-align: center;
+    margin: 10px auto;
   }
 }
