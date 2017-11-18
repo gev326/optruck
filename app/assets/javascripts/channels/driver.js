@@ -14,16 +14,13 @@ App.driver = App.cable.subscriptions.create("DriverChannel", {
     var active = '';
     var activeClass = '';
     var html = '';
+    var accountType = $('meta[name=account-type]').attr('content');
+    var isDispatcher = accountType === 'dispatcher';
 
     switch (data.msg) {
       case 'add-driver':
         driver = data.driver;
-        driver.full_name = full_name(driver);
-        driver.current_location = current_location(driver);
-        driver.desired_location = desired_location(driver);
-        active = driver.active ? 'yes' : 'no';
-        activeClass = driver.active ? 'success' : 'danger';
-        html = "<tr driver="+driver.id+"><td><a href=drivers/"+driver.id+">"+driver.full_name+"</a></td><td>"+driver.driver_phone+"</td><td>"+driver.driver_truck_type+"</td><td>"+driver.driver_availability+"</td><td>"+driver.current_location+"</td><td>"+driver.desired_location+"</td><td class="+activeClass+">"+active+"</td><td>"+driver.driver_status+"</td><td>"+driver.driver_company+"</td></tr>";
+        html = isDispatcher ? get_safe_fields(driver) : get_all_fields(driver);
         if (data.marker) {
           var newMarker = handler.addMarker(data.marker[0]);
           newMarker.serviceObject.set('id', data.marker[0].id);
@@ -33,12 +30,7 @@ App.driver = App.cable.subscriptions.create("DriverChannel", {
         break;
       case 'update-driver':
         driver = data.driver;
-        driver.full_name = full_name(driver);
-        driver.current_location = current_location(driver);
-        driver.desired_location = desired_location(driver);
-        active = driver.active ? 'yes' : 'no';
-        activeClass = driver.active ? 'success' : 'danger';
-        html = "<td><a href=drivers/"+driver.id+">"+driver.full_name+"</a></td><td>"+driver.driver_phone+"</td><td>"+driver.driver_truck_type+"</td><td>"+driver.driver_availability+"</td><td>"+driver.current_location+"</td><td>"+driver.desired_location+"</td><td class="+activeClass+">"+active+"</td><td>"+driver.driver_status+"</td><td>"+driver.driver_company+"</td>";
+        html = isDispatcher ? get_safe_fields(driver) : get_all_fields(driver);
         Gmaps.store.markers = Gmaps.store.markers.filter(function(m) {
           if (m.serviceObject.id === driver.id) handler.removeMarker(m);
           return m.serviceObject.id != driver.id;
@@ -62,6 +54,22 @@ App.driver = App.cable.subscriptions.create("DriverChannel", {
     }
   }
 });
+
+function get_safe_fields(driver) {
+  driver.full_name = full_name(driver);
+  driver.current_location = current_location(driver);
+  driver.desired_location = desired_location(driver);
+  return "<tr driver="+driver.id+"><td><a href=drivers/"+driver.id+">"+driver.full_name+"</a></td><td>"+driver.driver_phone+"</td><td>"+driver.driver_truck_type+"</td><td>"+driver.driver_availability+"</td><td>"+driver.current_location+"</td><td>"+driver.desired_location+"</td><td>"+driver.driver_status+"</td><td>"+driver.lang+"</td><td>"+driver.driver_company+"</td></tr>";
+}
+
+function get_all_fields(driver) {
+  driver.full_name = full_name(driver);
+  driver.current_location = current_location(driver);
+  driver.desired_location = desired_location(driver);
+  active = driver.active ? 'yes' : 'no';
+  activeClass = driver.active ? 'success' : 'danger';
+  return "<tr driver="+driver.id+"><td><a href=drivers/"+driver.id+">"+driver.full_name+"</a></td><td>"+driver.driver_phone+"</td><td>"+driver.driver_truck_type+"</td><td>"+driver.driver_availability+"</td><td>"+driver.current_location+"</td><td>"+driver.desired_location+"</td><td class="+activeClass+">"+active+"</td><td>"+driver.driver_status+"</td><td>"+driver.lang+"</td><td>"+driver.driver_company+"</td></tr>";
+}
 
 function full_name(driver) {
   return ""+driver.first_name+" "+driver.last_name

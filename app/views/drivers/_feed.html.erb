@@ -8,7 +8,9 @@
         <th>Availability</th>
         <th>Current Location</th>
         <th>Desired Location</th>
-        <th>Active</th>
+        <% if current_user.account_type != 'dispatcher' %>
+          <th>Active</th>
+        <% end %>
         <th>Driver status</th>
         <th>LANG</th>
         <th>Company</th>
@@ -30,10 +32,12 @@
           </td>
           <td><%= driver.current_location %></td>
           <td><%= driver.desired_location %></td>
-          <% if driver.active == true%>
-            <td class="success"><%= humanize_boolean(driver.active?)%></td>
-          <% else %>
-            <td class="danger"><%= humanize_boolean(driver.active?) %></td>
+          <% if current_user.account_type != 'dispatcher' %>
+            <% if driver.active == true%>
+              <td class="success"><%= humanize_boolean(driver.active?)%></td>
+            <% else %>
+              <td class="danger"><%= humanize_boolean(driver.active?) %></td>
+            <% end %>
           <% end %>
           <td><%= driver.driver_status %></td>
           <td><%= driver.lang %></td>

@@ -90,7 +90,9 @@
 
   <div id='drivers-heading'>
     <h1>Driver Feed</h1>
-    <%= link_to 'Create New Driver', new_driver_path, class: 'btn btn-primary link-btn' %>
+    <% if current_user.account_type != 'dispatcher' %>
+      <%= link_to 'Create New Driver', new_driver_path, class: 'btn btn-primary link-btn' %>
+    <% end %>
   </div>
 
   <%= render :partial => 'feed', :locals => {:data_id => 'driver-feed'} %>

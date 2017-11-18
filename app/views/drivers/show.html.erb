@@ -1,3 +1,5 @@
+<% account_type = current_user.account_type %>
+
 <div id='driver-show'>
 
   <h3> <%= @driver.full_name %> </h3>
@@ -44,10 +46,12 @@
     <%= @driver.driver_truck_type %>
   </p>
 
-  <p>
-    <strong>Active:</strong>
-    <%= @driver.active %>
-  </p>
+  <% if account_type != 'dispatcher' %>
+    <p>
+      <strong>Active:</strong>
+      <%= @driver.active %>
+    </p>
+  <% end %>
 
   <p>
     <strong>Driver status:</strong>
@@ -69,7 +73,7 @@
     <%= @driver.driver_availability %>
   </p>
 
-  <% if @driver.Covered %>
+  <% if @driver.Covered && account_type != 'dispatcher' %>
     <p>
       <strong>Covered by:</strong>
       <%= @driver.user.full_name %>
@@ -86,8 +90,7 @@
     <%= @driver.comments %>
   </p>
 
-  <% account_type = current_user.account_type %>
-  <% if account_type == 'admin' || account_type == 'updater' %>
+  <% if account_type != 'dispatcher' %>
 
     <td>
       <%= link_to 'Edit',
