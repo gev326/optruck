@@ -26,7 +26,7 @@ Rails.application.configure do
   config.assets.compile = false
 
   config.action_cable.url = 'wss://sheltered-headland-79525.herokuapp.com/cable'
-  config.action_cable.allowed_request_origins = [ 'https://sheltered-headland-79525.herokuapp.com', /http:\/\/sheltered-headland-79525.herokuapp.com.*/ ]
+  config.action_cable.allowed_request_origins = [ 'https://sheltered-headland-79525.herokuapp.com', 'http://sheltered-headland-79525.herokuapp.com']
 
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb

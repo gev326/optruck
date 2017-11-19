@@ -5,6 +5,7 @@ gem 'dotenv-rails', groups: [:development, :test]
 gem 'rails', '5.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.20.0'
+gem 'redis', '~> 3.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -34,9 +35,9 @@ gem 'ransack'
 gem 'bootstrap-form'
 gem 'simple_form'
 gem 'country_select'
-gem 'redis'
 gem 'city-state'
 gem 'jquery-inputmask-rails'
+gem 'puma'
 
 #
 
@@ -56,7 +57,6 @@ group :development, :test do
   gem 'rb-readline'
   gem 'pry-rails'
   gem 'faker', :require => false
-  gem 'puma'
 end
 
 group :development do
