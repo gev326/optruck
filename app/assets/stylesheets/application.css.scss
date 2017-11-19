@@ -18,6 +18,7 @@
 
 body {
   background-color: whitespace;
+  padding: 0 25px;
 
   #map-container {
     position: relative;
@@ -54,7 +55,7 @@ body {
     text-align: center;
   }
 
-  #driver-feed {
+  #driver-feed, #report-feed {
     text-align: center;
 
     a:visited {
