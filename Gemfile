@@ -36,6 +36,7 @@ gem 'simple_form'
 gem 'country_select'
 gem 'redis'
 gem 'city-state'
+gem 'jquery-inputmask-rails'
 
 #
 
