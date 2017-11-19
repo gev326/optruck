@@ -19,7 +19,10 @@
       <% @drivers.each do |driver| %>
         <tr driver="<%= driver.id %>">
           <td><%= link_to driver.full_name, driver %></td>
-          <td><%= driver.driver_phone %></td>
+          <td><%= number_to_phone driver.driver_phone,
+            pattern: /(\d{3})(\d{3})(\d{4})$/,
+            area_code: true %>
+          </td>
           <td><%= driver.driver_truck_type %></td>
           <td>
             <%=
