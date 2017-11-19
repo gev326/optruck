@@ -7,7 +7,8 @@ class DriversController < ApplicationController
   # GET /drivers
   # GET /drivers.json
   def index
-    @drivers = Driver.all
+    @q = Driver.ransack(params[:q])
+    @drivers = @q.result(distinct: true)
     @located_drivers = get_located_drivers @drivers
     @hash = generate_hash_map @located_drivers
   end
