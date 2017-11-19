@@ -37,9 +37,9 @@
           <td><%= driver.desired_location %></td>
           <% if current_user.account_type != 'dispatcher' %>
             <% if driver.active == true%>
-              <td class="success"><%= humanize_boolean(driver.active?)%></td>
+              <td class="success">Answering</td>
             <% else %>
-              <td class="danger"><%= humanize_boolean(driver.active?) %></td>
+              <td class="danger">Not Answering</td>
             <% end %>
           <% end %>
           <td><%= driver.driver_status %></td>

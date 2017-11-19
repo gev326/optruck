@@ -51,7 +51,7 @@
   <% if account_type != 'dispatcher' %>
     <p>
       <strong>Active:</strong>
-      <%= @driver.active %>
+      <%= @driver.active ? 'Answering' : 'Not Answering' %>
     </p>
   <% end %>
 

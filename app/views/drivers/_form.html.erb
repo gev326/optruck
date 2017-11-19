@@ -117,7 +117,16 @@
 
   <div class="field">
     <%= f.label :active %><br>
-    <%= f.check_box :active %>
+    <%= f.select(
+      :active,
+      options_for_select(
+        [
+          ['Answering', true],
+          ['Not Answering', false]
+        ],
+        @driver.active
+      )
+    ) %>
   </div>
 
   <div class="field">
