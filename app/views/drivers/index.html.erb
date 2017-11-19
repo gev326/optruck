@@ -84,14 +84,46 @@
         isOpen = true
         $('#state-report-link').on('click', sendData.bind(this, clickedPoint));
       });
-    });
 
+      function handleHtmlData(html) {
+        var $div = $('<div>');
+        $div.html(html);
+        var $content = $div.find('#driver-feed');
+        $feed.html($content.html());
+      }
+
+      var $feed = $('#driver-feed');
+      $('#feed-name-filter').on('keydown', function(evt) {
+        setTimeout(function() {
+          var $form = $('#driver-feed-form');
+          var formData = $form.serialize();
+          $.get('drivers', formData, handleHtmlData);
+        }, 0);
+      });
+
+      $('#feed-phone-filter').on('keydown', function(evt) {
+        setTimeout(function() {
+          var $form = $('#driver-feed-form');
+          var formData = $form.serialize();
+          $.get('drivers', formData, handleHtmlData);
+        }, 0);
+      });
+    });
   </script>
 
   <div id='drivers-heading'>
     <h1>Driver Feed</h1>
-    <% if current_user.account_type != 'dispatcher' %>
-      <%= link_to 'Create New Driver', new_driver_path, class: 'btn btn-primary link-btn' %>
+    <%= search_form_for @q, id: 'driver-feed-form', url: drivers_path do |f| %>
+      <div id="driver-feed-filter">
+        <%= f.label :driver_name, class: 'feed-label' %>
+        <%= f.text_field :full_name_cont, class: 'feed-filter', id: 'feed-name-filter' %>
+        <%= f.label :driver_phone, class: 'feed-label' %>
+        <%= f.text_field :driver_phone_cont, class: 'feed-filter', id: 'feed-phone-filter'%>
+        <%= link_to 'Clear Form', drivers_path, :class => 'btn btn-success link-btn' %>
+        <% if account_type != 'dispatcher' %>
+          <%= link_to 'Create New Driver', new_driver_path, class: 'btn btn-primary link-btn' %>
+        <% end %>
+      </div>
     <% end %>
   </div>
 
@@ -117,5 +149,3 @@
     </div>
   </div>
 <% end %>
-
-
