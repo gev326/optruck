@@ -2,39 +2,8 @@
 
 <div id='driver-show'>
 
-  <h3> <%= @driver.full_name %> </h3>
-
   <p id="notice"><%= notice %></p>
-
-  <p>
-    <strong>First name:</strong>
-    <%= @driver.first_name %>
-  </p>
-
-  <p>
-    <strong>Last name:</strong>
-    <%= @driver.last_name %>
-  </p>
-
-  <p>
-    <strong>Current Location:</strong>
-    <%= @driver.current_location %>
-  </p>
-
-  <p>
-    <strong>Desired Location:</strong>
-    <%= @driver.desired_location %>
-  </p>
-
-  <p>
-    <strong>Destination Zone:</strong>
-    <%= @driver.destination_zone %>
-  </p>
-
-  <p>
-    <strong>Driver id tag:</strong>
-    <%= @driver.driver_id_tag %>
-  </p>
+  <h3> <%= @driver.full_name %> </h3>
 
   <p>
     <strong>Driver phone:</strong>
@@ -46,6 +15,26 @@
   <p>
     <strong>Driver truck type:</strong>
     <%= @driver.driver_truck_type %>
+  </p>
+
+  <p>
+    <strong>Current Location:</strong>
+    <%= @driver.current_location %>
+  </p>
+
+  <p>
+    <strong>Driver id tag:</strong>
+    <%= @driver.driver_id_tag %>
+  </p>
+
+  <p>
+    <strong>Desired Location:</strong>
+    <%= @driver.desired_location %>
+  </p>
+
+  <p>
+    <strong>Destination Zone:</strong>
+    <%= @driver.destination_zone %>
   </p>
 
   <% if account_type != 'dispatcher' %>
@@ -61,19 +50,15 @@
   </p>
 
   <p>
-    <strong>Languages</strong>
-    <%= @driver.lang %>
-  </p>
-
-  <p>
-    <strong>Driver contract number:</strong>
-    <%= @driver.driver_contract_number %>
-  </p>
-
-  <p>
     <strong>Driver availability:</strong>
     <%= @driver.driver_availability %>
   </p>
+
+  <p>
+    <strong>Insurance Exclusions:</strong>
+    <%= @driver.insurance %>
+  </p>
+
 
   <% if @driver.Covered && account_type != 'dispatcher' %>
     <p>
@@ -90,6 +75,21 @@
   <p>
     <strong>Comments:</strong>
     <%= @driver.comments %>
+  </p>
+
+  <p>
+    <strong>PlateTrailer:</strong>
+    <%= humanize_boolean(@driver.PlateTrailer?) %>
+  </p>
+
+  <p>
+    <strong>Preferred Lanes:</strong>
+    <%= humanize_boolean(@driver.PreferredLanes?) %>
+  </p>
+
+  <p>
+    <strong>Etrak:</strong>
+    <%= humanize_boolean(@driver.Etrac?) %>
   </p>
 
   <% if account_type != 'dispatcher' %>

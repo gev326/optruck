@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171022214930) do
+ActiveRecord::Schema.define(version: 20171124000043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,12 +29,11 @@ ActiveRecord::Schema.define(version: 20171022214930) do
     t.string   "driver_truck_type"
     t.boolean  "active"
     t.string   "driver_status"
-    t.string   "driver_contract_number"
     t.date     "driver_availability"
     t.string   "driver_company"
     t.string   "comments"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
     t.integer  "user_id"
     t.string   "PlateTrailer"
     t.string   "Etrac"
@@ -42,10 +41,8 @@ ActiveRecord::Schema.define(version: 20171022214930) do
     t.boolean  "backhaul"
     t.boolean  "Covered"
     t.string   "current_state"
-    t.boolean  "reeferunit"
     t.string   "insurance"
     t.string   "destination_zone"
-    t.string   "lang"
     t.index ["user_id"], name: "index_drivers_on_user_id", using: :btree
   end
 

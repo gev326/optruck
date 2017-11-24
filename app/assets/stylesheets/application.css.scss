@@ -67,9 +67,28 @@ body {
     margin: 0 auto;
     width: fit-content;
     text-align: center;
+    overflow: hidden;
+
+    #form-col-1 {
+      float: left;
+      margin-right: 12px;
+    }
+
+    #form-col-2 {
+      display: inline-block;
+    }
+
+    .form-group {
+      text-align: left;
+      margin: 15px auto;
+    }
+
+    .form-label {
+      width: 135px;
+    }
 
     .name {
-      width: 300px;
+      width: 135px;
       display: inline-block;
       margin: 0 5px;
     }
@@ -79,23 +98,35 @@ body {
     }
 
     .control-label {
-      margin: 0 5px
+      margin: 0 5px;
     }
 
     .info {
       margin: 0 5px;
     }
 
-    .location-container {
-      display: inline-block;
-      margin: 25px;
-
-      .location {
-        display: inline-block;
-        margin: 0 10px;
-      }
+    .city-label {
+      width: 85px;
+      margin-left: 10px;
     }
 
+    #locations {
+      display: block;
+
+      .location-container {
+        display: inline-block;
+        margin-bottom: 25px;
+        margin-right: 15px;
+
+        .location {
+          display: inline-block;
+          margin: 0 10px;
+        }
+      }
+    }
+    .actions {
+      clear: left;
+    }
   }
 }
 

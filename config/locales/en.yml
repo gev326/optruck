@@ -20,5 +20,5 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  "true": "yes"
-  "false": "no"
+  "true": "Yes"
+  "false": "No"

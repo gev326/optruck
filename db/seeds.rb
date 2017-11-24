@@ -1,11 +1,3 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
-
 users = [
   {
     :first_name => 'Admin',
@@ -37,13 +29,11 @@ end
 #     :driver_id_tag => Faker::Number.number(6),
 #     :driver_phone => Faker::Number.number(10),
 #     :driver_truck_type => ['r53', 'flat'].sample,
-#     :driver_contract_number => Faker::Number.number(5),
 #     :active => [true, false].sample,
 #     :driver_company => Faker::Company.name,
 #     :backhaul => [true, false].sample,
 #     :Covered => covered,
 #     :user_id => id,
-#     :reeferunit => [true, false].sample,
 #     :insurance =>Faker::Company.name
 #   }
 #   drivers.push(driver)
