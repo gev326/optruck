@@ -1,3 +1,4 @@
+
 users = [
   {
     :first_name => 'Admin',
@@ -28,6 +29,7 @@ end
 #     :desired_state => Faker::Address.state,
 #     :driver_id_tag => Faker::Number.number(6),
 #     :driver_phone => Faker::Number.number(10),
+#     :contact_name => Faker::Name.first_name,
 #     :driver_truck_type => ['r53', 'flat'].sample,
 #     :active => [true, false].sample,
 #     :driver_company => Faker::Company.name,

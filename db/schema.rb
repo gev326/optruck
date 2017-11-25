@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171124000043) do
+ActiveRecord::Schema.define(version: 20171125183936) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "drivers", force: :cascade do |t|
-    t.string   "first_name"
+    t.string   "first_name",          null: false
     t.string   "last_name"
     t.float    "latitude"
     t.float    "longitude"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 20171124000043) do
     t.string   "current_state"
     t.string   "insurance"
     t.string   "destination_zone"
+    t.string   "contact_name"
     t.index ["user_id"], name: "index_drivers_on_user_id", using: :btree
   end
 

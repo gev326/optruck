@@ -295,6 +295,7 @@ class DriversController < ApplicationController
       :state_lat,
       :state_lng,
       :destination_zone,
+      :contact_name
     )
   end
 end
