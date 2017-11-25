@@ -97,10 +97,12 @@
       ) %>
     </div>
 
-    <div class="form-group">
-      <%= f.label :Covered, class: 'form-label' %>
-      <%= f.check_box :Covered %>
-    </div>
+    <% if editing %>
+      <div class="form-group">
+        <%= f.label :Covered, class: 'form-label' %>
+        <%= f.check_box :Covered %>
+      </div>
+    <% end %>
 
     <div class="form-group">
       <%= f.label :PlateTrailer, class: 'form-label' %>

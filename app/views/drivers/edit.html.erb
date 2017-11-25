@@ -7,7 +7,7 @@
       </div>
     </div>
   </div>
-  <%= render 'form' %>
+  <%= render :partial => 'form', :locals => {:editing => true} %>
   <%= link_to 'Cancel', @driver, class: 'btn btn-danger link-btn' %>
 </div>
 
