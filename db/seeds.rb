@@ -35,6 +35,8 @@ end
 #     :driver_company => Faker::Company.name,
 #     :backhaul => [true, false].sample,
 #     :Covered => covered,
+#     :Etrac => [true, false].sample,
+#     :PlateTrailer => [true, false].sample,
 #     :user_id => id,
 #     :insurance =>Faker::Company.name
 #   }

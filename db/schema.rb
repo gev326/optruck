@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20171125183936) do
   enable_extension "plpgsql"
 
   create_table "drivers", force: :cascade do |t|
-    t.string   "first_name",          null: false
+    t.string   "first_name"
     t.string   "last_name"
     t.float    "latitude"
     t.float    "longitude"
@@ -35,8 +35,8 @@ ActiveRecord::Schema.define(version: 20171125183936) do
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
     t.integer  "user_id"
-    t.string   "PlateTrailer"
-    t.string   "Etrac"
+    t.boolean  "PlateTrailer"
+    t.boolean  "Etrac"
     t.string   "PreferredLanes"
     t.boolean  "backhaul"
     t.boolean  "Covered"

@@ -13,6 +13,15 @@
         <% end %>
         <th>Driver status</th>
         <th>Company</th>
+        <% if data_id == 'report-feed' %>
+          <% if current_user.account_type != 'dispatcher' %>
+            <th>Covered by:</th>
+          <% end %>
+          <th>Etrac</th>
+          <th>Plate Trailer</th>
+          <th>Preferred Lanes</th>
+          <th>Destination Zone</th>
+        <% end %>
       </tr>
     </thead>
 
@@ -71,6 +80,17 @@
           <% end %>
           <td><%= driver.driver_status %></td>
           <td><%= driver.driver_company %></td>
+          <% if data_id == 'report-feed' %>
+            <% if current_user.account_type != 'dispatcher' %>
+              <td><%= driver.user ? driver.user.full_name : '' %></td>
+            <% end %>
+            <% etrac_class = driver.Etrac ? 'success' : 'danger' %>
+            <% plate_trailer_class = driver.PlateTrailer ? 'success' : 'danger' %>
+            <td class="<%= etrac_class%>"><%= humanize_boolean(driver.Etrac) %></td>
+            <td class="<%= plate_trailer_class%>"><%= humanize_boolean(driver.PlateTrailer) %></td>
+            <td><%= driver.PreferredLanes %></td>
+            <td><%= driver.destination_zone %></td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>
