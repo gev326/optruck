@@ -7,3 +7,9 @@
     margin: 10px 5px
   }
 }
+
+.truck-type {
+  &.yellow {
+    background-color: #FFFF00;
+  }
+}

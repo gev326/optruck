@@ -30,7 +30,7 @@ end
 #     :driver_id_tag => Faker::Number.number(6),
 #     :driver_phone => Faker::Number.number(10),
 #     :contact_name => Faker::Name.first_name,
-#     :driver_truck_type => ['r53', 'flat'].sample,
+#     :driver_truck_type => ['53R', '53RM', '53V', '53VM', 'flat', '48R', '48V'].sample,
 #     :active => [true, false].sample,
 #     :driver_company => Faker::Company.name,
 #     :backhaul => [true, false].sample,

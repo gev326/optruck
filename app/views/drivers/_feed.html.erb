@@ -25,7 +25,10 @@
             area_code: true %>
             <span> <%= " - #{driver.contact_name}" %>
           </td>
-          <td><%= driver.driver_truck_type %></td>
+          <% truck_type_class = ['48R', '53R', '53RM'].include?(
+            driver.driver_truck_type
+          ) ? "truck-type yellow" : "truck-type" %>
+          <td class="<%=truck_type_class%>"><%= driver.driver_truck_type %></td>
           <td>
             <%=
               driver.driver_availability ?
