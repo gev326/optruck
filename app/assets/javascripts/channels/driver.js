@@ -66,7 +66,7 @@ function get_all_fields(driver) {
   driver.full_name = full_name(driver);
   driver.current_location = current_location(driver);
   driver.desired_location = desired_location(driver);
-  active = driver.active ? 'yes' : 'no';
+  active = driver.active ? 'Answering' : 'Not Answering';
   activeClass = driver.active ? 'success' : 'danger';
   return "<tr driver="+driver.id+"><td><a href=drivers/"+driver.id+">"+driver.full_name+"</a></td><td>"+driver.driver_phone+"</td><td>"+driver.driver_truck_type+"</td><td>"+driver.driver_availability+"</td><td>"+driver.current_location+"</td><td>"+driver.desired_location+"</td><td class="+activeClass+">"+active+"</td><td>"+driver.driver_status+"</td><td>"+driver.lang+"</td><td>"+driver.driver_company+"</td></tr>";
 }

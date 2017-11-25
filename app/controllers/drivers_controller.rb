@@ -284,7 +284,6 @@ class DriversController < ApplicationController
       :driver_truck_type,
       :active,
       :driver_status,
-      :driver_contract_number,
       :driver_availability,
       :driver_company,
       :comments,
@@ -293,11 +292,9 @@ class DriversController < ApplicationController
       :Etrac,
       :PlateTrailer,
       :insurance,
-      :reeferunit,
       :state_lat,
       :state_lng,
       :destination_zone,
-      :lang
     )
   end
 end

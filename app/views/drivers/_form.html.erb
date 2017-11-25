@@ -4,7 +4,7 @@
   });
 </script>
 
-<%= simple_form_for(@driver, html: { id: 'new-driver-form', class: 'form-horizontal' }) do |f| %>
+<%= simple_form_for(@driver, html: { id: 'new-driver-form' }) do |f| %>
   <% if @driver.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@driver.errors.count, "error") %> prohibited this driver from being saved:</h2>
@@ -17,141 +17,123 @@
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= f.label :first_name, class: "control-label" %>
-    <%= f.text_field :first_name, class: "form-control name" %>
-    <%= f.label :last_name, class: "form-label" %>
-    <%= f.text_field :last_name, class: "form-control name" %>
+  <div id="form-col-1">
+
+    <div class="form-group">
+      <%= f.label :first_name, class: "form-label" %>
+      <%= f.text_field :first_name, class: "form-control name" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :last_name, class: "form-label" %>
+      <%= f.text_field :last_name, class: "form-control name" %>
+    </div>
+
+    <div class ="form-group">
+      <%= f.label :driver_phone, class: 'form-label' %>
+      <%= f.telephone_field :driver_phone, class: 'form-control name' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :driver_id_tag, class: 'form-label' %>
+      <%= f.text_field :driver_id_tag, class: 'form-control name' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :driver_company, class: 'form-label' %>
+      <%= f.text_field :driver_company, class: 'form-control name' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :driver_status, class: 'form-label' %>
+      <%= f.text_field :driver_status, class: 'form-control name' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :comments, class: 'form-label' %>
+      <%= f.text_field :comments, class: 'form-control name' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :insurance, "Insurance Exclusions", class: 'form-label' %>
+      <%= f.text_field :insurance, class: 'form-control name' %>
+    </div>
   </div>
 
-  <div class ="form-group">
-    <%= f.label :driver_phone, class: 'info' %>
-    <%= f.telephone_field :driver_phone, class: 'info' %>
+  <div id="form-col-2">
+    <div class="form-group">
+      <%= f.label :driver_availability, class: 'form-label' %>
+      <%= f.date_select :driver_availability,
+        order: [:month, :day, :year],
+        :date_separator => ' / ' %>
+    </div>
 
-    <%= f.label :driver_id_tag, class: 'info' %>
-    <%= f.text_field :driver_id_tag, class: 'info' %>
+    <div class="form-group">
+      <%= f.label "Truck Type", class: 'form-label' %>
+        <%= f.select(
+          :driver_truck_type,
+          options_for_select(
+            [
+              ['r53', 'r53'],
+              ['flat', 'flat']
+            ],
+            @driver.driver_truck_type
+          ),
+          include_blank: true
+        ) %>
+    </div>
 
-    <%= f.label :driver_company, class: 'info' %>
-    <%= f.text_field :driver_company, class: 'info' %>
-  </div>
+    <div class="form-group">
+      <%= f.label :active, class: 'form-label' %>
+      <%= f.select(
+        :active,
+        options_for_select(
+          [
+            ['Answering', true],
+            ['Not Answering', false]
+          ],
+          @driver.active
+        )
+      ) %>
+    </div>
 
+    <div class="form-group">
+      <%= f.label :Covered, class: 'form-label' %>
+      <%= f.check_box :Covered %>
+    </div>
 
-  <div class='location-container'>
-    <h4> Current Location </h4>
-    <div class="field location" id="current-state">
+    <div class="form-group">
+      <%= f.label :PlateTrailer, class: 'form-label' %>
+      <%= f.check_box :PlateTrailer, {}, true, false %>
+    </div>
 
-      <%= f.label :current_state %><br>
+    <div class="form-group">
+      <%= f.label :ETrac, class: 'form-label' %>
+      <%= f.check_box :Etrac, {}, true, false %>
+    </div>
+
+    <div class="form-group" id="current-state">
+
+      <%= f.label :current_state %>
       <%=
         f.select :current_state,
         options_for_select(us_states, "#{@driver.current_state}"),
         :include_blank => true
       %>
+      <%= f.label :current_city, class: "form-label city-label" %>
+      <%= f.text_field :current_city, class: 'form-control name' %>
     </div>
 
-     <div class="field location" id="current-city">
-      <%= f.label :current_city, class: "form-label"%><br>
-      <%= f.text_field :current_city %>
-    </div>
-  </div>
-
-  <div class='location-container'>
-    <h4> Desired Destination </h4>
-    <div class="field location" id="desired-state">
-
-      <%= f.label :desired_state %><br>
+    <div class="form-group" id="desired-state">
+      <%= f.label :desired_state %>
       <%=
         f.select :desired_state,
         options_for_select(us_states, "#{@driver.desired_state}"),
         :include_blank => true
       %>
+      <%= f.label :desired_city, class: "form-label city-label"%>
+      <%= f.text_field :desired_city, class: 'form-control name' %>
     </div>
-
-     <div class="field location" id="desired-city">
-      <%= f.label :desired_city, class: "form-label"%><br>
-      <%= f.text_field :desired_city %>
-    </div>
-  </div>
-
-  <div class="field">
-    <%= f.label :driver_availability %><br>
-    <%= f.date_select :driver_availability,
-      order: [:month, :day, :year],
-      :date_separator => ' / ' %>
-  </div>
-
-  <div class="control-group">
-    <%= f.label "Truck Type", class: 'control-label' %>
-    <div class="controls">
-      <%= f.select(
-        :driver_truck_type,
-        options_for_select(
-          [
-            ['r53', 'r53'],
-            ['flat', 'flat']
-          ]
-        ),
-        include_blank: true
-      ) %>
-    </div>
-  </div>
-
-  <div class="field">
-    <%= f.label :driver_status %><br>
-    <%= f.text_field :driver_status %>
-  </div>
-
-  <div class="field">
-    <%= f.label 'Languages' %><br>
-    <%= f.text_field :lang %>
-  </div>
-
-  <div class="field">
-    <%= f.label :driver_Contract_Number, 'Driver Contract Number' %><br>
-    <%= f.text_field :driver_contract_number %>
-  </div>
-
-  <div class="field">
-    <%= f.label :comments %><br>
-    <%= f.text_field :comments %>
-  </div>
-
-  <div class="field">
-    <%= f.label :active %><br>
-    <%= f.select(
-      :active,
-      options_for_select(
-        [
-          ['Answering', true],
-          ['Not Answering', false]
-        ],
-        @driver.active
-      )
-    ) %>
-  </div>
-
-  <div class="field">
-    <%= f.label :Covered %><br>
-    <%= f.check_box :Covered %>
-  </div>
-
-  <div class="field">
-    <%= f.label :PlateTrailer %><br>
-    <%= f.check_box :PlateTrailer %>
-  </div>
-
-  <div class="field">
-    <%= f.label :E_Trac %><br>
-    <%= f.check_box :Etrac %>
-  </div>
-
-  <div class="field">
-    <%= f.label :reeferUnit %><br>
-    <%= f.check_box :reeferunit %>
-  </div>
-
-  <div class="field">
-    <%= f.label :insurance %><br>
-    <%= f.text_field :insurance %>
   </div>
 
   <div class="actions">
