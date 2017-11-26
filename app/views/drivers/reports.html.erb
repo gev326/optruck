@@ -15,13 +15,19 @@
         <br>
 
         <%= f.label :current_state, class: 'report-label' %>
+        <% state = params[:q] && params[:q][:current_state_eq] ?
+          params[:q][:current_state_eq] : ''
+        %>
         <%= f.select :current_state_eq,
-          options_for_select(us_states),
+          options_for_select(us_states, state),
           :include_blank => true %>
         <br />
 
         <%= f.label :current_city, class: 'report-label' %>
-        <%= f.text_field :current_city_cont %>
+        <% city = params[:q] && params[:q][:current_city_cont] ?
+          params[:q][:current_city_cont] : ''
+        %>
+        <%= f.text_field :current_city_cont, value: city %>
         <br />
 
         <%= f.label 'Radius (mi)', class: 'report-label' %>
