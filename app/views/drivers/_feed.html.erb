@@ -23,6 +23,7 @@
           <td><%= number_to_phone driver.driver_phone,
             pattern: /(\d{3})(\d{3})(\d{4})$/,
             area_code: true %>
+            <span> <%= " - #{driver.contact_name}" %>
           </td>
           <td><%= driver.driver_truck_type %></td>
           <td>

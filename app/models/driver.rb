@@ -66,4 +66,6 @@ class Driver < ActiveRecord::Base
     return desired
   end
 
+  validates :first_name, presence: true, allow_blank: false
+
 end
