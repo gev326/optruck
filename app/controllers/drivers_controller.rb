@@ -91,7 +91,17 @@ class DriversController < ApplicationController
   # GET /drivers/1
   # GET /drivers/1.json
   def show
+    if params[:report]
+      @search = params[:search]
+      @report = Driver.find(params[:report])
+      @next_idx = get_next_report_idx params[:report], @driver.id
+    end
+  end
 
+  def get_next_report_idx report, id
+    last_index = report.length - 1
+    report.index("#{id}") + 1 <= last_index ?
+      report.index("#{id}") + 1 : 0
   end
 
   # GET /drivers/new
@@ -160,7 +170,6 @@ class DriversController < ApplicationController
   # PATCH/PUT /drivers/1
   # PATCH/PUT /drivers/1.json
   def update
-
     covered_name = nil
     if params[:driver][:Covered] == '1'
       params[:driver][:user_id] = current_user.id
@@ -200,7 +209,20 @@ class DriversController < ApplicationController
             :marker=>marker
           }
         )
-        format.html { redirect_to @driver, notice: 'Driver was successfully updated.' }
+        report = nil
+        search = nil
+        if params[:report]
+          report = JSON.parse(params[:report])
+          search = JSON.parse(params[:search])
+        end
+        format.html {
+          redirect_to driver_path(
+            id: @driver.id,
+            report: report,
+            search: search
+          ),
+          notice: 'Driver was successfully updated.'
+        }
         format.json { render :show, status: :ok, location: @driver }
       else
         format.html { render :edit }
@@ -245,10 +267,15 @@ class DriversController < ApplicationController
       # this allows the user to put in garabage without breaking
       # the form
       if lat_lon
+        saved_state = q[:current_state_eq]
+        saved_city = q[:current_city_cont]
         q[:current_state_eq] = nil
         q[:current_city_cont] = nil
         @q = Driver.near(address, radius).ransack(q)
-        return @drivers = @q.result(distinct: true)
+        @drivers = @q.result(distinct: true)
+        q[:current_state_eq] = saved_state
+        q[:current_city_cont] = saved_city
+        return @drivers
       else
         @q = Driver.ransack(params[:q])
         return @drivers = @q.result(distinct: true)

@@ -2,7 +2,6 @@
 
 <div id='driver-show'>
 
-  <p id="notice"><%= notice %></p>
   <h3> <%= @driver.full_name %> </h3>
 
   <p>
@@ -96,9 +95,33 @@
   <% if account_type != 'dispatcher' %>
 
     <td>
-      <%= link_to 'Edit',
-        edit_driver_path(@driver),
-        class: 'btn btn-primary link-btn'%>
+      <% if @report %>
+        <% search_hash = {} %>
+        <% if @search %>
+          <%
+            @search.each do |sp|
+              search_hash[sp] = @search[sp]
+            end
+          %>
+        <% end %>
+        <%= link_to 'Back to Report',
+            drivers_reports_path(
+            q: search_hash,
+            miles: search_hash["miles"]
+          ),
+          class: 'btn btn-primary link-btn' %>
+        <%= link_to 'Edit',
+          edit_driver_path(
+            id: @driver.id,
+            report: @report.map(&:id),
+            search: search_hash
+          ),
+          class: 'btn btn-primary link-btn' %>
+        <% else %>
+          <%= link_to 'Edit',
+            edit_driver_path(@driver),
+            class: 'btn btn-primary link-btn' %>
+      <% end %>
     </td>
 
     <td>
@@ -106,8 +129,17 @@
         @driver,
         method: :delete,
         data: { confirm: 'Are you sure?' },
-        class: 'btn btn-danger link-btn'%>
+        class: 'btn btn-danger link-btn' %>
     </td>
+    <% if @report %>
+      <%= link_to 'Next Driver in Report',
+      driver_path(
+        id: @report[@next_idx],
+        report: @report.map(&:id),
+        search: search_hash
+      ),
+      class: 'btn btn-success link-btn' %>
+    <% end %>
   <% end %>
 
 </div>

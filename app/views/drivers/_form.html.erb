@@ -163,7 +163,13 @@
   </div>
 
   <div class="actions">
-    <%= f.button :submit, class: "btn btn-primary" %>
+    <% if params[:report] %>
+      <%= hidden_field_tag(:report, params[:report].to_json) %>
+      <%= hidden_field_tag(:search, params[:search].to_json) %>
+      <%= f.button :submit, class: "btn btn-primary" %>
+    <% else %>
+      <%= f.button :submit, class: "btn btn-primary" %>
+    <% end %>
   </div>
 
 <% end %>
