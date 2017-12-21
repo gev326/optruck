@@ -95,12 +95,14 @@
   <% if account_type != 'dispatcher' %>
 
     <td>
-      <% if @report %>
+      <% report = @report || params[:report] %>
+      <% search = @search || params[:search] %>
+      <% if report && search %>
         <% search_hash = {} %>
-        <% if @search %>
+        <% if search %>
           <%
-            @search.each do |sp|
-              search_hash[sp] = @search[sp]
+            search.each do |sp|
+              search_hash[sp] = search[sp]
             end
           %>
         <% end %>
@@ -113,14 +115,14 @@
         <%= link_to 'Edit',
           edit_driver_path(
             id: @driver.id,
-            report: @report.map(&:id),
+            report: report.map(&:id),
             search: search_hash
           ),
           class: 'btn btn-primary link-btn' %>
-        <% else %>
-          <%= link_to 'Edit',
-            edit_driver_path(@driver),
-            class: 'btn btn-primary link-btn' %>
+      <% else %>
+        <%= link_to 'Edit',
+          edit_driver_path(@driver),
+          class: 'btn btn-primary link-btn' %>
       <% end %>
     </td>
 
@@ -131,11 +133,11 @@
         data: { confirm: 'Are you sure?' },
         class: 'btn btn-danger link-btn' %>
     </td>
-    <% if @report %>
+    <% if report && search %>
       <%= link_to 'Next Driver in Report',
       driver_path(
-        id: @report[@next_idx],
-        report: @report.map(&:id),
+        id: report[@next_idx],
+        report: report.map(&:id),
         search: search_hash
       ),
       class: 'btn btn-success link-btn' %>

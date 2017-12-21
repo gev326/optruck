@@ -8,6 +8,19 @@
     </div>
   </div>
   <%= render :partial => 'form', :locals => {:editing => true} %>
-  <%= link_to 'Cancel', @driver, class: 'btn btn-danger link-btn' %>
+  <% search_hash = {} %>
+  <%
+    if params[:search]
+      params[:search].each do |sp|
+        search_hash[sp] = params[:search][sp]
+      end
+    end
+  %>
+  <%= link_to 'Cancel',
+    driver_path(
+      id: @driver.id,
+      search: search_hash,
+      report: params[:report]
+    ), class: 'btn btn-danger link-btn' %>
 </div>
 
