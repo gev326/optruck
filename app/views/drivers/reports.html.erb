@@ -98,6 +98,21 @@
           :date_separator => ' / ',
           include_blank: true %>
       </div>
+      <div class='search-report-section col3'>
+        <%= f.label "Preferred Lanes", class: 'report-label' %>
+          <%= f.select(
+            :PreferredLanes_cont_any,
+            options_for_select(
+              us_states,
+              params[:q] ? params[:q][:PreferredLanes_cont_any] : ''
+            ),
+            {include_hidden: false},
+            {
+              class: 'form-control multi-select',
+              multiple: true,
+            }
+          ) %>
+        </div>
     </div>
 
     <div class='report-buttons'>

@@ -19,9 +19,9 @@
           <% end %>
           <th>Etrac</th>
           <th>Plate Trailer</th>
-          <th>Preferred Lanes</th>
           <th>Destination Zone</th>
         <% end %>
+        <th>Preferred Lanes</th>
       </tr>
     </thead>
 
@@ -88,9 +88,13 @@
             <% plate_trailer_class = driver.PlateTrailer ? 'success' : 'danger' %>
             <td class="<%= etrac_class%>"><%= humanize_boolean(driver.Etrac) %></td>
             <td class="<%= plate_trailer_class%>"><%= humanize_boolean(driver.PlateTrailer) %></td>
-            <td><%= driver.PreferredLanes %></td>
             <td><%= driver.destination_zone %></td>
           <% end %>
+          <td><%=
+            driver.PreferredLanes && driver.PreferredLanes.length != 0 ?
+              driver.PreferredLanes.split(", ").join(" ").gsub(/[\"\[\]]/, '')
+              : nil %>
+          </td>
         </tr>
       <% end %>
     </tbody>

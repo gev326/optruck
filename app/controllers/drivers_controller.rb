@@ -43,7 +43,9 @@ class DriversController < ApplicationController
   end
 
   def get_located_drivers drivers
-    Driver.geocoded
+    drivers.select do |driver|
+      driver.latitude && driver.longitude
+    end
   end
 
   def generate_hash_map located_drivers
@@ -354,7 +356,8 @@ class DriversController < ApplicationController
       :state_lng,
       :destination_zone,
       :contact_name,
-      :backhaul
+      :backhaul,
+      :PreferredLanes => []
     )
   end
 end
