@@ -33,7 +33,6 @@ end
 #     :driver_truck_type => ['53R', '53RM', '53V', '53VM', 'flat', '48R', '48V'].sample,
 #     :active => [true, false].sample,
 #     :driver_company => Faker::Company.name,
-#     :backhaul => [true, false].sample,
 #     :Covered => covered,
 #     :Etrac => [true, false].sample,
 #     :PlateTrailer => [true, false].sample,

@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20171125183936) do
   enable_extension "plpgsql"
 
   create_table "drivers", force: :cascade do |t|
-    t.string   "first_name"
+    t.string   "first_name",          null: false
     t.string   "last_name"
     t.float    "latitude"
     t.float    "longitude"

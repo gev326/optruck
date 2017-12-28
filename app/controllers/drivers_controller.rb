@@ -141,6 +141,19 @@ class DriversController < ApplicationController
       params[:driver][:destination_zone] = nil
     end
 
+    current_state = params[:driver][:current_state]
+    current_city = params[:driver][:current_city]
+    if current_state && current_state.length != 0
+      params[:driver][:backhaul] = current_state == 'California' ? false : true
+    elsif current_city && current_city.length != 0
+      loc = Geocoder.search(current_city, :params => {:countrycodes => 'us'})
+      if loc.length != 0
+        params[:driver][:backhaul] = loc[0].state == 'California' ? false : true
+      end
+    elsif current_state.length == 0 && current_city.length == 0
+      params[:driver][:backhaul] = true
+    end
+
     @driver = Driver.new(driver_params)
 
     respond_to do |format|
@@ -192,6 +205,19 @@ class DriversController < ApplicationController
       end
     else
       params[:driver][:destination_zone] = nil
+    end
+
+    current_state = params[:driver][:current_state]
+    current_city = params[:driver][:current_city]
+    if current_state && current_state.length != 0
+      params[:driver][:backhaul] = current_state == 'California' ? false : true
+    elsif current_city && current_city.length != 0
+      loc = Geocoder.search(current_city, :params => {:countrycodes => 'us'})
+      if loc.length != 0
+        params[:driver][:backhaul] = loc[0].state == 'California' ? false : true
+      end
+    elsif current_state.length == 0 && current_city.length == 0
+      params[:driver][:backhaul] = true
     end
 
     respond_to do |format|
@@ -247,8 +273,15 @@ class DriversController < ApplicationController
 
   # search
   def reports
-    radius = params[:miles] && params[:miles].length !=0
+    radius = params[:miles] && params[:miles].length != 0
     q = params[:q]
+
+    if q
+      q[:Etrac_eq] = nil if q[:Etrac_eq] == '0'
+      q[:PlateTrailer_eq] = nil if q[:PlateTrailer_eq] == '0'
+      q[:backhaul_eq] = nil if q[:backhaul_eq] == '0'
+    end
+
     state = q && q[:current_state_eq] && q[:current_state_eq].length != 0
     city = q && q[:current_city_cont] && q[:current_city_cont].length != 0
     if radius && (state || city)
@@ -322,7 +355,8 @@ class DriversController < ApplicationController
       :state_lat,
       :state_lng,
       :destination_zone,
-      :contact_name
+      :contact_name,
+      :backhaul
     )
   end
 end
