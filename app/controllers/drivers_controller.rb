@@ -356,7 +356,8 @@ class DriversController < ApplicationController
       :state_lng,
       :destination_zone,
       :contact_name,
-      :backhaul
+      :backhaul,
+      :PreferredLanes => []
     )
   end
 end

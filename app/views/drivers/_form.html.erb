@@ -160,6 +160,19 @@
       <%= f.label :desired_city, class: "form-label city-label"%>
       <%= f.text_field :desired_city, class: 'form-control name' %>
     </div>
+
+    <div class="form-group">
+      <%= f.label "Preferred Lanes - select multiple by holding shift or control (command for mac)", class: 'form-label' %>
+        <%= f.select(
+          :PreferredLanes,
+          options_for_select(us_states, @driver.PreferredLanes),
+          {include_hidden: false},
+          {
+            class: 'form-control multi-select',
+            multiple: true
+          }
+        ) %>
+    </div>
   </div>
 
   <div class="actions">
