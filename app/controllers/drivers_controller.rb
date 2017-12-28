@@ -43,9 +43,7 @@ class DriversController < ApplicationController
   end
 
   def get_located_drivers drivers
-    drivers.select do |driver|
-      driver.latitude && driver.longitude
-    end
+    Driver.geocoded
   end
 
   def generate_hash_map located_drivers
