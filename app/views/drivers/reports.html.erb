@@ -88,6 +88,10 @@
         <%= f.check_box :Etrac_eq %>
         <br>
 
+        <%= f.label :backhaul, class: 'report-label' %>
+        <%= f.check_box :backhaul_eq %>
+        <br>
+
         <%= f.label :driver_availability, class: 'report-label' %>
         <%= f.date_select :driver_availability_eq,
           order: [:month, :day, :year],
