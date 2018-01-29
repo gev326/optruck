@@ -27,6 +27,7 @@
 
     <tbody id="<%=data_id%>">
       <% @drivers.each do |driver| %>
+      <% covered_highlight = driver.Covered ? 'yellow' : '' %>
         <tr driver="<%= driver.id %>">
           <% if data_id == 'report-feed' %>
             <% if params[:q] %>
@@ -42,7 +43,7 @@
                 end
               %>
             <% end %>
-            <td>
+            <td class="<%=covered_highlight%>">
               <%= link_to driver.full_name,
                 driver_path(
                   id: driver.id,
@@ -52,7 +53,7 @@
               <div><%=" ID: #{driver.driver_id_tag}"%></div>
             </td>
           <% else %>
-            <td>
+            <td class="<%=covered_highlight%>">
               <%= link_to driver.full_name, driver %>
               <div><%=" ID: #{driver.driver_id_tag}"%></div>
             </td>
@@ -66,15 +67,19 @@
             driver.driver_truck_type
           ) ? "truck-type yellow" : "truck-type" %>
           <td class="<%=truck_type_class%>"><%= driver.driver_truck_type %></td>
-          <td>
+          <td class="<%=covered_highlight%>">
             <%=
               driver.driver_availability ?
                 driver.driver_availability.strftime("%m/%d/%Y") :
                 nil
             %>
           </td>
-          <td><%= driver.current_location %></td>
-          <td><%= driver.desired_location %></td>
+          <td class="<%=covered_highlight%>">
+            <%= driver.current_location %>
+          </td>
+          <td class="<%=covered_highlight%>">
+            <%= driver.desired_location %>
+          </td>
           <% if current_user.account_type != 'dispatcher' %>
             <% if driver.active == true%>
               <td class="success">Answering</td>
