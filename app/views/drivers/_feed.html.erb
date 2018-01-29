@@ -49,9 +49,13 @@
                   report: @drivers.map(&:id),
                   search: search_hash
                 ) %>
+              <div><%=" ID: #{driver.driver_id_tag}"%></div>
             </td>
           <% else %>
-            <td><%= link_to driver.full_name, driver %></td>
+            <td>
+              <%= link_to driver.full_name, driver %>
+              <div><%=" ID: #{driver.driver_id_tag}"%></div>
+            </td>
           <% end %>
           <td><%= number_to_phone driver.driver_phone,
             pattern: /(\d{3})(\d{3})(\d{4})$/,
