@@ -279,19 +279,48 @@ class DriversController < ApplicationController
   # search
   def reports
     radius = params[:miles] && params[:miles].length != 0
+    start_date = nil
+    end_date = nil
+    address = nil
+    lat_lon = nil
+    radius_drivers = nil
+    range_drivers = nil
+    saved_range = nil
+    saved_state = nil
+    saved_city = nil
     q = params[:q]
 
     if q
       q[:Etrac_eq] = nil if q[:Etrac_eq] == '0'
       q[:PlateTrailer_eq] = nil if q[:PlateTrailer_eq] == '0'
       q[:backhaul_eq] = nil if q[:backhaul_eq] == '0'
+
+      if q[:driver_availability_in].length != 0
+        saved_range = q[:driver_availability_in]
+        parts = q[:driver_availability_in].split(' - ')
+        q[:driver_availability_in] = nil
+        start_parts = parts[0].split('/')
+        end_parts = parts[1].split('/')
+        start_year = start_parts[2].to_i
+        start_mo = start_parts[0].to_i
+        start_day = start_parts[1].to_i
+        end_year = end_parts[2].to_i
+        end_mo = end_parts[0].to_i
+        end_day = end_parts[1].to_i
+        start_date = Date.new(start_year, start_mo, start_day)
+        end_date = Date.new(end_year, end_mo, end_day)
+        range_drivers = Driver.where(
+          "driver_availability >= :start_date AND " +
+          "driver_availability <= :end_date",
+          {start_date: start_date, end_date: end_date}
+        )
+      end
     end
 
     state = q && q[:current_state_eq] && q[:current_state_eq].length != 0
     city = q && q[:current_city_cont] && q[:current_city_cont].length != 0
     if radius && (state || city)
       radius = params[:miles].to_f
-
       # use state if city not present otherwise always
       # use city for radius searches.
       if state && !city
@@ -300,7 +329,6 @@ class DriversController < ApplicationController
         address = q[:current_city_cont]
       end
       lat_lon = Geocoder.coordinates(address)
-
       # since we are fuzzy matching we may not get a latlng
       # this allows the user to put in garabage without breaking
       # the form
@@ -309,17 +337,28 @@ class DriversController < ApplicationController
         saved_city = q[:current_city_cont]
         q[:current_state_eq] = nil
         q[:current_city_cont] = nil
-        @q = Driver.near(address, radius).ransack(q)
-        @drivers = @q.result(distinct: true)
-        q[:current_state_eq] = saved_state
-        q[:current_city_cont] = saved_city
-        return @drivers
-      else
-        @q = Driver.ransack(params[:q])
-        return @drivers = @q.result(distinct: true)
       end
     end
-    @q = Driver.ransack(params[:q])
+
+    drivers = nil
+    if range_drivers && lat_lon && address && radius
+      drivers = range_drivers.near(address, radius)
+    elsif range_drivers
+      drivers = range_drivers
+    elsif address && lat_lon && radius
+      drivers = Driver.near(address, radius)
+    else
+      drivers = Driver.all
+    end
+
+    @q = drivers.ransack(params[:q])
+    if saved_state && saved_city
+      q[:current_state_eq] = saved_state
+      q[:current_city_cont] = saved_city
+    end
+    if saved_range
+      q[:driver_availability_in] = saved_range
+    end
     @drivers = @q.result(distinct: true)
   end
 
