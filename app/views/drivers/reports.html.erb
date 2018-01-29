@@ -1,6 +1,17 @@
 <script type="text/javascript">
   $( document ).ready(function() {
-    $("#q_driver_phone_eq").inputmask({"mask": "(999) 999-9999"});
+    $("#driver_driver_phone").inputmask({"mask": "(999) 999-9999"});
+
+    var $checkbox = $('#q_PlateTrailer_eq');
+    var $warning = $('#plate-trailer-warning');
+    if ($checkbox[0].checked) $warning.css('display', 'inline');
+    $checkbox.on('change', function() {
+      if(this.checked) {
+        $warning.css('display', 'inline');
+      } else {
+        $warning.css('display', 'none');
+      }
+    });
   });
 </script>
 
@@ -82,6 +93,9 @@
 
         <%= f.label :PlateTrailer, class: 'report-label' %>
         <%= f.check_box :PlateTrailer_eq %>
+        <span id='plate-trailer-warning'>
+          ALWAYS CONFIRM WITH DRIVER
+        </span>
         <br>
 
         <%= f.label :ETrac, class: 'report-label' %>
