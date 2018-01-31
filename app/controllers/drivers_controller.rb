@@ -116,6 +116,8 @@ class DriversController < ApplicationController
   # POST /drivers
   # POST /drivers.json
   def create
+    params[:driver][:first_name].strip!
+    params[:driver][:last_name].strip!
 
     covered_name = nil
     if params[:driver][:Covered] == '1'
@@ -183,6 +185,9 @@ class DriversController < ApplicationController
   # PATCH/PUT /drivers/1
   # PATCH/PUT /drivers/1.json
   def update
+    params[:driver][:first_name].strip!
+    params[:driver][:last_name].strip!
+
     covered_name = nil
     if params[:driver][:Covered] == '1'
       params[:driver][:user_id] = current_user.id
