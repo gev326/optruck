@@ -20,5 +20,7 @@
 //= require bootstrap-sprockets
 //= require underscore
 //= require gmaps/google
+//= require moment
+//= require daterangepicker
 //= require_tree .
 

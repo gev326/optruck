@@ -1,16 +1,30 @@
 <script type="text/javascript">
   $( document ).ready(function() {
-    $("#driver_driver_phone").inputmask({"mask": "(999) 999-9999"});
-
-    var $checkbox = $('#q_PlateTrailer_eq');
-    var $warning = $('#plate-trailer-warning');
-    if ($checkbox[0].checked) $warning.css('display', 'inline');
-    $checkbox.on('change', function() {
-      if(this.checked) {
-        $warning.css('display', 'inline');
-      } else {
-        $warning.css('display', 'none');
+    $("#q_driver_phone_eq").inputmask({"mask": "(999) 999-9999"});
+    var q = <%= raw params[:q].to_json %>;
+    var opts = {
+      autoUpdateInput: false,
+      locale: {
+        cancelLabel: 'Clear'
       }
+    };
+    if (q && q.driver_availability_in.length) {
+      var range = q.driver_availability_in.split(' - ');
+      opts.startDate = range[0];
+      opts.endDate = range[1];
+      $('#datefilter').val(opts.startDate + ' - ' + opts.endDate);
+    }
+    $('#datefilter').daterangepicker(opts);
+
+    $('#datefilter').on('apply.daterangepicker', function(ev, picker) {
+      var startDate = picker.startDate.format('MM/DD/YYYY');
+      var endDate = picker.endDate.format('MM/DD/YYYY');
+      var value = (startDate + ' - ' + endDate);
+      $(this).val(value);
+    });
+
+    $('#datefilter').on('cancel.daterangepicker', function(ev, picker) {
+      $(this).val('');
     });
   });
 </script>
@@ -107,26 +121,23 @@
         <br>
 
         <%= f.label :driver_availability, class: 'report-label' %>
-        <%= f.date_select :driver_availability_eq,
-          order: [:month, :day, :year],
-          :date_separator => ' / ',
-          include_blank: true %>
+        <%= f.text_field :driver_availability_in, id: 'datefilter' %>
       </div>
       <div class='search-report-section col3'>
         <%= f.label "Preferred Lanes", class: 'report-label' %>
-          <%= f.select(
-            :PreferredLanes_cont_any,
-            options_for_select(
-              us_states,
-              params[:q] ? params[:q][:PreferredLanes_cont_any] : ''
-            ),
-            {include_hidden: false},
-            {
-              class: 'form-control multi-select',
-              multiple: true,
-            }
-          ) %>
-        </div>
+        <%= f.select(
+          :PreferredLanes_cont_any,
+          options_for_select(
+            us_states,
+            params[:q] ? params[:q][:PreferredLanes_cont_any] : ''
+          ),
+          {include_hidden: false},
+          {
+            class: 'form-control multi-select',
+            multiple: true,
+          }
+        ) %>
+      </div>
     </div>
 
     <div class='report-buttons'>
