@@ -119,12 +119,6 @@ class DriversController < ApplicationController
     params[:driver][:first_name].strip!
     params[:driver][:last_name].strip!
 
-    covered_name = nil
-    if params[:driver][:Covered] == '1'
-      params[:driver][:user_id] = current_user.id
-      covered_name = current_user.full_name
-    end
-
     desired_state = params[:driver][:desired_state]
     desired_city = params[:driver][:desired_city]
     if desired_state && desired_state.length != 0
@@ -169,7 +163,6 @@ class DriversController < ApplicationController
           {
             :msg=>'add-driver',
             :driver=>@driver,
-            :covered_name=>covered_name,
             :marker=>marker
           }
         )
@@ -192,6 +185,8 @@ class DriversController < ApplicationController
     if params[:driver][:Covered] == '1'
       params[:driver][:user_id] = current_user.id
       covered_name = current_user.full_name
+    else
+      params[:driver][:user_id] = nil
     end
 
     desired_state = params[:driver][:desired_state]
