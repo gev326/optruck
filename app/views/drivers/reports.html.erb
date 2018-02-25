@@ -92,18 +92,20 @@
         ) %>
         <br />
 
-        <%= f.label :active, class: 'report-label' %>
-        <%= f.select(
-          :active_eq,
-          options_for_select(
-            [
-              ['Answering', true], ['Not Answering', false]
-            ],
-            params[:q] ? params[:q][:active_eq] : ''
-          ),
-          include_blank: true
-        ) %>
-        <br>
+        <% if current_user.account_type != 'dispatcher' %>
+          <%= f.label :active, class: 'report-label' %>
+          <%= f.select(
+            :active_eq,
+            options_for_select(
+              [
+                ['Answering', true], ['Not Answering', false]
+              ],
+              params[:q] ? params[:q][:active_eq] : ''
+            ),
+            include_blank: true
+          ) %>
+          <br>
+        <% end %>
 
         <%= f.label :PlateTrailer, class: 'report-label' %>
         <%= f.check_box :PlateTrailer_eq %>
