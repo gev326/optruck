@@ -27,7 +27,8 @@
 
     <tbody id="<%=data_id%>">
       <% @drivers.each do |driver| %>
-      <% covered_highlight = driver.Covered ? 'yellow' : '' %>
+      <% covered_highlight1 = driver.Covered ? 'cyan' : '' %>
+      <% covered_highlight2 = driver.Covered ? 'red' : '' %>
         <tr driver="<%= driver.id %>">
           <% if data_id == 'report-feed' %>
             <% if params[:q] %>
@@ -43,7 +44,7 @@
                 end
               %>
             <% end %>
-            <td class="<%=covered_highlight%>">
+            <td class="<%=covered_highlight1%>">
               <%= link_to driver.full_name,
                 driver_path(
                   id: driver.id,
@@ -53,12 +54,13 @@
               <div><%=" ID: #{driver.driver_id_tag}"%></div>
             </td>
           <% else %>
-            <td class="<%=covered_highlight%>">
+            <td class="<%=covered_highlight1%>">
               <%= link_to driver.full_name, driver %>
               <div><%=" ID: #{driver.driver_id_tag}"%></div>
             </td>
           <% end %>
-          <td><%= number_to_phone driver.driver_phone,
+          <td class="<%=covered_highlight1%>">
+            <%= number_to_phone driver.driver_phone,
             pattern: /(\d{3})(\d{3})(\d{4})$/,
             area_code: true %>
             <span> <%= " - #{driver.contact_name}" %>
@@ -67,40 +69,48 @@
             driver.driver_truck_type
           ) ? "truck-type yellow" : "truck-type" %>
           <td class="<%=truck_type_class%>"><%= driver.driver_truck_type %></td>
-          <td class="<%=covered_highlight%>">
+          <td class="<%=covered_highlight2%>">
             <%=
               driver.driver_availability ?
                 driver.driver_availability.strftime("%m/%d/%Y") :
                 nil
             %>
           </td>
-          <td class="<%=covered_highlight%>">
+          <td class="<%=covered_highlight2%>">
             <%= driver.current_location %>
           </td>
-          <td class="<%=covered_highlight%>">
+          <td class="<%=covered_highlight2%>">
             <%= driver.desired_location %>
           </td>
           <% if current_user.account_type != 'dispatcher' %>
             <% if driver.active == true%>
-              <td class="success">Answering</td>
+              <td class="green">Answering</td>
             <% else %>
-              <td class="danger">Not Answering</td>
+              <td class="red">Not Answering</td>
             <% end %>
           <% end %>
-          <td><%= driver.driver_status %></td>
-          <td><%= driver.driver_company %></td>
+          <td class="<%=covered_highlight1%>"><%= driver.driver_status %></td>
+          <td class="<%=covered_highlight1%>"><%= driver.driver_company %></td>
           <% if data_id == 'report-feed' %>
             <% if current_user.account_type != 'dispatcher' %>
-              <td><%= driver.user ? driver.user.full_name : '' %></td>
+              <td class="<%=covered_highlight1%>">
+                <%= driver.user ? driver.user.full_name : '' %>
+              </td>
             <% end %>
-            <% etrac_class = driver.Etrac ? 'success' : 'danger' %>
-            <% plate_trailer_class = driver.PlateTrailer ? 'success' : 'danger' %>
-            <td class="<%= etrac_class%>"><%= humanize_boolean(driver.Etrac) %></td>
-            <td class="<%= plate_trailer_class%>"><%= humanize_boolean(driver.PlateTrailer) %></td>
-            <td><%= driver.destination_zone %></td>
+            <% etrac_class = driver.Etrac ? 'green' : 'red' %>
+            <% plate_trailer_class = driver.PlateTrailer ? 'green' : 'red' %>
+            <td class="<%= etrac_class%>">
+              <%= humanize_boolean(driver.Etrac) %>
+            </td>
+            <td class="<%= plate_trailer_class%>">
+              <%= humanize_boolean(driver.PlateTrailer) %>
+            </td>
+            <td class="<%=covered_highlight1%>">
+              <%= driver.destination_zone %>
+            </td>
           <% end %>
-          <td><%=
-            driver.PreferredLanes && driver.PreferredLanes.length != 0 ?
+          <td class="<%=covered_highlight1%>">
+            <%= driver.PreferredLanes && driver.PreferredLanes.length != 0 ?
               driver.PreferredLanes.split(", ").join(" ").gsub(/[\"\[\]]/, '')
               : nil %>
           </td>
