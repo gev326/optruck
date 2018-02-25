@@ -67,6 +67,9 @@ App.driver = App.cable.subscriptions.create("DriverChannel", {
 
 function get_safe_fields(driver) {
   driver.full_name = full_name(driver);
+  var coveredByUser = driver.Covered && driver.user ?
+    driver.user.full_name :
+    '';
   driver.current_location = current_location(driver);
   driver.desired_location = desired_location(driver);
   driver.PreferredLanes = preferredLanes(driver);
@@ -85,13 +88,17 @@ function get_safe_fields(driver) {
     driver.current_location+"</td><td class="+coveredHighlight2+">"+
     driver.desired_location+"</td><td class="+coveredHighlight1+">"+
     driver.driver_status+"</td><td class="+coveredHighlight1+">"+
-    driver.driver_company+"</td><td class="+coveredHighlight1+">"+
+    driver.driver_company+"</td><td class="+coveredHighlight1+"><strong>"+
+    coveredByUser+"</strong></td><td class="+coveredHighlight1+">"+
     driver.PreferredLanes+"</tr>"
   );
 }
 
 function get_all_fields(driver) {
   driver.full_name = full_name(driver);
+  var coveredByUser = driver.Covered && driver.user ?
+    driver.user.full_name :
+    '';
   driver.current_location = current_location(driver);
   driver.desired_location = desired_location(driver);
   driver.PreferredLanes = preferredLanes(driver);
@@ -113,7 +120,9 @@ function get_all_fields(driver) {
     ">"+driver.desired_location+"</td><td class="+activeClass+">"+active+
     "</td><td class="+coveredHighlight1+">"+driver.driver_status+
     "</td><td class="+coveredHighlight1+">"+driver.driver_company+
-    "</td><td class="+coveredHighlight1+">"+driver.PreferredLanes+"</tr>"
+    "</td><td class="+coveredHighlight1+"><strong>"+coveredByUser+
+    "</strong></td><td class="+coveredHighlight1+">"+
+    driver.PreferredLanes+"</tr>"
   );
 }
 
