@@ -2,95 +2,130 @@
 
 <div id='driver-show'>
 
-  <h3> <%= @driver.full_name %> </h3>
+  <h3> <%= @driver.full_name %> </h3><br/>
 
-  <p>
-    <strong>Driver phone:</strong>
-    <%= number_to_phone @driver.driver_phone,
-      pattern: /(\d{3})(\d{3})(\d{4})$/,
-      area_code: true %>
-    <span> <%= " - #{@driver.contact_name}" %>
-  </p>
+  <table id="show-table" class="table table-bordered">
+    <tbody>
+      <tr>
+        <td><strong>Driver phone:</strong></td>
+        <td>
+          <%= number_to_phone @driver.driver_phone,
+            pattern: /(\d{3})(\d{3})(\d{4})$/,
+            area_code: true %>
+        </td>
+      </tr>
 
-  <p>
-    <strong>Driver truck type:</strong>
-    <%= @driver.driver_truck_type %>
-  </p>
+      <tr>
+        <td><strong>Driver truck type:</strong></td>
+        <td>
+          <%= @driver.driver_truck_type %>
+        </td>
+      </tr>
 
-  <p>
-    <strong>Current Location:</strong>
-    <%= @driver.current_location %>
-  </p>
+      <tr>
+        <td><strong>Current Location:</strong></td>
+        <td>
+          <%= @driver.current_location %>
+        </td>
+      </tr>
 
-  <p>
-    <strong>Driver id tag:</strong>
-    <%= @driver.driver_id_tag %>
-  </p>
+      <tr>
+        <td><strong>Driver id tag:</strong></td>
+        <td>
+          <%= @driver.driver_id_tag %>
+        </td>
+      </tr>
 
-  <p>
-    <strong>Desired Location:</strong>
-    <%= @driver.desired_location %>
-  </p>
+      <tr>
+        <td><strong>Desired Location:</strong></td>
+        <td>
+          <%= @driver.desired_location %>
+        </td>
+      </tr>
 
-  <p>
-    <strong>Destination Zone:</strong>
-    <%= @driver.destination_zone %>
-  </p>
+      <tr>
+        <td><strong>Destination Zone:</strong></td>
+        <td>
+          <%= @driver.destination_zone %>
+        </td>
+      </tr>
 
-  <% if account_type != 'dispatcher' %>
-    <p>
-      <strong>Active:</strong>
-      <%= @driver.active ? 'Answering' : 'Not Answering' %>
-    </p>
-  <% end %>
+      <% if account_type != 'dispatcher' %>
+        <tr>
+          <td><strong>Active:</strong></td>
+          <td>
+            <%= @driver.active ? 'Answering' : 'Not Answering' %>
+          </td>
+        </tr>
+      <% end %>
 
-  <p>
-    <strong>Driver status:</strong>
-    <%= @driver.driver_status %>
-  </p>
+      <tr>
+        <td><strong>Driver status:</strong></td>
+        <td>
+          <%= @driver.driver_status %>
+        </td>
+      </tr>
 
-  <p>
-    <strong>Driver availability:</strong>
-    <%= @driver.driver_availability %>
-  </p>
+      <tr>
+        <td><strong>Driver availability:</strong></td>
+        <td>
+          <%= @driver.driver_availability %>
+        </td>
+      </tr>
 
-  <p>
-    <strong>Insurance Exclusions:</strong>
-    <%= @driver.insurance %>
-  </p>
+      <tr>
+        <td><strong>Insurance Exclusions:</strong></td>
+        <td>
+          <%= @driver.insurance %>
+        </td>
+      </tr>
 
+      <% if @driver.Covered && account_type != 'dispatcher' %>
+        <tr>
+          <td><strong>Covered by:</strong></td>
+          <td>
+            <%= @driver.user.full_name %>
+          </td>
+        </tr>
+      <% end %>
 
-  <% if @driver.Covered && account_type != 'dispatcher' %>
-    <p>
-      <strong>Covered by:</strong>
-      <%= @driver.user.full_name %>
-    </p>
-  <% end %>
+      <tr>
+        <td><strong>Driver company:</strong></td>
+        <td>
+          <%= @driver.driver_company %>
+        </td>
+      </tr>
 
-  <p>
-    <strong>Driver company:</strong>
-    <%= @driver.driver_company %>
-  </p>
+      <tr>
+        <td><strong>Comments:</strong></td>
+        <td>
+          <%= @driver.comments %>
+        </td>
+      </tr>
 
-  <p>
-    <strong>Comments:</strong>
-    <%= @driver.comments %>
-  </p>
+      <tr>
+        <td><strong>PlateTrailer:</strong></td>
+        <td>
+          <%= humanize_boolean(@driver.PlateTrailer?) %>
+        </td>
+      </tr>
 
-  <p>
-    <strong>PlateTrailer:</strong>
-    <%= humanize_boolean(@driver.PlateTrailer?) %>
-  </p>
+      <tr>
+        <td><strong>Preferred Lanes:</strong></td>
+        <td>
+          <%= humanize_boolean(@driver.PreferredLanes?) %>
+        </td>
+      </tr>
 
-  <p>
-    <strong>Preferred Lanes:</strong>
-    <%= humanize_boolean(@driver.PreferredLanes?) %>
-  </p>
+      <tr>
+        <td><strong>Etrak:</strong></td>
+        <td>
+          <%= humanize_boolean(@driver.Etrac?) %>
+        </td>
+      </tr>
 
-  <p>
-    <strong>Etrak:</strong>
-    <%= humanize_boolean(@driver.Etrac?) %>
-  </p>
+    </tbody>
+  </table>
 
   <% if account_type != 'dispatcher' %>
 
