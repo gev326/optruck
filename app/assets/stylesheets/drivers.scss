@@ -2,14 +2,32 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+#driver-feed, #report-feed {
+  td {
+    vertical-align: middle;
+  }
+}
+
 #driver-feed-filter {
   .feed-label, .feed-filter {
     margin: 10px 5px
   }
 }
 
+.green {
+  background-color: rgba(60,186,84,0.6); // #3CBA54
+}
+
 .yellow {
-  background-color: #FFFF00;
+  background-color: rgba(244,194,13,0.6); // #F4C20D
+}
+
+.red {
+  background-color: rgba(219,50,54,0.6); // #DB3236
+}
+
+.cyan {
+  background-color: rgba(78,127,138,0.6); // #4E7F8A
 }
 
 #plate-trailer-warning {
