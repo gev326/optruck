@@ -36,3 +36,12 @@
   line-height: 1.2em;
   margin-left: 6px;
 }
+
+#show-table {
+  margin: 0 auto;
+  width: 50vw;
+  td {
+    max-width: 300px;
+    vertical-align: middle;
+  }
+}
