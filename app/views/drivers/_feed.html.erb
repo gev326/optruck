@@ -13,10 +13,8 @@
         <% end %>
         <th>Driver status</th>
         <th>Company</th>
+        <th>Covered by:</th>
         <% if data_id == 'report-feed' %>
-          <% if current_user.account_type != 'dispatcher' %>
-            <th>Covered by:</th>
-          <% end %>
           <th>Etrac</th>
           <th>Plate Trailer</th>
           <th>Destination Zone</th>
@@ -91,12 +89,10 @@
           <% end %>
           <td class="<%=covered_highlight1%>"><%= driver.driver_status %></td>
           <td class="<%=covered_highlight1%>"><%= driver.driver_company %></td>
+          <td class="<%=covered_highlight1%>">
+            <strong><%= driver.user ? driver.user.full_name : '' %></strong>
+          </td>
           <% if data_id == 'report-feed' %>
-            <% if current_user.account_type != 'dispatcher' %>
-              <td class="<%=covered_highlight1%>">
-                <%= driver.user ? driver.user.full_name : '' %>
-              </td>
-            <% end %>
             <% etrac_class = driver.Etrac ? 'green' : 'red' %>
             <% plate_trailer_class = driver.PlateTrailer ? 'green' : 'red' %>
             <td class="<%= etrac_class%>">

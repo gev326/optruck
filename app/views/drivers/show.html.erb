@@ -80,14 +80,12 @@
         </td>
       </tr>
 
-      <% if @driver.Covered && account_type != 'dispatcher' %>
-        <tr>
-          <td><strong>Covered by:</strong></td>
-          <td>
-            <%= @driver.user.full_name %>
-          </td>
-        </tr>
-      <% end %>
+      <tr>
+        <td><strong>Covered by:</strong></td>
+        <td id='show-page-covered-by'>
+          <%= @driver.user ? @driver.user.full_name : 'Not Covered' %>
+        </td>
+      </tr>
 
       <tr>
         <td><strong>Driver company:</strong></td>
