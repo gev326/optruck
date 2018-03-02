@@ -15,8 +15,8 @@
         <th>Company</th>
         <th>Covered by:</th>
         <% if data_id == 'report-feed' %>
-          <th>Etrac</th>
-          <th>Plate Trailer</th>
+        <!--   <th>Etrac</th>
+          <th>Plate Trailer</th> -->
           <th>Destination Zone</th>
         <% end %>
         <th>Preferred Lanes</th>
@@ -42,8 +42,8 @@
                 end
               %>
             <% end %>
-            <td class="<%=covered_highlight1%>">
-              <%= link_to driver.full_name,
+            <td class="<%=covered_highlight2%>">
+              <%= link_to driver.full_name.upcase,
                 driver_path(
                   id: driver.id,
                   report: @drivers.map(&:id),
@@ -52,12 +52,12 @@
               <div><%=" ID: #{driver.driver_id_tag}"%></div>
             </td>
           <% else %>
-            <td class="<%=covered_highlight1%>">
-              <%= link_to driver.full_name, driver %>
+            <td class="<%=covered_highlight2%>">
+              <%= link_to driver.full_name.upcase, driver %>
               <div><%=" ID: #{driver.driver_id_tag}"%></div>
             </td>
           <% end %>
-          <td class="<%=covered_highlight1%>">
+          <td class="<%=covered_highlight2%>">
             <%= number_to_phone driver.driver_phone,
             pattern: /(\d{3})(\d{3})(\d{4})$/,
             area_code: true %>
@@ -66,7 +66,7 @@
           <% truck_type_class = ['48R', '53R', '53RM'].include?(
             driver.driver_truck_type
           ) ? "truck-type yellow" : "truck-type" %>
-          <td class="<%=truck_type_class%>"><%= driver.driver_truck_type %></td>
+          <td class="<%=truck_type_class%>"><%= driver.driver_truck_type.upcase %></td>
           <td class="<%=covered_highlight2%>">
             <%=
               driver.driver_availability ?
@@ -75,39 +75,34 @@
             %>
           </td>
           <td class="<%=covered_highlight2%>">
-            <%= driver.current_location %>
+            <%= driver.current_location.upcase %>
           </td>
           <td class="<%=covered_highlight2%>">
-            <%= driver.desired_location %>
+            <%= driver.desired_location.upcase %>
           </td>
           <% if current_user.account_type != 'dispatcher' %>
             <% if driver.active == true%>
-              <td class="green">Answering</td>
+              <td class="green">ANSWERING</td>
             <% else %>
-              <td class="red">Not Answering</td>
+              <td class="red">NOT ANSWERING</td>
             <% end %>
           <% end %>
-          <td class="<%=covered_highlight1%>"><%= driver.driver_status %></td>
-          <td class="<%=covered_highlight1%>"><%= driver.driver_company %></td>
-          <td class="<%=covered_highlight1%>">
+          <td class="<%=covered_highlight2%>"><%= driver.driver_status.upcase %></td>
+          <td class="<%=covered_highlight2%>"><%= driver.driver_company.upcase %></td>
+          <td class="<%=covered_highlight2%>">
             <strong><%= driver.user ? driver.user.full_name : '' %></strong>
           </td>
           <% if data_id == 'report-feed' %>
             <% etrac_class = driver.Etrac ? 'green' : 'red' %>
             <% plate_trailer_class = driver.PlateTrailer ? 'green' : 'red' %>
-            <td class="<%= etrac_class%>">
-              <%= humanize_boolean(driver.Etrac) %>
-            </td>
-            <td class="<%= plate_trailer_class%>">
-              <%= humanize_boolean(driver.PlateTrailer) %>
-            </td>
-            <td class="<%=covered_highlight1%>">
+
+            <td class="<%=covered_highlight2%>">
               <%= driver.destination_zone %>
             </td>
           <% end %>
-          <td class="<%=covered_highlight1%>">
+          <td class="<%=covered_highlight2%>">
             <%= driver.PreferredLanes && driver.PreferredLanes.length != 0 ?
-              driver.PreferredLanes.split(", ").join(" ").gsub(/[\"\[\]]/, '')
+              driver.PreferredLanes.upcase.split(", ").join(" ").gsub(/[\"\[\]]/, '')
               : nil %>
           </td>
         </tr>

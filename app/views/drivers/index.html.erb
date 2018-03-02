@@ -115,9 +115,9 @@
     <h1>Driver Feed</h1>
     <%= search_form_for @q, id: 'driver-feed-form', url: drivers_path do |f| %>
       <div id="driver-feed-filter">
-        <%= f.label :driver_name, class: 'feed-label' %>
+        <%= f.label :driver_name, "Driver Name", class: 'feed-label' %>
         <%= f.text_field :full_name_cont, class: 'feed-filter', id: 'feed-name-filter' %>
-        <%= f.label :driver_phone, class: 'feed-label' %>
+        <%= f.label :driver_phone, "Driver Phone",class: 'feed-label' %>
         <%= f.text_field :driver_phone_cont, class: 'feed-filter', id: 'feed-phone-filter'%>
         <%= link_to 'Clear Form', drivers_path, :class => 'btn btn-success link-btn' %>
         <% if account_type != 'dispatcher' %>

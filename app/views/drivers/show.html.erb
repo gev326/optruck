@@ -2,7 +2,7 @@
 
 <div id='driver-show'>
 
-  <h3> <%= @driver.full_name %> </h3><br/>
+  <h3> <%= @driver.full_name.upcase %> </h3><br/>
 
   <table id="show-table" class="table table-bordered">
     <tbody>
@@ -16,7 +16,7 @@
       </tr>
 
       <tr>
-        <td><strong>Driver truck type:</strong></td>
+        <td><strong>Trailer Type:</strong></td>
         <td>
           <%= @driver.driver_truck_type %>
         </td>
@@ -30,7 +30,7 @@
       </tr>
 
       <tr>
-        <td><strong>Driver id tag:</strong></td>
+        <td><strong>Driver ID:</strong></td>
         <td>
           <%= @driver.driver_id_tag %>
         </td>
@@ -39,7 +39,7 @@
       <tr>
         <td><strong>Desired Location:</strong></td>
         <td>
-          <%= @driver.desired_location %>
+          <%= @driver.desired_location%>
         </td>
       </tr>
 
@@ -60,14 +60,14 @@
       <% end %>
 
       <tr>
-        <td><strong>Driver status:</strong></td>
+        <td><strong>Driver Status:</strong></td>
         <td>
           <%= @driver.driver_status %>
         </td>
       </tr>
 
       <tr>
-        <td><strong>Driver availability:</strong></td>
+        <td><strong>Driver Availability:</strong></td>
         <td>
           <%= @driver.driver_availability %>
         </td>
@@ -88,7 +88,7 @@
       </tr>
 
       <tr>
-        <td><strong>Driver company:</strong></td>
+        <td><strong>Company Name:</strong></td>
         <td>
           <%= @driver.driver_company %>
         </td>
@@ -102,25 +102,25 @@
       </tr>
 
       <tr>
-        <td><strong>PlateTrailer:</strong></td>
+        <td><strong>Plate Trailer:</strong></td>
         <td>
           <%= humanize_boolean(@driver.PlateTrailer?) %>
         </td>
       </tr>
-
-      <tr>
-        <td><strong>Preferred Lanes:</strong></td>
-        <td>
-          <%= humanize_boolean(@driver.PreferredLanes?) %>
-        </td>
-      </tr>
-
-      <tr>
-        <td><strong>Etrak:</strong></td>
+ <tr>
+        <td><strong>E-Ttac:</strong></td>
         <td>
           <%= humanize_boolean(@driver.Etrac?) %>
         </td>
       </tr>
+      <tr>
+        <td><strong>Preferred Lanes:</strong></td>
+        <td>
+          <%= @driver.PreferredLanes%>
+        </td>
+      </tr>
+
+
 
     </tbody>
   </table>
