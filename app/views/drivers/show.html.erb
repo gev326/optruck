@@ -115,9 +115,12 @@
       </tr>
       <tr>
         <td><strong>Preferred Lanes:</strong></td>
+
         <td>
-          <%= @driver.PreferredLanes%>
-        </td>
+          <%= @driver.PreferredLanes && @driver.PreferredLanes.length != 0 ?
+              @driver.PreferredLanes.upcase.split(", ").join(" ").gsub(/[\"\[\]]/, '')
+              : "no lanes" %>
+       </td>
       </tr>
 
 
