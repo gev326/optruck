@@ -24,7 +24,6 @@
 
     <tbody id="<%=data_id%>">
       <% @drivers.each do |driver| %>
-      <% covered_highlight1 = driver.Covered ? 'yellow' : '' %>
       <% covered_highlight2 = driver.Covered ? 'red' : '' %>
         <tr driver="<%= driver.id %>">
           <% if data_id == 'report-feed' %>
@@ -63,13 +62,13 @@
             <span> <%= " - #{driver.contact_name}" %>
           </td>
 
-          <% if truck_type_class = ['48R', '53R', '53RM'].include?(
-            driver.driver_truck_type
-          )%>
-          <td class="<%=covered_highlight1%>"><%= driver.driver_truck_type.upcase %></td>
+
+          <% if driver.driver_truck_type == '53RM' || driver.driver_truck_type == '48R' || driver.driver_truck_type == '53R'%>
+          <td class="yellow"> <%= driver.driver_truck_type  %> </td>
           <% else %>
-          <td class="<%=covered_highlight2%>"> <%= driver.driver_truck_type.upcase %></td>
+          <td class = "<%=covered_highlight2%>"> <%= driver.driver_truck_type  %> </td>
           <% end %>
+
           <td class="<%=covered_highlight2%>">
             <%=
               driver.driver_availability ?
