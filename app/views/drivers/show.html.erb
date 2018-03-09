@@ -2,7 +2,7 @@
 
 <div id='driver-show'>
 
-  <h3> <%= @driver.full_name.upcase %> </h3><br/>
+  <h3> <%= @driver.full_name %> </h3><br/>
 
   <table id="show-table" class="table table-bordered">
     <tbody>
@@ -118,7 +118,7 @@
 
         <td>
           <%= @driver.PreferredLanes && @driver.PreferredLanes.length != 0 ?
-              @driver.PreferredLanes.upcase.split(", ").join(" ").gsub(/[\"\[\]]/, '')
+              @driver.PreferredLanes.split(", ").join(" ").gsub(/[\"\[\]]/, '')
               : "no lanes" %>
        </td>
       </tr>
@@ -128,7 +128,7 @@
     </tbody>
   </table>
 
-  <% if account_type != 'dispatcher' %>
+
 
     <td>
       <% report = @report || params[:report] %>
@@ -178,6 +178,9 @@
       ),
       class: 'btn btn-success link-btn' %>
     <% end %>
-  <% end %>
+
+
+
+
 
 </div>

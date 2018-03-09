@@ -41,7 +41,7 @@
               %>
             <% end %>
             <td class="<%=covered_highlight2%>">
-              <%= link_to driver.full_name.upcase,
+              <%= link_to driver.full_name,
                 driver_path(
                   id: driver.id,
                   report: @drivers.map(&:id),
@@ -51,7 +51,7 @@
             </td>
           <% else %>
             <td class="<%=covered_highlight2%>">
-              <%= link_to driver.full_name.upcase, driver %>
+              <%= link_to driver.full_name, driver %>
               <div><%=" ID: #{driver.driver_id_tag}"%></div>
             </td>
           <% end %>
@@ -77,10 +77,10 @@
             %>
           </td>
           <td class="<%=covered_highlight2%>">
-            <%= driver.current_location.upcase %>
+            <%= driver.current_location %>
           </td>
           <td class="<%=covered_highlight2%>">
-            <%= driver.desired_location.upcase %>
+            <%= driver.desired_location %>
           </td>
           <% if current_user.account_type != 'dispatcher' %>
             <% if driver.active == true%>
@@ -89,8 +89,8 @@
               <td class="red">NOT ANSWERING</td>
             <% end %>
           <% end %>
-          <td class="<%=covered_highlight2%>"><%= driver.driver_status.upcase %></td>
-          <td class="<%=covered_highlight2%>"><%= driver.driver_company.upcase %></td>
+          <td class="<%=covered_highlight2%>"><%= driver.driver_status %></td>
+          <td class="<%=covered_highlight2%>"><%= driver.driver_company %></td>
           <td class="<%=covered_highlight2%>">
             <strong><%= driver.user ? driver.user.full_name : '' %></strong>
           </td>
@@ -104,7 +104,7 @@
           <% end %>
           <td class="<%=covered_highlight2%>">
             <%= driver.PreferredLanes && driver.PreferredLanes.length != 0 ?
-              driver.PreferredLanes.upcase.split(", ").join(" ").gsub(/[\"\[\]]/, '')
+              driver.PreferredLanes.split(", ").join(" ").gsub(/[\"\[\]]/, '')
               : nil %>
           </td>
         </tr>
