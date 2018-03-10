@@ -22,8 +22,9 @@
     </thead>
 
     <tbody id="<%=data_id%>">
-      <% @drivers.order(updated_at: :desc).limit(3).each do |driver| %>
+      <% @drivers.order(updated_at: :desc).each do |driver| %>
       <% covered_highlight2 = driver.Covered ? 'red' : ''%>
+
         <tr driver="<%= driver.id %>">
           <% if data_id == 'report-feed' %>
             <% if params[:q] %>
