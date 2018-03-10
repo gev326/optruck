@@ -51,11 +51,11 @@ class DriversController < ApplicationController
   def generate_hash_map located_drivers
     Gmaps4rails.build_markers(located_drivers) do |driver, marker|
       driver_path = view_context.link_to driver.full_name, driver_path(driver)
+      driver_id_tag = driver.driver_id_tag
       driver_desired = driver.desired_state
       driver_phone = driver[:driver_phone]
       truck_type = driver[:driver_truck_type]
-      reefer = driver[:reeferunit]
-      available = driver[:driver_availability]
+      available = driver.driver_availability.strftime("%m/%d/%Y")
       comments = driver[:comments]
       marker.lat driver.latitude
       marker.lng driver.longitude
@@ -64,10 +64,10 @@ class DriversController < ApplicationController
       marker.infowindow (
         %Q(
           Driver: #{driver_path}<br><br>
+          Driver ID: #{driver_id_tag}<br><br>
           Phone: #{driver_phone}<br><br>
           Desired State: #{driver_desired}<br><br>
           Truck Type: #{truck_type}<br><br>
-          Reefer Unit: #{reefer}<br><br>
           Available Date: #{available}<br><br>
           Comments: #{comments}
         )
