@@ -23,7 +23,8 @@
 }
 
 .red {
-  background-color: rgba(255,0,0,0.4); // #E80000
+  background-color: rgba(255,0,0,0.5); // #E80000
+  border: 1px solid black;
 }
 
 .cyan {
@@ -35,7 +36,7 @@
 }
 
 #plate-trailer-warning {
-  display: none;
+
   color: #DB3236;
   line-height: 1.2em;
   margin-left: 6px;
@@ -47,5 +48,8 @@
   td {
     max-width: 300px;
     vertical-align: middle;
+
   }
 }
+
+

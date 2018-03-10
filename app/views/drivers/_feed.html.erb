@@ -1,4 +1,4 @@
- <table class="table table-bordered">
+ <table class="table table-striped feed">
     <thead>
       <tr>
         <th>Full Name</th>
@@ -14,8 +14,7 @@
         <th>Company</th>
         <th>Covered by:</th>
         <% if data_id == 'report-feed' %>
-        <!--   <th>Etrac</th>
-          <th>Plate Trailer</th> -->
+
           <th>Destination Zone</th>
         <% end %>
         <th>Preferred Lanes</th>
@@ -24,7 +23,7 @@
 
     <tbody id="<%=data_id%>">
       <% @drivers.each do |driver| %>
-      <% covered_highlight2 = driver.Covered ? 'red' : '' %>
+      <% covered_highlight2 = driver.Covered ? 'red' : ''%>
         <tr driver="<%= driver.id %>">
           <% if data_id == 'report-feed' %>
             <% if params[:q] %>
