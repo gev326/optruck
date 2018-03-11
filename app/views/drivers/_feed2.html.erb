@@ -23,8 +23,10 @@
     </thead>
 
     <tbody id="<%=data_id%>">
-
-      <% @drivers.order(updated_at: :desc).limit(25).each do |driver| %>
+       <% if params[:q].blank? %>
+      <h1> <%= "NO REPORTS GENERATED" %> </h1>
+      <% else %>
+      <% @drivers.order(updated_at: :desc).each do |driver| %>
       <% covered_highlight2 = driver.Covered ? 'red' : ''%>
 
         <tr driver="<%= driver.id %>">
@@ -110,6 +112,7 @@
               : nil %>
           </td>
         </tr>
+      <% end %>
       <% end %>
     </tbody>
   </table>
