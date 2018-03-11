@@ -40,6 +40,7 @@ gem 'jquery-inputmask-rails'
 gem 'puma'
 gem 'momentjs-rails'
 gem 'bootstrap-daterangepicker-rails'
+gem 'kaminari'
 
 #
 
