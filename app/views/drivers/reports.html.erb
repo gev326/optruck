@@ -42,7 +42,7 @@
         <br />
 
         <%= f.label :driver_id_tag, "Driver ID",class: 'report-label' %>
-        <%= f.text_field :driver_id_tag_cont%>
+        <%= f.text_field :driver_id_tag_eq%>
         <br>
 
         <%= f.label :current_state, class: 'report-label' %>
@@ -114,7 +114,7 @@
         <%= f.label :PlateTrailer, "Plate Trailer", class: 'report-label' %>
         <%= f.check_box :PlateTrailer_eq %>
         <span id='plate-trailer-warning'>
-          ALWAYS CONFIRM WITH DRIVER
+          ALWAYS CONFIRM W/ DRIVER
         </span>
         <br>
 
@@ -144,6 +144,33 @@
           }
         ) %>
       </div>
+
+  <%= f.label :destination_zone, "Destination Zones",class: 'report-label' %>
+  <%= f.select(
+          :destination_zone_cont_any,
+          options_for_select(
+            [
+              ['Z0', 'Z0'],
+              ['Z1', 'Z1'],
+              ['Z2', 'Z2'],
+              ['Z3', 'Z3'],
+              ['Z4', 'Z4'],
+              ['Z5', 'Z5'],
+              ['Z6', 'Z6'],
+              ['Z7', 'Z7'],
+              ['Z8', 'Z8']
+            ],
+            params[:q] ? params[:q][:destination_zone_cont_any] : ''
+          ),
+          {include_hidden: false},
+          {
+          class: 'form-control multi-select',
+            multiple: true,
+          }
+        ) %>
+
+
+
     </div>
 
     <div class='report-buttons'>
