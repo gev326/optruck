@@ -1,6 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-  prepend_before_filter :require_no_authentication, :only => []
-  prepend_before_filter :authenticate_scope!
+  prepend_before_action :require_no_authentication, :only => []
+  prepend_before_action :authenticate_scope!
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
   before_action :authorize
@@ -58,6 +58,48 @@ class Users::RegistrationsController < Devise::RegistrationsController
     set_flash_message :notice, flash_key
   end
 
+  def update_password
+    set_minimum_password_length
+    @user = User.find(params[:id])
+    user = params[:user]
+
+    if user[:new_password] === ""
+      flash_key = :missing_new_password
+      redirect_to edit_user_registration_path(:id => params[:id])
+      return set_flash_message :notice, flash_key
+    end
+
+    if user[:password_confirmation] === ""
+      flash_key = :missing_password_confirmation
+      redirect_to edit_user_registration_path(:id => params[:id])
+      return set_flash_message :notice, flash_key
+    end
+
+    if user[:new_password] != user[:password_confirmation]
+      flash_key = :no_match
+      redirect_to edit_user_registration_path(:id => params[:id])
+      return set_flash_message :notice, flash_key
+    end
+
+    if user[:new_password].length < @minimum_password_length
+      flash_key = :password_min_error
+      redirect_to edit_user_registration_path(:id => params[:id])
+      return set_flash_message :notice, flash_key
+    end
+
+    @user.password = user[:new_password]
+
+    begin
+      @user.save
+      flash_key = :updated
+      redirect_to users_path
+    rescue => e
+      flash_key = :update_failed
+      redirect_to edit_user_registration_path(:id => params[:id])
+    end
+    set_flash_message :notice, flash_key
+  end
+
   # DELETE /resource
   def destroy
     begin
@@ -83,7 +125,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   private
   def authorize
     return redirect_to root_path if current_user.nil?
-    user = User.find(current_user)
+    user = User.find(current_user.id)
     return redirect_to root_path if user != current_user
     redirect_to root_path if current_user.account_type != 'admin'
   end
@@ -97,7 +139,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update) { |u| u.permit(:first_name, :last_name, :email, :password, :current_password, :account_type) }
+    devise_parameter_sanitizer.permit(:account_update) { |u| u.permit(:first_name, :last_name, :email, :account_type) }
   end
 
   # The path used after sign up.

@@ -1,8 +1,6 @@
 <div id='signup-form'>
   <h3>Update User Info</h3>
 
-
-
   <%=
     form_for(
       resource,
@@ -27,9 +25,6 @@
       <%= f.label :email %><br />
       <%= f.email_field :email, autofocus: true %>
     </div>
-
-
-
 
     <div class="field">
       <%= f.label 'Type' %>
@@ -73,7 +68,35 @@
         :class => 'btn btn-danger'
       }
     %>
+  <% end %>
 
+  <h3>Change password</h3>
+
+  <%=
+    form_for(
+      resource,
+      as: resource_name,
+      url: password_path(resource.id),
+      method: :put
+    ) do |f| %>
+
+    <div class="field">
+      <%= f.label :password, "New password" %><br />
+      <% if @minimum_password_length %>
+        <em>(<%= @minimum_password_length %> characters minimum)</em><br />
+      <% end %>
+      <%= f.password_field :new_password, autofocus: true, autocomplete: "off" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password_confirmation, "Confirm new password" %><br />
+      <%= f.password_field :password_confirmation, autocomplete: "off" %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Change password", {:class => 'btn btn-primary'} %>
+    </div>
   <% end %>
 </div>
+
 

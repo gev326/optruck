@@ -14,6 +14,8 @@ Rails.application.routes.draw do
     put '/users/edit/:id' => 'users/registrations#update', as: :update_user_registration
     patch '/users/:id' => 'users/registrations#update', as: :patch_user_registration
     delete '/users/:id' => 'users/registrations#destroy', as: :destroy_user_registration
+
+    put '/users/password/:id' => 'users/registrations#update_password', as: :password
   end
 
 
