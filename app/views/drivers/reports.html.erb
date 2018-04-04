@@ -150,15 +150,16 @@
           :destination_zone_cont_any,
           options_for_select(
             [
-              ['Z0', 'Z0'],
-              ['Z1', 'Z1'],
-              ['Z2', 'Z2'],
-              ['Z3', 'Z3'],
-              ['Z4', 'Z4'],
-              ['Z5', 'Z5'],
-              ['Z6', 'Z6'],
-              ['Z7', 'Z7'],
-              ['Z8', 'Z8']
+              ['Z0 [CT,ME,MA,NH,NJ,RI,VT]', 'Z0'],
+              ['Z1 [DE,NY,PA]', 'Z1'],
+              ['Z2 [DC,MD,NC,SC,VA,WV]', 'Z2'],
+              ['Z3 [AL,FL,GA,MS,TN]', 'Z3'],
+              ['Z4 [IN,KY,MI,OH]', 'Z4'],
+              ['Z5 [IA,MN,MT,ND,SD,WI]', 'Z5'],
+              ['Z6 [IL,KS,MO,NE]', 'Z6'],
+              ['Z7 [AR,LA,OK,TX]', 'Z7'],
+              ['Z8 [AZ,CO,ID,NV,NM,UT,WY]', 'Z8'],
+              ['Z9 [CA,OR,WA]', 'Z9']
             ],
             params[:q] ? params[:q][:destination_zone_cont_any] : ''
           ),

@@ -30,7 +30,9 @@ module ApplicationHelper
 
       :Z7 => ['AR','LA','OK','TX'],
 
-      :Z8 => ['AZ','CO','ID','NV','NM','UT','WY']
+      :Z8 => ['AZ','CO','ID','NV','NM','UT','WY'],
+
+      :Z9 => ['CA', 'OR', 'WA']
     }
   end
 
