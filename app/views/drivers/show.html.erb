@@ -163,12 +163,14 @@
     </td>
 
     <td>
+      <% if account_type != "dispatcher" %>
       <%= link_to 'Delete',
         @driver,
         method: :delete,
         data: { confirm: 'Are you sure?' },
         class: 'btn btn-danger link-btn' %>
     </td>
+    <%end %>
     <% if report && search %>
       <%= link_to 'Next Driver in Report',
       driver_path(

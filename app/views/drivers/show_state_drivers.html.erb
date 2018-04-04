@@ -2,7 +2,7 @@
 <% if user_signed_in? %>
   <% account_type = current_user.account_type %>
 
-  <h4 style='text-align: center;'> Drivers in <%= @state %> </h4>
+ <h1 style='text-align: center;'> State Report for <%= @state %> </h1>
   <div style='margin: 0 auto; width: fit-content;'>
     <div id="map" style='width: 800px; height: 400px;'></div>
   </div>

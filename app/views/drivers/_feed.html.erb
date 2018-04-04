@@ -23,7 +23,6 @@
     </thead>
 
     <tbody id="<%=data_id%>">
-
       <% @drivers.order(updated_at: :desc).limit(25).each do |driver| %>
       <% covered_highlight2 = driver.Covered ? 'red' : ''%>
 
