@@ -1,0 +1,116 @@
+
+<h1 class = "state-reports">  <%= "State Report"%>  </h1>
+ <table class="table table-striped table-hover feed">
+    <thead>
+      <tr>
+        <th>Full Name</th>
+        <th>Phone</th>
+        <th>Truck Type</th>
+        <th>Availability</th>
+        <th>Current Location</th>
+        <th>Desired Location</th>
+        <% if current_user.account_type != 'dispatcher' %>
+          <th>Active</th>
+        <% end %>
+        <th>Driver status</th>
+        <th>Company</th>
+        <th>Covered by:</th>
+        <% if data_id == 'report-feed' %>
+
+          <th>Destination Zone</th>
+        <% end %>
+        <th>Preferred Lanes</th>
+      </tr>
+    </thead>
+
+    <tbody id="<%=data_id%>">
+
+      <% @drivers.each do |driver| %>
+      <% covered_highlight2 = driver.Covered ? 'red' : ''%>
+
+        <tr driver="<%= driver.id %>">
+          <% if data_id == 'report-feed' %>
+            <% if params[:q] %>
+              <%
+                search_hash = {}
+                params[:q].each do |param|
+                  search_hash[param] = params[:q][param]
+                end
+                params.each do |param|
+                  if param == 'miles' || param == :miles
+                    search_hash[:miles] = params[param]
+                  end
+                end
+              %>
+            <% end %>
+            <td class="<%=covered_highlight2%>">
+              <%= link_to driver.full_name,
+                driver_path(
+                  id: driver.id,
+                  report: @drivers.map(&:id),
+                  search: search_hash
+                ) %>
+              <div><%=" ID: #{driver.driver_id_tag}"%></div>
+            </td>
+          <% else %>
+            <td class="<%=covered_highlight2%>">
+              <%= link_to driver.full_name, driver %>
+              <div><%=" ID: #{driver.driver_id_tag}"%></div>
+            </td>
+          <% end %>
+          <td class="<%=covered_highlight2%>">
+            <%= number_to_phone driver.driver_phone,
+            pattern: /(\d{3})(\d{3})(\d{4})$/,
+            area_code: true %>
+            <span> <%= " - #{driver.contact_name}" %>
+          </td>
+
+
+          <% if driver.driver_truck_type == '53RM' || driver.driver_truck_type == '48R' || driver.driver_truck_type == '53R'%>
+          <td class="yellow"> <%= driver.driver_truck_type  %> </td>
+          <% else %>
+          <td class = "<%=covered_highlight2%>"> <%= driver.driver_truck_type  %> </td>
+          <% end %>
+
+          <td class="<%=covered_highlight2%>">
+            <%=
+              driver.driver_availability ?
+                driver.driver_availability.strftime("%m/%d/%Y") :
+                nil
+            %>
+          </td>
+          <td class="<%=covered_highlight2%>">
+            <%= driver.current_location %>
+          </td>
+          <td class="<%=covered_highlight2%>">
+            <%= driver.desired_location %>
+          </td>
+          <% if current_user.account_type != 'dispatcher' %>
+            <% if driver.active == true%>
+              <td class="green">ANSWERING</td>
+            <% else %>
+              <td class="red">NOT ANSWERING</td>
+            <% end %>
+          <% end %>
+          <td class="<%=covered_highlight2%>"><%= driver.driver_status %></td>
+          <td class="<%=covered_highlight2%>"><%= driver.driver_company %></td>
+          <td class="<%=covered_highlight2%>">
+            <strong><%= driver.user ? driver.user.full_name : '' %></strong>
+          </td>
+          <% if data_id == 'report-feed' %>
+            <% etrac_class = driver.Etrac ? 'green' : 'red' %>
+            <% plate_trailer_class = driver.PlateTrailer ? 'green' : 'red' %>
+
+            <td class="<%=covered_highlight2%>">
+              <%= driver.destination_zone %>
+            </td>
+          <% end %>
+          <td class="<%=covered_highlight2%>">
+            <%= driver.PreferredLanes && driver.PreferredLanes.length != 0 ?
+              driver.PreferredLanes.split(", ").join(" ").gsub(/[\"\[\]]/, '')
+              : nil %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
