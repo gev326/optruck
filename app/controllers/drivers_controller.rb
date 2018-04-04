@@ -95,6 +95,7 @@ class DriversController < ApplicationController
       @search = params[:search]
       @report = Driver.find(params[:report])
       @next_idx = get_next_report_idx params[:report], @driver.id
+      @previous_idx = get_previous_report_idx params[:report], @driver.id
     end
   end
 
@@ -102,6 +103,12 @@ class DriversController < ApplicationController
     last_index = report.length - 1
     report.index("#{id}") + 1 <= last_index ?
       report.index("#{id}") + 1 : 0
+  end
+
+   def get_previous_report_idx report, id
+    last_index = report.length + 1
+    report.index("#{id}") - 1 <= last_index ?
+      report.index("#{id}") - 1 : 0
   end
 
   # GET /drivers/new

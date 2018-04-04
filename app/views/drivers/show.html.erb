@@ -172,7 +172,14 @@
     </td>
     <%end %>
     <% if report && search %>
-      <%= link_to 'Next Driver in Report',
+      <%= link_to 'Previous Driver in Report',
+      driver_path(
+        id: report[@previous_idx],
+        report: report.map(&:id),
+        search: search_hash
+      ),
+      class: 'btn btn-success link-btn' %>
+       <%= link_to 'Next Driver in Report',
       driver_path(
         id: report[@next_idx],
         report: report.map(&:id),
