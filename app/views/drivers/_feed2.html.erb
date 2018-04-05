@@ -16,6 +16,7 @@
         <th>Covered by:</th>
         <% if data_id == 'report-feed' %>
 
+          <th>Current Zone</th>
           <th>Destination Zone</th>
         <% end %>
         <th>Preferred Lanes</th>
@@ -105,6 +106,9 @@
             <% etrac_class = driver.Etrac ? 'green' : 'red' %>
             <% plate_trailer_class = driver.PlateTrailer ? 'green' : 'red' %>
 
+            <td class="<%=covered_highlight2%>">
+              <%= driver.current_zone %>
+            </td>
             <td class="<%=covered_highlight2%>">
               <%= driver.destination_zone %>
             </td>

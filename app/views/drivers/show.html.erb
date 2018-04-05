@@ -30,6 +30,13 @@
       </tr>
 
       <tr>
+        <td><strong>Current Zone:</strong></td>
+        <td>
+          <%= @driver.current_zone %>
+        </td>
+      </tr>
+
+      <tr>
         <td><strong>Driver ID:</strong></td>
         <td>
           <%= @driver.driver_id_tag %>
@@ -46,9 +53,11 @@
       <tr>
         <td><strong>Destination Zone:</strong></td>
         <td>
-          <%= @driver.destination_zone %>
+          <%= @driver.destination_zone%>
         </td>
       </tr>
+
+
 
       <% if account_type != 'dispatcher' %>
         <tr>

@@ -16,6 +16,7 @@
         <th>Driver status</th>
         <th>Company</th>
         <th>Covered by:</th>
+        <th>Current Zone:</th>
 
 
           <th>Destination Zone</th>
@@ -103,6 +104,10 @@
 
             <td class="<%=covered_highlight2%>">
               <%= driver.destination_zone %>
+            </td>
+
+            <td class="<%=covered_highlight2%>">
+              <%= driver.current_zone %>
             </td>
 
           <td class="<%=covered_highlight2%>">
