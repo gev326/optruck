@@ -36,9 +36,42 @@ module ApplicationHelper
     }
   end
 
-  def get_destination_zone state_abbrv
+ def get_destination_zone state_abbrv
     result = 'Unknown Zone'
     destination_zones.each_pair do |zone, states|
+      result = zone if states.include? state_abbrv
+    end
+    result
+  end
+
+
+  def current_zones
+    {
+      :Z0 => ['CT','ME','MA','NH','NJ','RI','VT'],
+
+      :Z1 => ['DE','NY','PA'],
+
+      :Z2 => ['DC','MD','NC','SC','VA','WV'],
+
+      :Z3 => ['AL','FL','GA','MS','TN'],
+
+      :Z4 => ['IN','KY','MI','OH'],
+
+      :Z5 => ['IA','MN','MT','ND','SD','WI'],
+
+      :Z6 => ['IL','KS','MO','NE'],
+
+      :Z7 => ['AR','LA','OK','TX'],
+
+      :Z8 => ['AZ','CO','ID','NV','NM','UT','WY'],
+
+      :Z9 => ['CA', 'OR', 'WA']
+    }
+  end
+
+  def get_current_zone state_abbrv
+    result = 'Unknown Zone'
+      current_zones.each_pair do |zone, states|
       result = zone if states.include? state_abbrv
     end
     result

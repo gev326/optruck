@@ -157,6 +157,22 @@ class DriversController < ApplicationController
       params[:driver][:backhaul] = true
     end
 
+     if current_state && current_state.length != 0
+      state_abbrv = get_state_abbrev current_state
+      current_zone = get_current_zone state_abbrv
+      params[:driver][:current_zone] = current_zone
+    elsif current_city && current_city.length != 0
+      result = Geocoder.search(current_city)
+      if result[0]
+        state_abbrv = get_state_abbrev result[0].state
+        zone = get_current_zone state_abbrv
+        params[:driver][:current_state] = result[0].state
+        params[:driver][:current_zone] = zone
+      end
+    else
+      params[:driver][:current_zone] = nil
+    end
+
     @driver = Driver.new(driver_params)
 
     respond_to do |format|
@@ -225,6 +241,22 @@ class DriversController < ApplicationController
       end
     elsif current_state.length == 0 && current_city.length == 0
       params[:driver][:backhaul] = true
+    end
+
+       if current_state && current_state.length != 0
+      state_abbrv = get_state_abbrev current_state
+      current_zone = get_current_zone state_abbrv
+      params[:driver][:current_zone] = current_zone
+    elsif current_city && current_city.length != 0
+      result = Geocoder.search(current_city)
+      if result[0]
+        state_abbrv = get_state_abbrev result[0].state
+        zone = get_current_zone state_abbrv
+        params[:driver][:current_state] = result[0].state
+        params[:driver][:current_zone] = zone
+      end
+    else
+      params[:driver][:current_zone] = nil
     end
 
     respond_to do |format|
@@ -401,6 +433,7 @@ class DriversController < ApplicationController
       :state_lat,
       :state_lng,
       :destination_zone,
+      :current_zone,
       :contact_name,
       :backhaul,
       :PreferredLanes => []
