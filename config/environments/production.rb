@@ -25,8 +25,8 @@ Rails.application.configure do
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
 
-  config.action_cable.url = 'wss://sheltered-headland-79525.herokuapp.com/cable'
-  config.action_cable.allowed_request_origins = [ 'https://sheltered-headland-79525.herokuapp.com', 'http://sheltered-headland-79525.herokuapp.com']
+  config.action_cable.url = 'wss://etruckboard.com/cable'
+  config.action_cable.allowed_request_origins = [ 'https://etruckboard.com', 'http://etruckboard.com/']
 
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
