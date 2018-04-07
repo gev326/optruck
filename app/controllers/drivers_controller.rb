@@ -11,6 +11,7 @@ class DriversController < ApplicationController
     @drivers = @q.result(distinct: true)
     @located_drivers = get_located_drivers @drivers
     @hash = generate_hash_map @located_drivers
+
   end
 
   # def home_feed

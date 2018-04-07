@@ -1,9 +1,11 @@
 
+
+<div id = "driv-feed">
  <table class="table table-striped table-hover feed sortable">
     <thead>
       <tr>
 
-        <th>Last Updated</th>
+        <th><%= sort_link @q, :updated_at, "Last Updated" %></th>
         <th>Name</th>
         <th>Phone</th>
         <th>Truck Type</th>
@@ -125,3 +127,4 @@
       <% end %>
     </tbody>
   </table>
+</div>

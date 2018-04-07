@@ -70,6 +70,7 @@ function get_safe_fields(driver) {
   var coveredByUser = driver.Covered && driver.user ?
     driver.user.full_name :
     '';
+
   driver.current_location = current_location(driver);
   driver.desired_location = desired_location(driver);
   driver.PreferredLanes = preferredLanes(driver);
