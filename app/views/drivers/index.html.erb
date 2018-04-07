@@ -116,6 +116,13 @@
           $.get('drivers', formData, handleHtmlData);
         }, 0);
       });
+
+    //     $(document).ready(
+    //      function() {
+    //       setInterval(function() {
+    //         $('.feed').load('/drivers/home_feed');
+    //     }, 5000);
+    // });
     });
   </script>
 
@@ -137,7 +144,7 @@
     <% end %>
   </div>
 
-  <%= render :partial => 'feed', :locals => {:data_id => 'driver-feed'} %>
+ <div class ="home_feed"> <%= render :partial => 'feed', :locals => {:data_id => 'driver-feed'} %> </div>
 
 <% else %>
 

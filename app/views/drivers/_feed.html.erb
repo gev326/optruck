@@ -1,11 +1,13 @@
 
- <table class="table table-striped table-hover feed">
+ <table class="table table-striped table-hover feed sortable">
     <thead>
       <tr>
-        <th>Full Name</th>
+
+        <th>Last Updated</th>
+        <th>Name</th>
         <th>Phone</th>
         <th>Truck Type</th>
-        <th>Availability</th>
+        <th>Date Available</th>
         <th>Current Location</th>
         <th>Desired Location</th>
         <% if current_user.account_type != 'dispatcher' %>
@@ -19,14 +21,20 @@
           <th>Destination Zone</th>
         <% end %>
         <th>Preferred Lanes</th>
+
       </tr>
     </thead>
 
     <tbody id="<%=data_id%>">
-      <% @drivers.order(updated_at: :desc).limit(30).each do |driver| %>
-      <% covered_highlight2 = driver.Covered ? 'red' : ''%>
 
+      <% @drivers.order(updated_at: :desc).limit(40).each do |driver| %>
+
+      <% covered_highlight2 = driver.Covered ? 'red' : ''%>
         <tr driver="<%= driver.id %>">
+           <td class="<%=covered_highlight2%>">
+            <%= driver.updated_at.strftime("%m/%d/%y-%I:%M%p")%>
+
+
           <% if data_id == 'report-feed' %>
             <% if params[:q] %>
               <%
@@ -41,7 +49,10 @@
                 end
               %>
             <% end %>
+
+
             <td class="<%=covered_highlight2%>">
+
               <%= link_to driver.full_name,
                 driver_path(
                   id: driver.id,
@@ -56,6 +67,7 @@
               <div><%=" ID: #{driver.driver_id_tag}"%></div>
             </td>
           <% end %>
+
           <td class="<%=covered_highlight2%>">
             <%= number_to_phone driver.driver_phone,
             pattern: /(\d{3})(\d{3})(\d{4})$/,
@@ -108,6 +120,7 @@
               driver.PreferredLanes.split(", ").join(" ").gsub(/[\"\[\]]/, '')
               : nil %>
           </td>
+
         </tr>
       <% end %>
     </tbody>

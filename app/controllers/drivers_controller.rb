@@ -11,7 +11,13 @@ class DriversController < ApplicationController
     @drivers = @q.result(distinct: true)
     @located_drivers = get_located_drivers @drivers
     @hash = generate_hash_map @located_drivers
+
   end
+
+  # def home_feed
+  #   @drivers = Driver.ransack(params[:q])
+  #   render :partial => "/drivers"
+  # end
 
   def state_drivers
     new_params = {

@@ -17,6 +17,8 @@ class Driver < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+
+
   def current_location
     current_city_exists = current_city != nil && current_city.length != 0
     current_state_exists = current_state != nil && current_state.length != 0
