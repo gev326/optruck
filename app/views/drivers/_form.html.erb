@@ -195,7 +195,7 @@
   <% end %>
 
   <div id="form-col-1">
-
+    <h3> dispatcher user </h3>
     <div class="form-group">
       <%= f.label :first_name, class: "form-label" %>
       <%= f.text_field :first_name,:readonly => true, class: "form-control name" %>
@@ -259,8 +259,16 @@
       <%= humanize_boolean(@driver.active?) %>
     </div>
 
-    <% if editing %>
+    <% if editing && @driver.Covered == true%>
       <div class="form-group">
+        <%= f.label :Covered, class: 'form-label' %>
+        <strong> Driver Is Covered By:
+        <%= @driver.user.full_name%> </strong>
+      </div>
+    <% else %>
+
+     <div class="form-group">
+        <div class="form-group">
         <%= f.label :Covered, class: 'form-label' %>
         <%= f.check_box :Covered %>
       </div>
