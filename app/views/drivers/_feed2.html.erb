@@ -2,24 +2,24 @@
  <table class="table table-striped table-hover feed">
     <thead>
       <tr>
-        <th>Full Name</th>
-        <th>Phone</th>
-        <th>Truck Type</th>
-        <th>Availability</th>
-        <th>Current Location</th>
-        <th>Desired Location</th>
+        <th><%= sort_link @q, :first_name, "Name" %></th>
+        <th><%= sort_link @q, :driver_phone, "Phone" %></th>
+        <th><%= sort_link @q, :driver_truck_type, "Truck Type" %></th>
+        <th><%= sort_link @q, :driver_availability, "Availability" %></th>
+        <th><%= sort_link @q, :current_city, "Current Location" %></th>
+        <th><%= sort_link @q, :desired_location, "Desired Location" %></th>
         <% if current_user.account_type != 'dispatcher' %>
-          <th>Active</th>
+          <th><%= sort_link @q, :active, "Active" %></th>
         <% end %>
-        <th>Driver status</th>
-        <th>Company</th>
-        <th>Covered by:</th>
+        <th><%= sort_link @q, :driver_status, "Status" %></th>
+        <th><%= sort_link @q, :driver_company, "Company" %></th>
+        <th><%= sort_link @q, :Covered, "Covered By" %></th>
         <% if data_id == 'report-feed' %>
 
-          <th>Current Zone</th>
-          <th>Destination Zone</th>
+          <th><%= sort_link @q, :current_zone, "Current Zone" %></th>
+          <th><%= sort_link @q, :destination_zone, "Destination Zone" %></th>
         <% end %>
-        <th>Preferred Lanes</th>
+        <th><%= sort_link @q, :PreferredLanes, "Preferred Lanes" %></th>
       </tr>
     </thead>
 

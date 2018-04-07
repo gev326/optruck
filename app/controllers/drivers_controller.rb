@@ -11,7 +11,6 @@ class DriversController < ApplicationController
     @drivers = @q.result(distinct: true)
     @located_drivers = get_located_drivers @drivers
     @hash = generate_hash_map @located_drivers
-
   end
 
   # def home_feed
@@ -218,6 +217,10 @@ class DriversController < ApplicationController
       params[:driver][:user_id] = nil
     end
 
+
+
+
+
     desired_state = params[:driver][:desired_state]
     desired_city = params[:driver][:desired_city]
     if desired_state && desired_state.length != 0
@@ -412,6 +415,7 @@ class DriversController < ApplicationController
   def driver_params
     params.require(:driver).permit(
       :search,
+      :updated_at,
       :reports,
       :first_name,
       :last_name,
