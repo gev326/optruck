@@ -36,169 +36,179 @@
   <%= search_form_for @q, url: drivers_reports_path do |f| %>
     <div class="search-report-container form-group">
 
-      <div class='search-report-section col1'>
-        <%= f.label :full_name_cont, "Driver Name", class: 'report-label' %>
-        <%= f.text_field :full_name_cont%>
-        <br />
+      <div class='search-report-top-section'>
 
-        <%= f.label :driver_id_tag, "Driver ID",class: 'report-label' %>
-        <%= f.text_field :driver_id_tag_eq%>
-        <br>
+        <div class='search-report-section col1'>
+          <%= f.label :full_name_cont, "Driver Name", class: 'report-label' %>
+          <%= f.text_field :full_name_cont%>
+          <br />
 
-        <%= f.label :current_state, class: 'report-label' %>
-        <% state = params[:q] && params[:q][:current_state_eq] ?
-          params[:q][:current_state_eq] : ''
-        %>
-        <%= f.select :current_state_eq,
-          options_for_select(us_states, state),
-          :include_blank => true %>
-        <br />
+          <%= f.label :driver_id_tag, "Driver ID",class: 'report-label' %>
+          <%= f.text_field :driver_id_tag_eq%>
+          <br>
 
-        <%= f.label :current_city, class: 'report-label' %>
-        <% city = params[:q] && params[:q][:current_city_cont] ?
-          params[:q][:current_city_cont] : ''
-        %>
-        <%= f.text_field :current_city_cont, value: city %>
-        <br />
+          <%= f.label :current_state, class: 'report-label' %>
+          <% state = params[:q] && params[:q][:current_state_eq] ?
+            params[:q][:current_state_eq] : ''
+          %>
+          <%= f.select :current_state_eq,
+            options_for_select(us_states, state),
+            :include_blank => true %>
+          <br />
 
-        <%= f.label 'Radius (mi)', class: 'report-label' %>
-        <%= number_field_tag :miles, params[:miles], min: 1 %>
-        <br>
+          <%= f.label :current_city, class: 'report-label' %>
+          <% city = params[:q] && params[:q][:current_city_cont] ?
+            params[:q][:current_city_cont] : ''
+          %>
+          <%= f.text_field :current_city_cont, value: city %>
+          <br />
 
-        <%= f.label :driver_company, "Company Name", class: 'report-label' %>
-        <%= f.text_field :driver_company_cont%>
+          <%= f.label 'Radius (mi)', class: 'report-label' %>
+          <%= number_field_tag :miles, params[:miles], min: 1 %>
+          <br>
 
+          <%= f.label :driver_company, "Company Name", class: 'report-label' %>
+          <%= f.text_field :driver_company_cont%>
+        </div>
 
+        <div class='search-report-section col2'>
+          <%= f.label :driver_phone, "Driver Phone",class: 'report-label' %>
+          <%= f.telephone_field :driver_phone_cont %>
+          <br />
 
-      </div>
-
-      <div class='search-report-section col2'>
-        <%= f.label :driver_phone, "Driver Phone",class: 'report-label' %>
-        <%= f.telephone_field :driver_phone_cont%>
-        <br />
-
-        <%= f.label :driver_truck_type, "Trailer Type", class: 'report-label' %>
-        <%= f.select(
-          :driver_truck_type_eq,
-          options_for_select(
-            [
-              ['53R', '53R'],
-              ['53RM', '53RM'],
-              ['53V', '53V'],
-              ['53VM', '53VM'],
-              ['flat', 'flat'],
-              ['48R', '48R'],
-              ['48V', '48V']
-            ],
-            params[:q] ? params[:q][:driver_truck_type_eq] : ''
-          ),
-          include_blank: true
-        ) %>
-        <br />
-
-        <% if current_user.account_type != 'dispatcher' %>
-          <%= f.label :active, class: 'report-label' %>
+          <%= f.label :driver_truck_type, "Trailer Type", class: 'report-label' %>
           <%= f.select(
-            :active_eq,
+            :driver_truck_type_eq,
             options_for_select(
               [
-                ['Answering', true], ['Not Answering', false]
+                ['53R', '53R'],
+                ['53RM', '53RM'],
+                ['53V', '53V'],
+                ['53VM', '53VM'],
+                ['flat', 'flat'],
+                ['48R', '48R'],
+                ['48V', '48V']
               ],
-              params[:q] ? params[:q][:active_eq] : ''
+              params[:q] ? params[:q][:driver_truck_type_eq] : ''
             ),
             include_blank: true
           ) %>
+          <br />
+
+          <% if current_user.account_type != 'dispatcher' %>
+            <%= f.label :active, class: 'report-label' %>
+            <%= f.select(
+              :active_eq,
+              options_for_select(
+                [
+                  ['Answering', true], ['Not Answering', false]
+                ],
+                params[:q] ? params[:q][:active_eq] : ''
+              ),
+              include_blank: true
+            ) %>
+            <br>
+          <% end %>
+
+          <%= f.label :PlateTrailer, "Plate Trailer", class: 'report-label' %>
+          <%= f.check_box :PlateTrailer_eq %>
+          <span id='plate-trailer-warning'>
+            ALWAYS CONFIRM W/ DRIVER
+          </span>
           <br>
-        <% end %>
 
-        <%= f.label :PlateTrailer, "Plate Trailer", class: 'report-label' %>
-        <%= f.check_box :PlateTrailer_eq %>
-        <span id='plate-trailer-warning'>
-          ALWAYS CONFIRM W/ DRIVER
-        </span>
-        <br>
+          <%= f.label :ETrac, "E-Trac",class: 'report-label' %>
+          <%= f.check_box :Etrac_eq %>
+          <br>
 
-        <%= f.label :ETrac, "E-Trac",class: 'report-label' %>
-        <%= f.check_box :Etrac_eq %>
-        <br>
+          <%= f.label :backhaul, class: 'report-label' %>
+          <%= f.check_box :backhaul_eq %>
+          <br>
 
-        <%= f.label :backhaul, class: 'report-label' %>
-        <%= f.check_box :backhaul_eq %>
-        <br>
-
-        <%= f.label :driver_availability, class: 'report-label' %>
-        <%= f.text_field :driver_availability_in, id: 'datefilter' %>
-      </div>
-      <div class='search-report-section col3'>
-        <%= f.label "Preferred Lanes", class: 'report-label' %>
-        <%= f.select(
-          :PreferredLanes_cont_any,
-          options_for_select(
-            us_states,
-            params[:q] ? params[:q][:PreferredLanes_cont_any] : ''
-          ),
-          {include_hidden: false},
-          {
-            class: 'form-control multi-select',
-            multiple: true,
-          }
-        ) %>
+          <%= f.label :driver_availability, class: 'report-label' %>
+          <%= f.text_field :driver_availability_in, id: 'datefilter' %>
+        </div>
       </div>
 
-       <div class='search-report-section col4'>
-  <%= f.label :destination_zone, "Destination Zones",class: 'report-label' %>
-  <%= f.select(
-          :destination_zone_cont_any,
-          options_for_select(
-            [
-              ['Z0 [CT,ME,MA,NH,NJ,RI,VT]', 'Z0'],
-              ['Z1 [DE,NY,PA]', 'Z1'],
-              ['Z2 [DC,MD,NC,SC,VA,WV]', 'Z2'],
-              ['Z3 [AL,FL,GA,MS,TN]', 'Z3'],
-              ['Z4 [IN,KY,MI,OH]', 'Z4'],
-              ['Z5 [IA,MN,MT,ND,SD,WI]', 'Z5'],
-              ['Z6 [IL,KS,MO,NE]', 'Z6'],
-              ['Z7 [AR,LA,OK,TX]', 'Z7'],
-              ['Z8 [AZ,CO,ID,NV,NM,UT,WY]', 'Z8'],
-              ['Z9 [CA,OR,WA]', 'Z9']
-            ],
-            params[:q] ? params[:q][:destination_zone_cont_any] : ''
-          ),
-          {include_hidden: false},
-          {
-          class: 'form-control multi-select',
-            multiple: true,
-          }
-        ) %>
-</div>
+      <div class='search-report-bottom-section'>
 
+        <div class='search-report-section col3'>
+          <div class='report-label-top'>
+            <%= f.label "Preferred Lanes" %>
+          </div>
+          <%= f.select(
+            :PreferredLanes_cont_any,
+            options_for_select(
+              us_states,
+              params[:q] ? params[:q][:PreferredLanes_cont_any] : ''
+            ),
+            { include_hidden: false },
+            {
+              class: 'form-control multi-select',
+              multiple: true,
+            }
+          ) %>
+        </div>
 
-       <div class='search-report-section col5'>
-  <%= f.label :current_zone, "Current Zones",class: 'report-label' %>
-  <%= f.select(
-          :current_zone_cont_any,
-          options_for_select(
-            [
-              ['Z0 [CT,ME,MA,NH,NJ,RI,VT]', 'Z0'],
-              ['Z1 [DE,NY,PA]', 'Z1'],
-              ['Z2 [DC,MD,NC,SC,VA,WV]', 'Z2'],
-              ['Z3 [AL,FL,GA,MS,TN]', 'Z3'],
-              ['Z4 [IN,KY,MI,OH]', 'Z4'],
-              ['Z5 [IA,MN,MT,ND,SD,WI]', 'Z5'],
-              ['Z6 [IL,KS,MO,NE]', 'Z6'],
-              ['Z7 [AR,LA,OK,TX]', 'Z7'],
-              ['Z8 [AZ,CO,ID,NV,NM,UT,WY]', 'Z8'],
-              ['Z9 [CA,OR,WA]', 'Z9']
-            ],
-            params[:q] ? params[:q][:current_zone_cont_any] : ''
-          ),
-          {include_hidden: false},
-          {
-          class: 'form-control multi-select',
-            multiple: true,
-          }
-        ) %>
-</div>
+        <div class='search-report-section col4'>
+          <div class='report-label-top'>
+            <%= f.label :destination_zone, "Destination Zones" %>
+          </div>
+          <%= f.select(
+            :destination_zone_cont_any,
+            options_for_select(
+              [
+                ['Z0 [CT,ME,MA,NH,NJ,RI,VT]', 'Z0'],
+                ['Z1 [DE,NY,PA]', 'Z1'],
+                ['Z2 [DC,MD,NC,SC,VA,WV]', 'Z2'],
+                ['Z3 [AL,FL,GA,MS,TN]', 'Z3'],
+                ['Z4 [IN,KY,MI,OH]', 'Z4'],
+                ['Z5 [IA,MN,MT,ND,SD,WI]', 'Z5'],
+                ['Z6 [IL,KS,MO,NE]', 'Z6'],
+                ['Z7 [AR,LA,OK,TX]', 'Z7'],
+                ['Z8 [AZ,CO,ID,NV,NM,UT,WY]', 'Z8'],
+                ['Z9 [CA,OR,WA]', 'Z9']
+              ],
+              params[:q] ? params[:q][:destination_zone_cont_any] : ''
+            ),
+            { include_hidden: false },
+            {
+              class: 'form-control multi-select',
+              multiple: true,
+            }
+          ) %>
+        </div><!--
+
+     --><div class='search-report-section col5'>
+          <div class='report-label-top'>
+            <%= f.label :current_zone, "Current Zones" %>
+          </div>
+          <%= f.select(
+            :current_zone_cont_any,
+            options_for_select(
+              [
+                ['Z0 [CT,ME,MA,NH,NJ,RI,VT]', 'Z0'],
+                ['Z1 [DE,NY,PA]', 'Z1'],
+                ['Z2 [DC,MD,NC,SC,VA,WV]', 'Z2'],
+                ['Z3 [AL,FL,GA,MS,TN]', 'Z3'],
+                ['Z4 [IN,KY,MI,OH]', 'Z4'],
+                ['Z5 [IA,MN,MT,ND,SD,WI]', 'Z5'],
+                ['Z6 [IL,KS,MO,NE]', 'Z6'],
+                ['Z7 [AR,LA,OK,TX]', 'Z7'],
+                ['Z8 [AZ,CO,ID,NV,NM,UT,WY]', 'Z8'],
+                ['Z9 [CA,OR,WA]', 'Z9']
+              ],
+              params[:q] ? params[:q][:current_zone_cont_any] : ''
+            ),
+            { include_hidden: false },
+            {
+              class: 'form-control multi-select',
+              multiple: true,
+            }
+          ) %>
+        </div>
+
+      </div>
 
     </div>
 

@@ -32,42 +32,20 @@
 
       <% covered_highlight2 = driver.Covered ? 'red' : ''%>
         <tr driver="<%= driver.id %>">
-           <td class="<%=covered_highlight2%>">
+          <td class="<%=covered_highlight2%>">
             <%= driver.updated_at.strftime("%m/%d/%y-%I:%M%p")%>
+          </td>
 
+          <td class="<%=covered_highlight2%>">
 
-          <% if data_id == 'report-feed' %>
-            <% if params[:q] %>
-              <%
-                search_hash = {}
-                params[:q].each do |param|
-                  search_hash[param] = params[:q][param]
-                end
-                params.each do |param|
-                  if param == 'miles' || param == :miles
-                    search_hash[:miles] = params[param]
-                  end
-                end
-              %>
-            <% end %>
-
-
-            <td class="<%=covered_highlight2%>">
-
-              <%= link_to driver.full_name,
-                driver_path(
-                  id: driver.id,
-                  report: @drivers.map(&:id),
-                  search: search_hash
-                ) %>
-              <div><%=" ID: #{driver.driver_id_tag}"%></div>
-            </td>
-          <% else %>
-            <td class="<%=covered_highlight2%>">
-              <%= link_to driver.full_name, driver %>
-              <div><%=" ID: #{driver.driver_id_tag}"%></div>
-            </td>
-          <% end %>
+            <%= link_to driver.full_name,
+              driver_path(id: driver.id) %>
+            <div><%=" ID: #{driver.driver_id_tag}"%></div>
+          </td>
+          <td class="<%=covered_highlight2%>">
+            <%= link_to driver.full_name, driver %>
+            <div><%=" ID: #{driver.driver_id_tag}"%></div>
+          </td>
 
           <td class="<%=covered_highlight2%>">
             <%= number_to_phone driver.driver_phone,

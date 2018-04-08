@@ -116,86 +116,58 @@
           <%= humanize_boolean(@driver.PlateTrailer?) %>
         </td>
       </tr>
- <tr>
+
+      <tr>
         <td><strong>E-Ttac:</strong></td>
         <td>
           <%= humanize_boolean(@driver.Etrac?) %>
         </td>
       </tr>
+
       <tr>
         <td><strong>Preferred Lanes:</strong></td>
-
         <td>
           <%= @driver.PreferredLanes && @driver.PreferredLanes.length != 0 ?
               @driver.PreferredLanes.split(", ").join(" ").gsub(/[\"\[\]]/, '')
               : "no lanes" %>
-       </td>
+        </td>
       </tr>
-
-
 
     </tbody>
   </table>
 
+    <span>
+      <%= link_to 'Edit',
+        edit_driver_path(@driver),
+        class: 'btn btn-primary link-btn' %>
+    </span>
 
-
-    <td>
-      <% report = @report || params[:report] %>
-      <% search = @search || params[:search] %>
-      <% if report && search %>
-        <% search_hash = {} %>
-        <% if search %>
-          <%
-            search.each do |sp|
-              search_hash[sp] = search[sp]
-            end
-          %>
-        <% end %>
-        <%= link_to 'Back to Report',
-            drivers_reports_path(
-            q: search_hash,
-            miles: search_hash["miles"]
-          ),
-          class: 'btn btn-primary link-btn' %>
-        <%= link_to 'Edit',
-          edit_driver_path(
-            id: @driver.id,
-            report: report.map(&:id),
-            search: search_hash
-          ),
-          class: 'btn btn-primary link-btn' %>
-      <% else %>
-        <%= link_to 'Edit',
-          edit_driver_path(@driver),
-          class: 'btn btn-primary link-btn' %>
-      <% end %>
-    </td>
-
-    <td>
+    <span>
       <% if account_type != "dispatcher" %>
-      <%= link_to 'Delete',
-        @driver,
-        method: :delete,
-        data: { confirm: 'Are you sure?' },
-        class: 'btn btn-danger link-btn' %>
-    </td>
-    <%end %>
-    <% if report && search %>
-      <%= link_to 'Previous Driver in Report',
-      driver_path(
-        id: report[@previous_idx],
-        report: report.map(&:id),
-        search: search_hash
-      ),
-      class: 'btn btn-success link-btn' %>
-       <%= link_to 'Next Driver in Report',
-      driver_path(
-        id: report[@next_idx],
-        report: report.map(&:id),
-        search: search_hash
-      ),
-      class: 'btn btn-success link-btn' %>
-    <% end %>
+        <%= link_to 'Delete',
+          @driver,
+          method: :delete,
+          data: { confirm: 'Are you sure?' },
+          class: 'btn btn-danger link-btn' %>
+      <%end %>
+    </span>
+
+    <div>
+      <% if @report.length != 0 %>
+        <%= link_to 'Back to Report',
+          drivers_reports_path(
+            q: @search_params[:q],
+            miles: @search_params[:miles]
+          ),
+          class: 'btn btn-primary link-btn' %>
+        <%= link_to 'Previous Driver in Report',
+          driver_path(id: @report[@previous_idx]),
+          class: 'btn btn-success link-btn' %>
+        <%= link_to 'Next Driver in Report',
+          driver_path(id: @report[@next_idx]),
+          class: 'btn btn-success link-btn' %>
+      <% end %>
+    </div>
 
 
 
