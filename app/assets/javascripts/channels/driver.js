@@ -73,6 +73,7 @@ function get_safe_fields(driver) {
 
   driver.current_location = current_location(driver);
   driver.desired_location = desired_location(driver);
+  driver.updated_at = getLastUpdatedInfo(driver);
   driver.PreferredLanes = preferredLanes(driver);
   var truckHightlight = (
     ['48R', '53R', '53RM'].includes(driver.driver_truck_type) ? 'yellow' : ''
@@ -80,18 +81,21 @@ function get_safe_fields(driver) {
   var coveredHighlight1 = driver.Covered ? 'cyan': '';
   var coveredHighlight2 = driver.Covered ? 'red' : '';
   return (
-    "<tr driver="+driver.id+"><td class="+coveredHighlight1+"><a href=drivers/"+
-    driver.id+">"+driver.full_name+"</a><div>"+driver.driver_id_tag+
-    "</div></td><td class="+coveredHighlight1+">"+driver.driver_phone+
-    "<span> - "+driver.contact_name+"</span></td><td class="+truckHightlight+
-    ">"+driver.driver_truck_type+"</td><td class="+coveredHighlight2+">"+
-    driver.driver_availability+"</td><td class="+coveredHighlight2+">"+
-    driver.current_location+"</td><td class="+coveredHighlight2+">"+
-    driver.desired_location+"</td><td class="+coveredHighlight1+">"+
-    driver.driver_status+"</td><td class="+coveredHighlight1+">"+
-    driver.driver_company+"</td><td class="+coveredHighlight1+"><strong>"+
-    coveredByUser+"</strong></td><td class="+coveredHighlight1+">"+
-    driver.PreferredLanes+"</tr>"
+    "<tr driver="+driver.id+">"+
+    "<td class="+coveredHighlight2+">"+driver.updated_at+"<br/>"+
+    driver.last_updated_by+"</td>"+
+    "<td class="+coveredHighlight1+">+<a href=drivers/"+driver.id+">"+
+    driver.full_name+"</a><div>"+driver.driver_id_tag+"</div></td>"+
+    "<td class="+coveredHighlight1+">"+driver.driver_phone+"<span> - "+
+    driver.contact_name+"</span></td>"+
+    "<td class="+truckHightlight+">"+driver.driver_truck_type+"</td>"+
+    "<td class="+coveredHighlight2+">"+driver.driver_availability+"</td>"+
+    "<td class="+coveredHighlight2+">"+driver.current_location+"</td>"+
+    "<td class="+coveredHighlight2+">"+driver.desired_location+"</td>"+
+    "<td class="+coveredHighlight1+">"+driver.driver_status+"</td>"+
+    "<td class="+coveredHighlight1+">"+driver.driver_company+"</td>"+
+    "<td class="+coveredHighlight1+"><strong>"+coveredByUser+"</strong></td>"+
+    "<td class="+coveredHighlight1+">"+driver.PreferredLanes+"</tr>"
   );
 }
 
@@ -102,6 +106,7 @@ function get_all_fields(driver) {
     '';
   driver.current_location = current_location(driver);
   driver.desired_location = desired_location(driver);
+  driver.updated_at = getLastUpdatedInfo(driver);
   driver.PreferredLanes = preferredLanes(driver);
   active = driver.active ? 'Answering' : 'Not Answering';
   activeClass = driver.active ? 'green' : 'red';
@@ -111,20 +116,34 @@ function get_all_fields(driver) {
   var coveredHighlight1 = driver.Covered ? 'cyan': '';
   var coveredHighlight2 = driver.Covered ? 'red' : '';
   return (
-    "<tr driver="+driver.id+"><td class="+coveredHighlight1+"><a href=drivers/"+
-    driver.id+">"+driver.full_name+"</a><div>"+driver.driver_id_tag+
-    "</div></td><td class="+coveredHighlight1+">"+driver.driver_phone+
-    "<span> - "+driver.contact_name+"</span></td><td class="+truckHightlight+
-    ">"+driver.driver_truck_type+"</td><td class="+coveredHighlight2+">"+
-    driver.driver_availability+"</td><td class="+coveredHighlight2+">"+
-    driver.current_location+"</td><td class="+coveredHighlight2+
-    ">"+driver.desired_location+"</td><td class="+activeClass+">"+active+
-    "</td><td class="+coveredHighlight1+">"+driver.driver_status+
-    "</td><td class="+coveredHighlight1+">"+driver.driver_company+
-    "</td><td class="+coveredHighlight1+"><strong>"+coveredByUser+
-    "</strong></td><td class="+coveredHighlight1+">"+
-    driver.PreferredLanes+"</tr>"
+    "<tr driver="+driver.id+">"+
+    "<td class="+coveredHighlight2+">"+driver.updated_at+"<br/>"+
+    driver.last_updated_by+"</td>"+
+    "<td class="+coveredHighlight1+"><a href=drivers/"+driver.id+">"+
+    driver.full_name+"</a><div>"+driver.driver_id_tag+"</div></td>"+
+    "<td class="+coveredHighlight1+">"+driver.driver_phone+
+    "<span> - "+driver.contact_name+"</span></td>"+
+    "<td class="+truckHightlight+">"+driver.driver_truck_type+"</td>"+
+    "<td class="+coveredHighlight2+">"+driver.driver_availability+"</td>"+
+    "<td class="+coveredHighlight2+">"+driver.current_location+"</td>"+
+    "<td class="+coveredHighlight2+">"+driver.desired_location+"</td>"+
+    "<td class="+activeClass+">"+active+"</td>"+
+    "<td class="+coveredHighlight1+">"+driver.driver_status+"</td>"+
+    "<td class="+coveredHighlight1+">"+driver.driver_company+"</td>"+
+    "<td class="+coveredHighlight1+"><strong>"+coveredByUser+"</strong></td>"+
+    "<td class="+coveredHighlight1+">"+driver.PreferredLanes+"</tr>"
   );
+}
+
+function getLastUpdatedInfo(driver) {
+  return new Date(driver.updated_at).toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+    weekday: 'short',
+    month: '2-digit',
+    day: '2-digit',
+    year: '2-digit'
+  });
 }
 
 function full_name(driver) {

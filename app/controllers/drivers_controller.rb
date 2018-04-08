@@ -10,10 +10,13 @@ class DriversController < ApplicationController
   def index
     ReportsHelper.reset
     @q = Driver.ransack(params[:q])
-    @drivers = @q.result(distinct: true)
+    @drivers = @q.result(distinct: true).order(updated_at: :desc)
     @located_drivers = get_located_drivers @drivers
     @hash = generate_hash_map @located_drivers
-
+    respond_to do |format|
+        format.html
+        format.json { render json: @drivers, status: :ok }
+    end
   end
 
   # def home_feed
@@ -181,6 +184,7 @@ class DriversController < ApplicationController
       params[:driver][:current_zone] = nil
     end
 
+    params[:driver][:last_updated_by] = current_user.full_name
     @driver = Driver.new(driver_params)
 
     respond_to do |format|
@@ -251,7 +255,7 @@ class DriversController < ApplicationController
       params[:driver][:backhaul] = true
     end
 
-       if current_state && current_state.length != 0
+    if current_state && current_state.length != 0
       state_abbrv = get_state_abbrev current_state
       current_zone = get_current_zone state_abbrv
       params[:driver][:current_zone] = current_zone
@@ -267,6 +271,7 @@ class DriversController < ApplicationController
       params[:driver][:current_zone] = nil
     end
 
+    params[:driver][:last_updated_by] = current_user.full_name
     respond_to do |format|
       if @driver.update(driver_params)
         marker = nil
@@ -401,7 +406,7 @@ class DriversController < ApplicationController
     if saved_range
       q[:driver_availability_in] = saved_range
     end
-    @drivers = @q.result(distinct: true)
+    @drivers = @q.result(distinct: true).order(updated_at: :desc)
 
     if q
       search_hash = {}
@@ -460,6 +465,7 @@ class DriversController < ApplicationController
       :current_zone,
       :contact_name,
       :backhaul,
+      :last_updated_by,
       :PreferredLanes => []
     )
   end

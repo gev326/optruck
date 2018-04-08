@@ -30,7 +30,7 @@
 
       <br>
       <h3 style='text-align: center;'> Report Generated <%= @drivers.length %> Drivers </h3>
-      <% @drivers.order(updated_at: :desc).each do |driver| %>
+      <% @drivers.each do |driver| %>
       <% covered_highlight2 = driver.Covered ? 'red' : ''%>
 
         <tr driver="<%= driver.id %>">

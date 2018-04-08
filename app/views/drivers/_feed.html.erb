@@ -28,13 +28,14 @@
 
     <tbody id="<%=data_id%>">
 
-      <% @drivers.order(updated_at: :desc).limit(40).each do |driver| %>
+      <% @drivers.limit(40).each do |driver| %>
 
       <% covered_highlight2 = driver.Covered ? 'red' : ''%>
         <tr driver="<%= driver.id %>">
-          <td class="<%=covered_highlight2%>">
-            <%= driver.updated_at.strftime("%m/%d/%y-%I:%M%p")%>
-          </td>
+
+         <td class="<%=covered_highlight2%>">
+          <%= driver.updated_at.strftime("%a, %m/%d/%y, %I:%M%p")%><br/>
+          <%= driver.last_updated_by || '' %>
 
           <td class="<%=covered_highlight2%>">
 
