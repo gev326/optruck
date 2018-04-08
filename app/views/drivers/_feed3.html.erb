@@ -31,26 +31,8 @@
 
         <tr driver="<%= driver.id %>">
           <% if data_id == 'report-feed' %>
-            <% if params[:q] %>
-              <%
-                search_hash = {}
-                params[:q].each do |param|
-                  search_hash[param] = params[:q][param]
-                end
-                params.each do |param|
-                  if param == 'miles' || param == :miles
-                    search_hash[:miles] = params[param]
-                  end
-                end
-              %>
-            <% end %>
             <td class="<%=covered_highlight2%>">
-              <%= link_to driver.full_name,
-                driver_path(
-                  id: driver.id,
-                  report: @drivers.map(&:id),
-                  search: search_hash
-                ) %>
+              <%= link_to driver.full_name, driver_path(id: driver.id) %>
               <div><%=" ID: #{driver.driver_id_tag}"%></div>
             </td>
           <% else %>

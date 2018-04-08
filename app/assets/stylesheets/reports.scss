@@ -20,19 +20,41 @@
       text-transform: capitalize;
     }
 
+    .report-label-top {
+      text-transform: capitalize;
+      text-align: center;
+      padding-top: 10px;
+    }
+
     .search-report-section {
       display: inline-block;
       margin-right: 10px;
-      float: left;
+
+      &:first-child {
+        float: left;
+      }
       &:last-child {
+        clear: left;
         margin-right: 0;
       }
+    }
+
+    .multi-select {
+      margin-top: 5px;
+    }
+
+    .search-report-top-section {
+      width: fit-content;
+      margin: 0 auto;
+    }
+
+    .search-report-bottom-section {
+      margin-top: 15px;
     }
   }
 
   .report-buttons {
-    clear: left;
     text-align: center;
-    margin: 10px auto;
+    margin: 25px auto;
   }
 }

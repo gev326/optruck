@@ -1,5 +1,6 @@
 class DriversController < ApplicationController
   include ApplicationHelper
+  include ReportsHelper
 
   before_action :authenticate_user!
   before_action :set_driver,  only: [:show, :edit, :update, :destroy ]
@@ -7,6 +8,7 @@ class DriversController < ApplicationController
   # GET /drivers
   # GET /drivers.json
   def index
+    ReportsHelper.reset
     @q = Driver.ransack(params[:q])
     @drivers = @q.result(distinct: true)
     @located_drivers = get_located_drivers @drivers
@@ -97,24 +99,24 @@ class DriversController < ApplicationController
   # GET /drivers/1
   # GET /drivers/1.json
   def show
-    if params[:report]
-      @search = params[:search]
-      @report = Driver.find(params[:report])
-      @next_idx = get_next_report_idx params[:report], @driver.id
-      @previous_idx = get_previous_report_idx params[:report], @driver.id
+    @report = ReportsHelper.get_current_report
+    if @report.length != 0
+      @next_idx = get_next_report_idx(@report, @driver.id)
+      @previous_idx = get_previous_report_idx(@report, @driver.id)
+      @search_params = ReportsHelper.get_current_search_params
     end
   end
 
   def get_next_report_idx report, id
     last_index = report.length - 1
-    report.index("#{id}") + 1 <= last_index ?
-      report.index("#{id}") + 1 : 0
+    report.index(id) + 1 <= last_index ?
+      report.index(id) + 1 : 0
   end
 
    def get_previous_report_idx report, id
     last_index = report.length + 1
-    report.index("#{id}") - 1 <= last_index ?
-      report.index("#{id}") - 1 : 0
+    report.index(id) - 1 <= last_index ?
+      report.index(id) - 1 : 0
   end
 
   # GET /drivers/new
@@ -217,10 +219,6 @@ class DriversController < ApplicationController
     else
       params[:driver][:user_id] = nil
     end
-
-
-
-
 
     desired_state = params[:driver][:desired_state]
     desired_city = params[:driver][:desired_city]
@@ -404,6 +402,21 @@ class DriversController < ApplicationController
       q[:driver_availability_in] = saved_range
     end
     @drivers = @q.result(distinct: true)
+
+    if q
+      search_hash = {}
+      q.each_pair do |k, v|
+        search_hash[k] = v
+      end
+      ReportsHelper.set_current_search_params(
+        q: search_hash,
+        miles: params[:miles]
+      )
+      ids = @drivers.map do |d|
+        d.id
+      end
+      ReportsHelper.set_current_report(ids)
+    end
   end
 
   private
