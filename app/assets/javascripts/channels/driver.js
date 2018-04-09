@@ -80,6 +80,7 @@ function get_safe_fields(driver) {
   );
   var coveredHighlight1 = driver.Covered ? 'cyan': '';
   var coveredHighlight2 = driver.Covered ? 'red' : '';
+  truckHightlight = truckHightlight.length ? truckHightlight : coveredHighlight2;
   return (
     "<tr driver="+driver.id+">"+
     "<td class="+coveredHighlight2+">"+driver.updated_at+"<br/>"+
@@ -115,6 +116,7 @@ function get_all_fields(driver) {
   );
   var coveredHighlight1 = driver.Covered ? 'cyan': '';
   var coveredHighlight2 = driver.Covered ? 'red' : '';
+  truckHightlight = truckHightlight.length ? truckHightlight : coveredHighlight2;
   return (
     "<tr driver="+driver.id+">"+
     "<td class="+coveredHighlight2+">"+driver.updated_at+"<br/>"+
