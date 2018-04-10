@@ -26,8 +26,8 @@
 
 function get_safe_fields(driver) {
   driver.full_name = full_name(driver);
-  var coveredByUser = driver.Covered && driver.user ?
-    driver.user.full_name :
+  var coveredByUser = driver.Covered && driver.covered_name ?
+    driver.covered_name :
     '';
 
   driver.current_location = current_location(driver);
@@ -45,7 +45,7 @@ function get_safe_fields(driver) {
     "<td class="+coveredHighlight2+">"+driver.updated_at+"<br/>"+
     driver.last_updated_by+"</td>"+
     "<td class="+coveredHighlight1+">+<a href=drivers/"+driver.id+">"+
-    driver.full_name+"</a><div>"+driver.driver_id_tag+"</div></td>"+
+    driver.full_name+"</a><div>ID: "+driver.driver_id_tag+"</div></td>"+
     "<td class="+coveredHighlight1+">"+driver.driver_phone+"<span> - "+
     driver.contact_name+"</span></td>"+
     "<td class="+truckHightlight+">"+driver.driver_truck_type+"</td>"+
@@ -61,8 +61,8 @@ function get_safe_fields(driver) {
 
 function get_all_fields(driver) {
   driver.full_name = full_name(driver);
-  var coveredByUser = driver.Covered && driver.user ?
-    driver.user.full_name :
+  var coveredByUser = driver.Covered && driver.covered_name ?
+    driver.covered_name :
     '';
   driver.current_location = current_location(driver);
   driver.desired_location = desired_location(driver);
@@ -81,7 +81,7 @@ function get_all_fields(driver) {
     "<td class="+coveredHighlight2+">"+driver.updated_at+"<br/>"+
     driver.last_updated_by+"</td>"+
     "<td class="+coveredHighlight1+"><a href=drivers/"+driver.id+">"+
-    driver.full_name+"</a><div>"+driver.driver_id_tag+"</div></td>"+
+    driver.full_name+"</a><div>ID: "+driver.driver_id_tag+"</div></td>"+
     "<td class="+coveredHighlight1+">"+driver.driver_phone+
     "<span> - "+driver.contact_name+"</span></td>"+
     "<td class="+truckHightlight+">"+driver.driver_truck_type+"</td>"+
@@ -151,8 +151,11 @@ setInterval(function() {
       url: "/drivers",
       success: function(data) {
         var html = '';
-        var shortList = data.slice(0, 40);
+        var shortList = data.drivers.slice(0, 40);
         shortList.forEach(function(d) {
+          if (data.covered_drivers[d.id]) {
+            d.covered_name = data.covered_drivers[d.id];
+          }
           var content = isDispatcher ? get_safe_fields(d) : get_all_fields(d);
           html += content;
         });

@@ -11,11 +11,21 @@ class DriversController < ApplicationController
     ReportsHelper.reset
     @q = Driver.ransack(params[:q])
     @drivers = @q.result(distinct: true).order(updated_at: :desc)
+    covered_drivers = {}
+    @drivers.joins(:user).each do | d |
+      covered_drivers[d.id] = d.user.full_name
+    end
     @located_drivers = get_located_drivers @drivers
     @hash = generate_hash_map @located_drivers
     respond_to do |format|
         format.html
-        format.json { render json: @drivers, status: :ok }
+        format.json {
+          render json: {
+            drivers: @drivers,
+            covered_drivers: covered_drivers
+          },
+          status: :ok
+        }
     end
   end
 

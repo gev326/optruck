@@ -38,12 +38,6 @@
           <%= driver.last_updated_by || '' %>
 
           <td class="<%=covered_highlight2%>">
-
-            <%= link_to driver.full_name,
-              driver_path(id: driver.id) %>
-            <div><%=" ID: #{driver.driver_id_tag}"%></div>
-          </td>
-          <td class="<%=covered_highlight2%>">
             <%= link_to driver.full_name, driver %>
             <div><%=" ID: #{driver.driver_id_tag}"%></div>
           </td>
