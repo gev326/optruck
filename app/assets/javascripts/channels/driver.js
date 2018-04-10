@@ -34,6 +34,7 @@ App.driver = App.cable.subscriptions.create("DriverChannel", {
         break;
       case 'update-driver':
         driver = data.driver;
+        if (data.covered_name) { driver.covered_name = data.covered_name; }
         html = isDispatcher ? get_safe_fields(driver) : get_all_fields(driver);
         if (mapVisible) {
           Gmaps.store.markers = Gmaps.store.markers.filter(function(m) {
@@ -67,8 +68,8 @@ App.driver = App.cable.subscriptions.create("DriverChannel", {
 
 function get_safe_fields(driver) {
   driver.full_name = full_name(driver);
-  var coveredByUser = driver.Covered && driver.user ?
-    driver.user.full_name :
+  var coveredByUser = driver.Covered && driver.covered_name ?
+    driver.covered_name :
     '';
 
   driver.current_location = current_location(driver);
@@ -86,7 +87,7 @@ function get_safe_fields(driver) {
     "<td class="+coveredHighlight2+">"+driver.updated_at+"<br/>"+
     driver.last_updated_by+"</td>"+
     "<td class="+coveredHighlight1+">+<a href=drivers/"+driver.id+">"+
-    driver.full_name+"</a><div>"+driver.driver_id_tag+"</div></td>"+
+    driver.full_name+"</a><div>ID: "+driver.driver_id_tag+"</div></td>"+
     "<td class="+coveredHighlight1+">"+driver.driver_phone+"<span> - "+
     driver.contact_name+"</span></td>"+
     "<td class="+truckHightlight+">"+driver.driver_truck_type+"</td>"+
@@ -102,8 +103,8 @@ function get_safe_fields(driver) {
 
 function get_all_fields(driver) {
   driver.full_name = full_name(driver);
-  var coveredByUser = driver.Covered && driver.user ?
-    driver.user.full_name :
+  var coveredByUser = driver.Covered && driver.covered_name ?
+    driver.covered_name :
     '';
   driver.current_location = current_location(driver);
   driver.desired_location = desired_location(driver);
@@ -122,7 +123,7 @@ function get_all_fields(driver) {
     "<td class="+coveredHighlight2+">"+driver.updated_at+"<br/>"+
     driver.last_updated_by+"</td>"+
     "<td class="+coveredHighlight1+"><a href=drivers/"+driver.id+">"+
-    driver.full_name+"</a><div>"+driver.driver_id_tag+"</div></td>"+
+    driver.full_name+"</a><div>ID: "+driver.driver_id_tag+"</div></td>"+
     "<td class="+coveredHighlight1+">"+driver.driver_phone+
     "<span> - "+driver.contact_name+"</span></td>"+
     "<td class="+truckHightlight+">"+driver.driver_truck_type+"</td>"+
