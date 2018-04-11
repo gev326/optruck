@@ -164,4 +164,5 @@ setInterval(function() {
       dataType: "json"
     });
   }
+      console.log('refreshed')
 }, 15000);
