@@ -164,4 +164,4 @@ setInterval(function() {
       dataType: "json"
     });
   }
-}, 30000);
+}, 15000);
