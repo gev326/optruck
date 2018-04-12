@@ -2,6 +2,10 @@
 
  <table class="table table-striped table-hover feed">
 <h4 style='text-align: center;'> There are <%= @drivers.count %> Drivers in <%= @state %></h4>
+ <div class="col-md-12 text-center">  <%= link_to 'Home',
+          drivers_path,
+          class: 'btn btn-primary link-btn' %> </div>
+
     <thead>
       <tr>
         <th>Full Name</th>
@@ -26,6 +30,7 @@
     </thead>
 
     <tbody id="<%=data_id%>">
+
       <% @drivers.each do |driver| %>
       <% covered_highlight2 = driver.Covered ? 'red' : ''%>
 
