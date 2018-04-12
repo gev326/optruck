@@ -1,6 +1,5 @@
 class DriversController < ApplicationController
   include ApplicationHelper
-  include ReportsHelper
 
   before_action :authenticate_user!
   before_action :set_driver,  only: [:show, :edit, :update, :destroy ]
@@ -8,7 +7,9 @@ class DriversController < ApplicationController
   # GET /drivers
   # GET /drivers.json
   def index
-    ReportsHelper.reset
+    if current_user.report
+      current_user.report.delete
+    end
     @q = Driver.ransack(params[:q])
     @drivers = @q.result(distinct: true).order(updated_at: :desc)
     covered_drivers = {}
@@ -112,11 +113,22 @@ class DriversController < ApplicationController
   # GET /drivers/1
   # GET /drivers/1.json
   def show
-    @report = ReportsHelper.get_current_report
-    if @report.length != 0
-      @next_idx = get_next_report_idx(@report, @driver.id)
-      @previous_idx = get_previous_report_idx(@report, @driver.id)
-      @search_params = ReportsHelper.get_current_search_params
+    report = current_user.report
+    @report_ids = report && report[:driver_ids].length != 0 ?
+      report[:driver_ids] :
+      []
+
+    if @report_ids.length != 0
+      miles = report[:miles]
+      @next_idx = get_next_report_idx(@report_ids, @driver.id)
+      @previous_idx = get_previous_report_idx(@report_ids, @driver.id)
+      search_params = {}
+      report.attributes.each_pair do | k, v |
+        if k != 'id' && k != 'driver_ids' && k != 'miles' && k != 'created_at' && k != 'updated_at'
+          search_params[k] = v
+        end
+      end
+      @search_params = { :q => search_params, :miles => miles }
     end
   end
 
@@ -127,9 +139,9 @@ class DriversController < ApplicationController
   end
 
    def get_previous_report_idx report, id
-    last_index = report.length + 1
-    report.index(id) - 1 <= last_index ?
-      report.index(id) - 1 : 0
+    last_index = report.length - 1
+    report.index(id) - 1 < 0 ?
+      last_index : report.index(id) - 1
   end
 
   # GET /drivers/new
@@ -199,18 +211,6 @@ class DriversController < ApplicationController
 
     respond_to do |format|
       if @driver.save
-        marker = nil
-        if @driver.current_state.length != 0 || @driver.current_city.length != 0
-          marker = generate_hash_map [@driver]
-        end
-        ActionCable.server.broadcast(
-          'driver_channel',
-          {
-            :msg=>'add-driver',
-            :driver=>@driver,
-            :marker=>marker
-          }
-        )
         format.html { redirect_to @driver, notice: 'Driver was successfully created.' }
         format.json { render :show, status: :created, location: @driver }
       else
@@ -284,33 +284,7 @@ class DriversController < ApplicationController
     params[:driver][:last_updated_by] = current_user.full_name
     respond_to do |format|
       if @driver.update(driver_params)
-        marker = nil
-        if @driver.current_state.length != 0 || @driver.current_city.length != 0
-          marker = generate_hash_map [@driver]
-        end
-        ActionCable.server.broadcast(
-          'driver_channel',
-          {
-            :msg=>'update-driver',
-            :driver=>@driver,
-            :covered_name=>covered_name,
-            :marker=>marker
-          }
-        )
-        report = nil
-        search = nil
-        if params[:report]
-          report = JSON.parse(params[:report])
-          search = JSON.parse(params[:search])
-        end
-        format.html {
-          redirect_to driver_path(
-            id: @driver.id,
-            report: report,
-            search: search
-          ),
-          notice: 'Driver was successfully updated.'
-        }
+        format.html { redirect_to @driver, notice: 'Driver was successfully updated.' }
         format.json { render :show, status: :ok, location: @driver }
       else
         format.html { render :edit }
@@ -323,10 +297,6 @@ class DriversController < ApplicationController
   # DELETE /drivers/1.json
   def destroy
     @driver.destroy
-    ActionCable.server.broadcast(
-      'driver_channel',
-      {:msg=>'delete-driver', :id=>@driver.id}
-    )
     respond_to do |format|
       format.html { redirect_to drivers_url, notice: 'Driver was successfully deleted.' }
       format.json { head :no_content }
@@ -419,18 +389,21 @@ class DriversController < ApplicationController
     @drivers = @q.result(distinct: true).order(updated_at: :desc)
 
     if q
+      if current_user.report
+        current_user.report.delete
+      end
       search_hash = {}
       q.each_pair do |k, v|
         search_hash[k] = v
       end
-      ReportsHelper.set_current_search_params(
-        q: search_hash,
-        miles: params[:miles]
-      )
+      search_hash[:miles] = params[:miles]
       ids = @drivers.map do |d|
         d.id
       end
-      ReportsHelper.set_current_report(ids)
+      search_hash[:driver_ids] = ids
+      report = Report.new search_hash
+      report[:user_id] = current_user.id
+      report.save
     end
   end
 
