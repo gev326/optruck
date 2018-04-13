@@ -1,9 +1,9 @@
-development:
-  adapter: async
+# development:
+#   adapter: async
 
-test:
-  adapter: async
+# test:
+#   adapter: async
 
-production:
-  adapter: redis
-  url: redis://redistogo:4de7bed46ed7062c00f5967dcf6d0d22@greeneye.redistogo.com:11118/
+# production:
+#   adapter: redis
+#   url: redis://redistogo:4de7bed46ed7062c00f5967dcf6d0d22@greeneye.redistogo.com:11118/

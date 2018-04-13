@@ -1,0 +1,69 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  full_name: MyString
+  : MyString
+  driver_id_tag: MyString
+  : MyString
+  current_state: MyString
+  : MyString
+  current_city: MyString
+  : MyString
+  : 
+  : 
+  driver_company: MyString
+  : MyString
+  driver_phone: MyString
+  : MyString
+  : 
+  : MyString
+  active: MyString
+  : false
+  PlateTrailer: MyString
+  : false
+  ETrac: MyString
+  : false
+  backhaul: MyString
+  : false
+  driver_availability: MyString
+  : MyString
+  PreferredLanes: MyString
+  : MyString
+  destination_zone: MyString
+  : MyString
+  current_zone: MyString
+  : MyString
+
+two:
+  full_name: MyString
+  : MyString
+  driver_id_tag: MyString
+  : MyString
+  current_state: MyString
+  : MyString
+  current_city: MyString
+  : MyString
+  : 
+  : 
+  driver_company: MyString
+  : MyString
+  driver_phone: MyString
+  : MyString
+  : 
+  : MyString
+  active: MyString
+  : false
+  PlateTrailer: MyString
+  : false
+  ETrac: MyString
+  : false
+  backhaul: MyString
+  : false
+  driver_availability: MyString
+  : MyString
+  PreferredLanes: MyString
+  : MyString
+  destination_zone: MyString
+  : MyString
+  current_zone: MyString
+  : MyString

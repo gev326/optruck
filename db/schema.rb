@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180408184422) do
+ActiveRecord::Schema.define(version: 20180412042641) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,30 @@ ActiveRecord::Schema.define(version: 20180408184422) do
     t.string   "current_zone"
     t.string   "last_updated_by"
     t.index ["user_id"], name: "index_drivers_on_user_id", using: :btree
+  end
+
+  create_table "reports", force: :cascade do |t|
+    t.integer  "driver_ids",                default: [],              array: true
+    t.string   "full_name_cont"
+    t.string   "driver_id_tag_eq"
+    t.string   "current_state_eq"
+    t.string   "current_city_cont"
+    t.integer  "miles"
+    t.string   "driver_company_cont"
+    t.string   "driver_phone_cont"
+    t.string   "driver_truck_type_eq"
+    t.boolean  "active_eq"
+    t.boolean  "PlateTrailer_eq"
+    t.boolean  "Etrac_eq"
+    t.boolean  "backhaul_eq"
+    t.string   "driver_availability_in"
+    t.string   "PreferredLanes_cont_any"
+    t.string   "destination_zone_cont_any"
+    t.string   "current_zone_cont_any"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.integer  "user_id"
+    t.index ["user_id"], name: "index_reports_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|

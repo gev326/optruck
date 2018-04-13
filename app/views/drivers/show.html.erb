@@ -153,7 +153,7 @@
     </span>
 
     <div>
-      <% if @report.length != 0 %>
+      <% if @report_ids.length != 0 %>
         <%= link_to 'Back to Report',
           drivers_reports_path(
             q: @search_params[:q],
@@ -161,10 +161,10 @@
           ),
           class: 'btn btn-primary link-btn' %>
         <%= link_to 'Previous Driver in Report',
-          driver_path(id: @report[@previous_idx]),
+          driver_path(id: @report_ids[@previous_idx]),
           class: 'btn btn-success link-btn' %>
         <%= link_to 'Next Driver in Report',
-          driver_path(id: @report[@next_idx]),
+          driver_path(id: @report_ids[@next_idx]),
           class: 'btn btn-success link-btn' %>
       <% end %>
     </div>

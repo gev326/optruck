@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
 
 
   has_many :drivers
+  has_one :report
 
   def full_name
     "#{first_name} #{last_name}"
