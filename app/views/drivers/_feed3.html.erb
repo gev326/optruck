@@ -8,7 +8,7 @@
 
     <thead>
       <tr>
-        <th>Full Name</th>
+        <th>Name</th>
         <th>Phone</th>
         <th>Truck Type</th>
         <th>Availability</th>
@@ -31,7 +31,9 @@
 
     <tbody id="<%=data_id%>">
 
-      <% @drivers.each do |driver| %>
+      <% @drivers.sort_by{ |d| d.driver_availability}.reverse.each do |driver| %>
+
+
       <% covered_highlight2 = driver.Covered ? 'red' : ''%>
 
         <tr driver="<%= driver.id %>">
