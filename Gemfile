@@ -42,6 +42,7 @@ gem 'momentjs-rails'
 gem 'bootstrap-daterangepicker-rails'
 gem 'kaminari'
 gem 'will_paginate'
+gem 'jquery-tablesorter'
 
 #
 
