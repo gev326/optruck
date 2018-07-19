@@ -28,7 +28,8 @@
 
     <tbody id="<%=data_id%>">
 
-      <% @drivers.limit(40).each do |driver| %>
+      <% @drivers.limit(60).select{|x| x.active }.each do |driver| %>
+
 
       <% covered_highlight2 = driver.Covered ? 'red' : ''%>
         <tr driver="<%= driver.id %>">
@@ -97,6 +98,7 @@
 
         </tr>
       <% end %>
+
     </tbody>
   </table>
 </div>

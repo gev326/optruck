@@ -61,7 +61,9 @@ function get_safe_fields(driver) {
 }
 
 function get_all_fields(driver) {
-  driver.full_name = full_name(driver);
+  if(driver.active === true) {
+    driver.full_name = full_name(driver);
+
   var coveredByUser = driver.Covered && driver.covered_name ?
     driver.covered_name :
     '';
@@ -69,7 +71,7 @@ function get_all_fields(driver) {
   driver.desired_location = desired_location(driver);
   driver.updated_at = getLastUpdatedInfo(driver);
   driver.PreferredLanes = preferredLanes(driver);
-  active = driver.active ? 'Answering' : 'Not Answering';
+  active = driver.active ? 'Answering' : " ";
   activeClass = driver.active ? 'green' : 'red';
   var truckHightlight = (
     ['48R', '53R', '53RM'].includes(driver.driver_truck_type) ? 'yellow' : ''
@@ -95,6 +97,7 @@ function get_all_fields(driver) {
     "<td class="+coveredHighlight1+"><strong>"+coveredByUser+"</strong></td>"+
     "<td class="+coveredHighlight1+">"+driver.PreferredLanes+"</tr>"
   );
+}
 }
 
 function getLastUpdatedInfo(driver) {
@@ -152,7 +155,7 @@ setInterval(function() {
       url: "/drivers",
       success: function(data) {
         var html = '';
-        var shortList = data.drivers.slice(0, 40);
+        var shortList = data.drivers.slice(0, 600);
         shortList.forEach(function(d) {
           if (data.covered_drivers[d.id]) {
             d.covered_name = data.covered_drivers[d.id];
@@ -165,4 +168,4 @@ setInterval(function() {
       dataType: "json"
     });
   }
-}, 15000);
+}, 30000);
